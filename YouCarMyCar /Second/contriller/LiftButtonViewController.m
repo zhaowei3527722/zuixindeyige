@@ -20,12 +20,25 @@
 #import "TiJiaoTableViewCell.h"
 #import "ZWTextView.h"
 #import "XieYiViewController.h"
+#import "AFNetworking.h"
+
+#import "CommUtils.h"
+
 @interface LiftButtonViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,GradeTableViewCellDelegate>
 @property (nonatomic,strong)UITableView *shiYongTableView;
 @property (nonatomic,strong)ZWTextView *zwTextView;
 @property (nonatomic,strong)UIImageView *zhaoxiangImage;
 @property (nonatomic)BOOL change;
 @property (nonatomic ,strong)EvaluateTableViewCell *myCell;
+
+@property (nonatomic,strong)ZWTextView *wai;
+@property (nonatomic ,strong)ZWTextView *zhi;
+@property (nonatomic ,strong)ZWTextView *jia;
+@property (nonatomic )NSInteger numberXing;
+@property (nonatomic ,strong)NSString *base64string;
+@property (nonatomic , strong)NSString *md5String;
+
+
 
 @end
 
@@ -147,15 +160,96 @@
     }
 }
 
+/*
+ •	请求参数：
+	•	act=try
+	•	op=subReport
+	•	member_id：会员id
+	•	key 登录tokon
+	•	try_id：试用id
+	•	appearance_info:外观
+	•	score:评分
+	•	quality_info:质量
+	•	price_info:价格
+	•	img:图片
+
+ */
 //cell 的点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 5) {
         
-        XieYiViewController *xiexieVC= [[XieYiViewController alloc]init];
-        xiexieVC.k = 1;
+          NSMutableArray *imageArray = [[NSMutableArray alloc]init];
+//        NSDictionary *imageDic = [[];
         
-        [self.navigationController   pushViewController:xiexieVC animated:YES];
+        
+        if (self.zhaoxiangImage.image) {
+            NSData *imageData = UIImageJPEGRepresentation(self.zhaoxiangImage.image, 1.0);
+            self.base64string = [imageData base64Encoding];
+            self.md5String = [CommUtils md5:self.base64string];
+          //：[{"img":"sdfdsfsfsdfsdfs","type":"jpg","size":"100","width":"12","height":"12","md5":"sssss"}] （数组方式，可
+            
+        }
+        
+        NSDictionary *imagedic = @{@"img":self.base64string,@"type":@"jpg",@"size":[NSString stringWithFormat:@"%lu",(unsigned long)self.base64string.length],@"width":[NSString stringWithFormat:@"%f",self.zhaoxiangImage.image.size.width],@"heigth":[NSString stringWithFormat:@"%f",self.zhaoxiangImage.image.size.width],@"md5":self.md5String};
+        
+        
+        
+        [imageArray addObject:imagedic];
+        
+        NSString *mymember_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+        NSString *mykey = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+        
+        
+        NSLog(@"key = %@ id =  %@" ,mykey,mymember_id);
+        NSLog(@" == == = = == %@ ===== %@ ====  == =%@",self.wai.text,self.zhi.text ,self.jia.text);
+ 
+        
+        /*act=try
+         •	op=subReport
+         •	member_id：会员id
+         •	key 登录tokon
+         •	try_id：试用id
+         •	appearance_info:外观
+         •	score:评分
+         •	quality_info:质量
+         •	price_info:价格
+         •	img:图片
+*/
+        
+        
+        
+        NSDictionary *parameters = @{@"act":@"try",@"op":@"subReport",@"member_id":mymember_id,@"key":mykey,@"try_id":@"1",@"appearance_info":self.wai,@"score":[NSString stringWithFormat:@"%ld",(long)self.numberXing],@"quality_info":self.zhi,@"price_info":self.jia,@"img":imageArray};
+        
+        
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+//            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"img"]);
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+                
+            }
+            
+            
+            XieYiViewController *xiexieVC= [[XieYiViewController alloc]init];
+            xiexieVC.k = 1;
+            
+            [self.navigationController   pushViewController:xiexieVC animated:YES];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"%@",error);
+            
+            
+        }];
+        
+        
+        
+        
+       
     }
 }
 
@@ -180,6 +274,10 @@
                                                                                   forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = MainBackGround;
+        self.wai = cell.zwTextView;
+        
+        
+        
         [cell.zhaoxiangButton addTarget:self action:@selector(zhaoxiang) forControlEvents:(UIControlEventTouchUpInside)];
         return cell;
         
@@ -195,9 +293,15 @@
         if (indexPath.row == 2) {
             
             self.zwTextView.placeholder = @"请您写下您使用该产品的质量问题和建议...";
+            self.zhi = cell.zwTextView;
+
         }else{
             cell.shiyongIcon.image = [UIImage imageNamed:@"产品价格.png"];
             cell.shiyongTitle.text = @"产品价格";
+            self.jia = cell.zwTextView;
+            NSLog( @"%@",cell.zwTextView.text);
+            
+
             
         }
         
@@ -242,6 +346,7 @@
     if (self.isOne == YES) {
         [self.xingxing1 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
         self.isOne = NO;
+        self.numberXing = 1;
     }else if (self.isOne == NO) {
         [self.xingxing1 setImage:[UIImage imageNamed:@"星星未选中.png"] forState:(UIControlStateNormal)];
         self.isOne = YES;
@@ -249,6 +354,8 @@
         self.isThree = YES;
         self.isFour = YES;
         self.isFive = YES;
+        self.numberXing = 0;
+        
     }
     
     [self.xingxing2 setImage:[UIImage imageNamed:@"星星未选中.png"] forState:(UIControlStateNormal)];
@@ -263,6 +370,7 @@
 {
     
     if (self.isTow == YES) {
+        self.numberXing = 2;
         
         [self.xingxing2 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
         self.isTow = NO;
@@ -276,6 +384,8 @@
         self.isThree = YES;
         self.isFour  = YES;
         self.isFive  = YES;
+        self.numberXing = 1;
+        
         
     }
     
@@ -290,6 +400,8 @@
 {
     
     if (self.isThree == YES) {
+        self.numberXing = 3;
+        
         [self.xingxing3 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
         self.isThree = NO;
         self.isOne   = NO;
@@ -302,6 +414,8 @@
         self.isThree = YES;
         self.isFour  = YES;
         self.isFive  = YES;
+        self.numberXing = 2;
+        
         
     }
     
@@ -314,6 +428,8 @@
 -(void)buttonAction4:(UIButton *)button
 {
     if (self.isFour== YES) {
+        self.numberXing = 4;
+        
         [self.xingxing4 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
         self.isFour  = NO;
         self.isTow   = NO;
@@ -324,6 +440,8 @@
         [self.xingxing4 setImage:[UIImage imageNamed:@"星星未选中.png"] forState:(UIControlStateNormal)];
         self.isFour = YES;
         self.isFive = YES;
+        self.numberXing = 3;
+        
     }
     
     [self.xingxing1 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
@@ -335,6 +453,8 @@
 -(void)buttonAction5:(UIButton *)button
 {
     if (self.isFive== YES) {
+        self.numberXing = 5;
+        
         [self.xingxing5 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
         self.isFive  = NO;
         self.isOne   = NO;
@@ -344,6 +464,8 @@
     }else if (self.isFive == NO) {
         [self.xingxing5 setImage:[UIImage imageNamed:@"星星未选中.png"] forState:(UIControlStateNormal)];
         self.isFive = YES;
+        self.numberXing = 4;
+        
     }
     
     [self.xingxing1 setImage:[UIImage imageNamed:@"星星选中.png"] forState:(UIControlStateNormal)];
@@ -442,25 +564,20 @@
 // 点击图片触发
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
     {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         self.zhaoxiangImage.image = image;
+        
     }else{
         self.zhaoxiangImage.image = image;
     }
     
-    
-    NSLog(@" == = = = = %@",info);
-    
-    NSLog(@"图片参数  %@",[info  valueForKey:@"UIImagePickerControllerEditedImage"]);
-
-    
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 
 -(void)pop

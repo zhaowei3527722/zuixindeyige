@@ -10,31 +10,31 @@
 	<string>YouCarMyCar</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>26A63B5A6B43A7D71DF2C2037F485C7D81B99F7A</key>
-		<string>https://github.com/skyExclusive/zhaowei.git</string>
+		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
+		<string>https://github.com/zhaowei3527722/zuixindeyige.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>YouCarMyCar 2/YouCarMyCar.xcodeproj</string>
+	<string>YouCarMyCar /YouCarMyCar.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>26A63B5A6B43A7D71DF2C2037F485C7D81B99F7A</key>
+		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/skyExclusive/zhaowei.git</string>
+	<string>https://github.com/zhaowei3527722/zuixindeyige.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>26A63B5A6B43A7D71DF2C2037F485C7D81B99F7A</string>
+	<string>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>26A63B5A6B43A7D71DF2C2037F485C7D81B99F7A</string>
+			<string>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</string>
 			<key>IDESourceControlWCCName</key>
-			<string>YAN</string>
+			<string>ZUI</string>
 		</dict>
 	</array>
 </dict>
