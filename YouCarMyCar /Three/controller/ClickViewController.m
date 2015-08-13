@@ -543,6 +543,11 @@
     NSString *key = [[NSUserDefaults  standardUserDefaults] valueForKey:@"key"];
     
     NSLog(@"%@",key);
+    
+    
+    if (key == nil) {
+        NSLog(@"去登陆");
+    }else if (key != nil) {
     //上传数据
     
     NSDictionary *params = @{@"act":@"member_feedback",@"op":@"feedback_add",@"key":key,@"feedbook":self.textView.text};
@@ -556,8 +561,11 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"失败");
     }];
+        
+         [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 
-    [self.navigationController popToRootViewControllerAnimated:YES];
+   
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

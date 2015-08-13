@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WangQiModel.h"
 @interface LiftButtonViewController : UIViewController
 @property (nonatomic)BOOL isOne;
 @property (nonatomic)BOOL isTow;
@@ -19,6 +19,7 @@
 @property (nonatomic ,strong)UIButton *xingxing3;
 @property (nonatomic ,strong)UIButton *xingxing4;
 @property (nonatomic ,strong)UIButton *xingxing5;
+@property (nonatomic ,strong)WangQiModel *wangqiModel;
 
 
 
