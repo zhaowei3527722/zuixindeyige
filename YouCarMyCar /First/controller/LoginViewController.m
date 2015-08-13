@@ -465,7 +465,18 @@
                 
                  [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_id"] forKey:@"member_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"mobile"]  forKey : @"mobile"];
-                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"]  forKey : @"member_truename"];
+                
+                
+                
+    if ([[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] != [NSNull null])
+    
+    
+    {
+                    
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"]  forKey : @"member_truename"];
+                }
+                
+                
                 //存入 用户的密码 以备不时之需
                 [[NSUserDefaults standardUserDefaults] setObject:self.userPassWordMy.mytextField.text forKey:@"userPassWord"];
                 
