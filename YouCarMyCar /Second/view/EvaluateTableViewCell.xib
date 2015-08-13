@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="evaluateCell" id="KGk-i7-Jjw" customClass="EvaluateTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="产品外观" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGf-Rh-gfE">
+                        <rect key="frame" x="43" y="8" width="324" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="tph-dU-NYv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybC-b2-W6W">
+                        <rect key="frame" x="316" y="43" width="51" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="Dip-Zo-n7S"/>
+                            <constraint firstAttribute="width" constant="51" id="nwp-aS-jKg"/>
+                        </constraints>
+                        <state key="normal" image="照相.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="zhaoxiang:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tJj-Ha-uFq"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="短.png" translatesAutoresizingMaskIntoConstraints="NO" id="0Zw-OR-IsX">
+                        <rect key="frame" x="8" y="43" width="298" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="rD8-hP-c5v"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="产品外观.png" translatesAutoresizingMaskIntoConstraints="NO" id="r4B-Ir-Rqa">
+                        <rect key="frame" x="8" y="8" width="27" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="27" id="qh0-Fd-ljS"/>
+                            <constraint firstAttribute="height" constant="27" id="s9h-n6-f16"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ybC-b2-W6W" firstAttribute="leading" secondItem="0Zw-OR-IsX" secondAttribute="trailing" constant="10" id="32B-UH-tNd"/>
+                    <constraint firstItem="zGf-Rh-gfE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="3FW-I6-7i5"/>
+                    <constraint firstItem="zGf-Rh-gfE" firstAttribute="leading" secondItem="r4B-Ir-Rqa" secondAttribute="trailing" constant="8" id="4T4-Yq-r3o"/>
+                    <constraint firstItem="r4B-Ir-Rqa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="B8R-Yh-7W0"/>
+                    <constraint firstItem="r4B-Ir-Rqa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="CP1-38-TTO"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ybC-b2-W6W" secondAttribute="trailing" id="TOa-UY-VHh"/>
+                    <constraint firstItem="0Zw-OR-IsX" firstAttribute="top" secondItem="zGf-Rh-gfE" secondAttribute="bottom" constant="8" id="V20-BR-2Mx"/>
+                    <constraint firstItem="ybC-b2-W6W" firstAttribute="top" secondItem="zGf-Rh-gfE" secondAttribute="bottom" constant="8" id="cCH-kn-1xE"/>
+                    <constraint firstItem="zGf-Rh-gfE" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="faP-9b-KMh"/>
+                    <constraint firstItem="0Zw-OR-IsX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="xgo-Uh-2PL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="shiyongIcon" destination="r4B-Ir-Rqa" id="oJh-ZJ-ym7"/>
+                <outlet property="shiyongLable" destination="zGf-Rh-gfE" id="XpJ-3e-4QO"/>
+                <outlet property="textImage" destination="0Zw-OR-IsX" id="BRT-Gq-0xt"/>
+                <outlet property="zhaoxiangButton" destination="ybC-b2-W6W" id="bSb-up-pBK"/>
+            </connections>
+            <point key="canvasLocation" x="49.5" y="178"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="产品外观.png" width="24" height="24"/>
+        <image name="照相.png" width="51" height="51"/>
+        <image name="短.png" width="268" height="51"/>
+    </resources>
+</document>

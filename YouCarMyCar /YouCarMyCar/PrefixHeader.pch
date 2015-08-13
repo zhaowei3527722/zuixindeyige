@@ -1,0 +1,76 @@
+//
+//  PrefixHeader.pch
+//  YouCarMyCar
+//
+//  Created by ZhaoWei on 15/6/30.
+//  Copyright (c) 2015年 LLY. All rights reserved.
+//
+
+//#ifndef YouCarMyCar_PrefixHeader_pch
+#define YouCarMyCar_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+//-------------------获取设备大小-------------------------
+#define kMainX ([UIScreen mainScreen].bounds.origin.x)
+#define kMainY ([UIScreen mainScreen].bounds.origin.y)
+#define kMainWidth ([UIScreen mainScreen].bounds.size.width)
+#define kMainHeight ([UIScreen mainScreen].bounds.size.height)
+#define kMainHttp @"http://m.nichewoche.com/mobile/index.php"
+
+
+#define KcellIndetifier @"cellIndentifier"
+#define kHeaderIdentier @"headerIdentier"
+#define kFordIdentier @"FordIdentier"
+
+
+//NavBar高度
+#define NavigationBar_HEIGHT 44
+
+//----------------------颜色类---------------------------
+// rgb颜色转换（16进制->10进制）
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+//带有RGBA的颜色设置
+#define COLOR(R, G, B, A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
+//主要的背景颜色
+#define MainBackGround  [UIColor colorWithRed:251/255.0 green:246/255.0 blue:240/255.0 alpha:1]
+
+//设置button的字体和大小
+
+#define MyButtonFont [UIFont fontWithName:@"DBLCDTempBlack" size:18]
+
+
+//背景色
+#define BACKGROUND_COLOR [UIColor colorWithRed:242.0/255.0 green:236.0/255.0 blue:231.0/255.0 alpha:1.0]
+
+//清除背景色
+#define CLEARCOLOR [UIColor clearColor]
+
+//所有字体的颜色 黑色
+#define WordColor [UIColor colorWithRed:15 / 255.0 green:15/ 255.0  blue:15/ 255.0  alpha:1]
+
+//textField的占位符字体 大小 颜色
+
+#define KMainPlaceholder(arr) [[NSAttributedString alloc] initWithString:arr attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:COLOR(150, 150, 150, 1)}]
+
+//（1）当前系统版本号
+
+#define kCurrentSystemVersion [[[UIDevice currentDevice] systemVersion] floatValue]
+//（2）判断是否是iOS7或更高的系统版本
+
+#define IOS_VERSION_7_OR_LATER (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)? (YES):(NO))
+//（3）当前的系统语言
+
+#define kCurrentLanguage [[NSLocale preferredLanguages] objectAtIndex:0]
+
+// DLog
+#define DEBUG_MODE 1
+#if DEBUG_MODE
+#define DLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define DLog( s, ... )
+
+#endif

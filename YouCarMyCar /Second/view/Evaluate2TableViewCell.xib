@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="evaluate2Cell" rowHeight="54" id="KGk-i7-Jjw" customClass="Evaluate2TableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="产品质量.png" translatesAutoresizingMaskIntoConstraints="NO" id="YKB-EW-AaP">
+                        <rect key="frame" x="8" y="8" width="27" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="27" id="Urt-hK-ie6"/>
+                            <constraint firstAttribute="height" constant="27" id="isN-6x-v4f"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="长.png" translatesAutoresizingMaskIntoConstraints="NO" id="gDP-ej-awz">
+                        <rect key="frame" x="8" y="43" width="359" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="diF-AN-2Ni"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="产品质量" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0CE-v7-EPt">
+                        <rect key="frame" x="43" y="8" width="324" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="Gcs-Je-8PM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YKB-EW-AaP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="3Hr-5f-6MR"/>
+                    <constraint firstItem="gDP-ej-awz" firstAttribute="top" secondItem="0CE-v7-EPt" secondAttribute="bottom" constant="8" id="4Kk-fC-phV"/>
+                    <constraint firstItem="gDP-ej-awz" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="OHs-LJ-KTo"/>
+                    <constraint firstItem="YKB-EW-AaP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="T1H-QB-AD8"/>
+                    <constraint firstItem="0CE-v7-EPt" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="ecW-lG-smX"/>
+                    <constraint firstItem="gDP-ej-awz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="fQO-U4-Nia"/>
+                    <constraint firstItem="0CE-v7-EPt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="t88-3h-cZ8"/>
+                    <constraint firstItem="0CE-v7-EPt" firstAttribute="leading" secondItem="YKB-EW-AaP" secondAttribute="trailing" constant="8" id="zGN-n5-fcQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="shiyongIcon" destination="YKB-EW-AaP" id="peX-41-R0T"/>
+                <outlet property="shiyongImage" destination="gDP-ej-awz" id="xwD-3j-njg"/>
+                <outlet property="shiyongTitle" destination="0CE-v7-EPt" id="VP4-YM-OvK"/>
+            </connections>
+            <point key="canvasLocation" x="425.5" y="213"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="产品质量.png" width="24" height="24"/>
+        <image name="长.png" width="331" height="51"/>
+    </resources>
+</document>
