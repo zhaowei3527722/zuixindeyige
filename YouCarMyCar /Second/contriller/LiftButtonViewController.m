@@ -35,6 +35,8 @@
     [super viewDidLoad];
     
     
+    NSLog(@"%@",self.wangqiModel.title);
+    
     self.isOne = YES;
     self.isTow = YES;
     self.isThree = YES;

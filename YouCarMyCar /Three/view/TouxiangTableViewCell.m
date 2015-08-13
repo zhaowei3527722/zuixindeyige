@@ -7,15 +7,23 @@
 //
 
 #import "TouxiangTableViewCell.h"
-
+#import "PrefixHeader.pch"
 @implementation TouxiangTableViewCell
 
 - (void)awakeFromNib {
     // Initialization code
     
+    
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
+    view.backgroundColor = [UIColor blackColor];
+    [self addSubview:view];
+    self.backimage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
+    self.backimage.image = [UIImage imageNamed:@"未选.png"];
+    [view addSubview:self.backimage];
+    
     UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-    [self.backimage setFrame:self.frame];
+    visualEfView.frame = CGRectMake(0, 0, kMainWidth, 155);
+    self.backimage.frame = self.backgroundView.bounds;
     visualEfView.alpha = 1.0;
     [self.backimage addSubview:visualEfView];
 }

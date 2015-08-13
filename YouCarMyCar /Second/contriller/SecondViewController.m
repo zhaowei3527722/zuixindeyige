@@ -10,6 +10,10 @@
 #import "CollectionCell.h"
 #import "PrefixHeader.pch"
 #import "SxiangViewController.h"
+
+#import "AFNetworking.h"
+#import "UIImageView+WebCache.h"
+#import "WangQiModel.h"
 @interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong)UICollectionView *collectionView;
 @end
@@ -25,10 +29,29 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //获取数据
+    [self custom];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"往期试用";
     //自定义View
     [self layoutView];
+}
+-(void)custom
+{
+    self.myArray = [NSMutableArray array];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=2",kMainHttp];
+    AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
+    [manger GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+        for (NSDictionary *dic in array) {
+            WangQiModel *model = [[WangQiModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:model];
+        }
+        [self.collectionView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 //自定义View
@@ -72,7 +95,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 8;
+    return self.myArray.count;
     
 }
 
@@ -81,9 +104,10 @@
 {
     CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIndentifier" forIndexPath:indexPath];
    
+    WangQiModel *model = self.myArray[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
-    cell.mylabel.text = @"06期";
-    cell.myimageView.image = [UIImage imageNamed:@"2.jpg"];
+    cell.mylabel.text = model.title;
+    cell.myimageView.image = [UIImage imageNamed:model.img];
  
 
     
@@ -94,7 +118,9 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     SxiangViewController *sXiangVC = [[SxiangViewController alloc]init];
+    sXiangVC.wangqiModel = self.myArray[indexPath.row];
     [self.navigationController pushViewController:sXiangVC animated:YES];
 }
 

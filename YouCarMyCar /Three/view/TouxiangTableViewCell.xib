@@ -17,9 +17,6 @@
                     <userLayoutGuide location="187" affinity="minX"/>
                 </userGuides>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="1.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="cMi-5R-t5i">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="154"/>
-                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="形状 1.png" translatesAutoresizingMaskIntoConstraints="NO" id="daZ-Id-IGx">
                         <rect key="frame" x="51" y="99" width="272" height="50"/>
                         <constraints>
@@ -55,7 +52,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="backimage" destination="cMi-5R-t5i" id="Y7B-qA-TJj"/>
                 <outlet property="nameLable" destination="1IF-nm-5Zx" id="3bw-g5-R9G"/>
                 <outlet property="photoImage" destination="fEj-A9-p8R" id="yxC-bk-QST"/>
                 <outlet property="xiaoImage" destination="daZ-Id-IGx" id="TyP-Ew-lev"/>
@@ -64,7 +60,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="1.jpg" width="640" height="887"/>
         <image name="2.jpg" width="270" height="360"/>
         <image name="形状 1.png" width="500" height="110"/>
     </resources>

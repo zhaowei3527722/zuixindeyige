@@ -82,7 +82,8 @@
             
         }
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        wqCell.myGoodsNameLable.text = @"商品的名字 座椅";
+        wqCell.myGoodsNameLable.text = self.wangqiModel.title;
+//        wqCell.myGoodDescritionLable.text = self.wangqiModel.
         wqCell.myreportNumberLable .text = @"一共是100万份";
         wqCell.delegate = self;
         
@@ -141,6 +142,7 @@
 -(void)liftButton:(UIButton *)button
 {
     LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
+    lift.wangqiModel = self.wangqiModel;
     [self.navigationController pushViewController:lift animated:YES];
     
 }
