@@ -125,6 +125,27 @@
      •	try_id：试用产品id
      •	返回数据：*/
     
+//   	•	请求参数：
+//    •	act=try
+//    •	op=getComment
+//    •	tryId 试用产品id
+//    •	返回数据：
+//    •	"member_name": "wei3527722",
+//    •	member_avatar": null,
+//    •	"id": "19",
+//    •	"content": "特别好",
+//    •	"member_id": "6097",
+//    •	"try_id": "2",
+//    •	"add_time": "1438219113"
+//    
+//    16、发表评论（）
+//    
+//    act=try
+//    •	op=getComment
+//    •	tryId 试用产品id
+    
+    
+    
     NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
     NSLog(@"%@ , %@ %@",member_id,self.myModelnoW.myid,content);

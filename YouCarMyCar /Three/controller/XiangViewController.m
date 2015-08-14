@@ -13,6 +13,10 @@
 #import "DataNameTableViewCell.h"
 #import "DataSexTableViewCell.h"
 #import "TuiChuTableViewCell.h"
+#import "AFNetworking.h"
+
+
+
 @interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)NSMutableDictionary *dic;
@@ -181,7 +185,59 @@
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 2 && indexPath.row == 0) {
         
-        NSLog(@"退出登录");
+        if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            manager.responseSerializer = [AFJSONResponseSerializer serializer];
+            //申明请求的数据是json类型
+            manager.requestSerializer=[AFJSONRequestSerializer serializer];
+            //如果报接受类型不一致请替换一致text/html或别的
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+            
+            NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+            NSString  *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+            NSLog(@" - - - - - - - -%@%@",key,member_id);
+            
+            NSString *url = [NSString stringWithFormat:@"%@?act=login&op=outlogin&member_id=%@&key=%@",kMainHttp,member_id,key];
+            
+            NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            
+            [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                    
+                    NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+                    
+                    UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"注销成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [aller show];
+                    
+                    [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
+                    [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
+                    
+                    
+                    
+                }
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                if (error) {
+                    NSLog(@"%@",error);
+                    
+                    
+                    
+                }
+            }];
+            
+
+        }else {
+            
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [aller show];
+
+        }
+        
+             NSLog(@"退出登录");
     }
     
 }

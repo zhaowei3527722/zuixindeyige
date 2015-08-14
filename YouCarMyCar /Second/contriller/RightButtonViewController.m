@@ -10,8 +10,13 @@
 
 #import "PrefixHeader.pch"
 #import "RightListTableViewCell.h"
+#import "AFNetworking.h"
+#import "RightModel.h"
+
+#import "UIImageView+WebCache.h"
 
 @interface RightButtonViewController ()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic ,strong)NSMutableArray *myArray;
 
 @end
 
@@ -29,9 +34,56 @@
     self.navigationItem.leftBarButtonItem = lift;
     
     
+    [self coustom1];//获取数据
+    
     [self coustom];//布局
 
     // Do any additional setup after loading the view.
+}
+//获取 数据
+
+-(void)coustom1
+{/*	请求参数：
+  •	act=try
+  •	op=getWinning
+  •	try_id 试用产品ID
+  •	curpage:第几页，
+  •	eachNum:几条一页
+  •	返回数据：
+  •	Page totalPage  总页数
+  •	list 用户列表（数组）
+  •	member_name 昵称
+  •	member _avatar 头像*/
+    
+    self.myArray = [[NSMutableArray alloc]init];
+    
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager  alloc]init];
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getWinning&try_id=%@&curpage=1&eachNum=100",kMainHttp,self.myModel.myID];
+    NSString *urlF8 = [url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *array = [responseObject valueForKey:@"list"];
+        
+        for (NSDictionary *dic in array) {
+            RightModel *model = [[RightModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:model];
+        }
+        [self.myTableview reloadData];//刷新数据
+        
+        
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    
+    
 }
 
 -(void)coustom
@@ -47,7 +99,7 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 20;
+    return self.myArray.count / 2;
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -57,16 +109,28 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSLog(@"%ld",indexPath.row * 2 );
+    NSLog(@"%ld",indexPath.row *2 + 1);
+    
+    
+    
+    RightModel *model1 = self.myArray[indexPath.row * 2];
+    RightModel *model2 = self.myArray[indexPath.row * 2 +1];
+    
     static NSString *indext = @"indext";
     RightListTableViewCell *cell = [self.myTableview dequeueReusableCellWithIdentifier:indext];   
     if (!cell) {
         cell = [[RightListTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:indext];
         
     }
-    cell.myliftImageView .image = [UIImage imageNamed:@"2.png"];
-    cell.myliftNameLable.text = @"name1";
-    cell.myRightLable.text = @"name2";
-    cell.myRightImageView.image = [UIImage imageNamed:@"2.png"];
+    
+    
+    [cell.myliftImageView  sd_setImageWithURL:[NSURL URLWithString:model1.member_avatar]];
+    cell.myliftNameLable.text = model1.member_name;
+    cell.myRightLable.text = model2.member_name;
+    [cell.myRightImageView sd_setImageWithURL:[NSURL URLWithString:model2.member_avatar]];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     

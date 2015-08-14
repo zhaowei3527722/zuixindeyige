@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "WangQiModel.h"
+
+
 @interface RightButtonViewController : UIViewController
 @property(nonatomic ,strong)UITableView *myTableview;
+@property (nonatomic ,strong)WangQiModel *myModel;
 
 @end

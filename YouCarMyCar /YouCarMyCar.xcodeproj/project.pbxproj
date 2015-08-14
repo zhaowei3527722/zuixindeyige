@@ -201,6 +201,8 @@
 		0AED02741B7D8C9A00F13B9A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02711B7D8C9A00F13B9A /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0AED02751B7D8C9A00F13B9A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02721B7D8C9A00F13B9A /* README.md */; };
 		0AED02781B7D9BAD00F13B9A /* Urljson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02771B7D9BAD00F13B9A /* Urljson.m */; };
+		0AED027C1B7DD6F300F13B9A /* TryReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027B1B7DD6F300F13B9A /* TryReportModel.m */; };
+		0AED027F1B7E153D00F13B9A /* RightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027E1B7E153D00F13B9A /* RightModel.m */; };
 		0AFBFE711B422A8600C3C98B /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE6F1B422A8600C3C98B /* 1.jpg */; };
 		0AFBFE721B422A8600C3C98B /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE701B422A8600C3C98B /* 2.jpg */; };
 		0AFF80FD1B6383360009C5C3 /* 免费试用@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */; };
@@ -597,6 +599,10 @@
 		0AED02721B7D8C9A00F13B9A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0AED02761B7D9BAD00F13B9A /* Urljson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Urljson.h; sourceTree = "<group>"; };
 		0AED02771B7D9BAD00F13B9A /* Urljson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Urljson.m; sourceTree = "<group>"; };
+		0AED027A1B7DD6F300F13B9A /* TryReportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TryReportModel.h; sourceTree = "<group>"; };
+		0AED027B1B7DD6F300F13B9A /* TryReportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryReportModel.m; sourceTree = "<group>"; };
+		0AED027D1B7E153D00F13B9A /* RightModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightModel.h; sourceTree = "<group>"; };
+		0AED027E1B7E153D00F13B9A /* RightModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightModel.m; sourceTree = "<group>"; };
 		0AFBFE6F1B422A8600C3C98B /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1.jpg; path = ../1.jpg; sourceTree = "<group>"; };
 		0AFBFE701B422A8600C3C98B /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 2.jpg; path = ../2.jpg; sourceTree = "<group>"; };
 		0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "免费试用@2x.png"; sourceTree = "<group>"; };
@@ -1447,6 +1453,10 @@
 			children = (
 				95AA44001B7C8169006EE3A6 /* WangQiModel.h */,
 				95AA44011B7C8169006EE3A6 /* WangQiModel.m */,
+				0AED027A1B7DD6F300F13B9A /* TryReportModel.h */,
+				0AED027B1B7DD6F300F13B9A /* TryReportModel.m */,
+				0AED027D1B7E153D00F13B9A /* RightModel.h */,
+				0AED027E1B7E153D00F13B9A /* RightModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1867,12 +1877,14 @@
 				95D661BC1B44D44500E9992E /* TongyongTableViewCell.m in Sources */,
 				0ACAF2581B411E830029ACC9 /* NSData+ImageContentType.m in Sources */,
 				0ADC1A9B1B72091900368248 /* UIWebView+AFNetworking.m in Sources */,
+				0AED027C1B7DD6F300F13B9A /* TryReportModel.m in Sources */,
 				959281B01B6A1FD400F122B8 /* ShiYongTitleTableViewCell.m in Sources */,
 				0AFF81021B6390E50009C5C3 /* MZTimerLabel.m in Sources */,
 				95A532481B53B72C002D2D0F /* DataNameTableViewCell.m in Sources */,
 				0ACAF26D1B411EB90029ACC9 /* FirstViewController.m in Sources */,
 				95E5AC941B437D5200904602 /* WillViewController.m in Sources */,
 				0AED02731B7D8C9A00F13B9A /* CHANGELOG.md in Sources */,
+				0AED027F1B7E153D00F13B9A /* RightModel.m in Sources */,
 				0ACAF2441B411E830029ACC9 /* MJRefreshAutoFooter.m in Sources */,
 				0ADC1A9A1B72091900368248 /* UIRefreshControl+AFNetworking.m in Sources */,
 				0A7B82CA1B7CC9C500D3EEDE /* AFHTTPSessionManager.m in Sources */,
