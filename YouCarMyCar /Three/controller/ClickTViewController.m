@@ -9,6 +9,7 @@
 #import "ClickTViewController.h"
 #import "PrefixHeader.pch"
 #import "SureViewController.h"
+#import "AFNetworking.h"
 @interface ClickTViewController ()<UITextFieldDelegate>
 @property (nonatomic,strong)UITextField *newpasswordField;
 @property (nonatomic,strong)UITextField *surepasswordField;
