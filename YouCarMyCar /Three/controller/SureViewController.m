@@ -13,6 +13,7 @@
 @property (nonatomic,strong)UITableView *addressTableView;
 @property (nonatomic,strong)UITableView *myTableView;
 
+
 @end
 
 @implementation SureViewController
@@ -26,7 +27,7 @@
     if (self.j == 10) {
         //布局修改密码
         [self layoutSureKey];
-    }else if (self.j == 11) {
+    }else if (self.j == 11 || self.j == 111) {
         //布局添加地址
         [self laoutAddAddress];
     }
@@ -93,7 +94,11 @@
 //**********************************************布局添加地址*************************************
 -(void)laoutAddAddress
 {
-    self.title = @"新增地址";
+    if (self.j == 11) {
+        self.title = @"新增地址";
+    }else if (self.j == 111) {
+        self.title = @"编辑地址";
+    }
     
        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height )];
     self.myTableView.backgroundColor = [UIColor whiteColor];
@@ -157,26 +162,51 @@
     
     
     NSString *tag=@"tag";
-    NSArray *arr = [[NSArray alloc]initWithObjects:@"",@"请输入收货人姓名",@"请输入您的详细地址",@"请输入您的联系电话",@"请输入您的邮编",@"",@"",@"", nil];
-    NSString *cellString  =arr[indexPath.row];
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:tag];
-    
-    
     if (cell==nil ) {
         cell=[[ UITableViewCell alloc]init];
         if (indexPath.row >0 && indexPath.row < 5) {
         UIView  *lable = [[UIView alloc]initWithFrame:CGRectMake(30, 0, kMainWidth - 60, 40)];
         lable.backgroundColor = [UIColor whiteColor];
         lable.layer.cornerRadius = 4;
-        
-        
-        self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(25, 0, lable.frame.size.width - 30, 40)];
-        _addressField.delegate = self;
-        _addressField.attributedPlaceholder = KMainPlaceholder(cellString);
+            self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(25, 0, lable.frame.size.width - 30, 40)];
+            _addressField.delegate = self;
+            if (indexPath.row == 1) {
+                if (self.j == 11) {
+                    _addressField.placeholder = @"请输入收货人姓名";
+                }else if (self.j == 111) {
+                    _addressField.text = self.addressMd.name;
+                }
+                self.nameFd = _addressField;
+            }else if (indexPath.row == 2) {
+                if (self.j == 11) {
+                    _addressField.placeholder = @"请输入您的详细地址";
+                }else if (self.j == 111) {
+                    //这里是传过来的地址
+                }
+                self.addressFd = _addressField;
+            }else if (indexPath.row == 3) {
+                if (self.j == 11) {
+                    _addressField.placeholder = @"请输入您的联系电话";
+                }else if (self.j == 111) {
+                    _addressField.text = self.addressMd.telephone;
+                }
+                self.phoneFd = _addressField;
+            }else if (indexPath.row == 4) {
+                if (self.j == 11) {
+                    _addressField.placeholder = @"请输入您的邮编";
+                }else if (self.j == 111) {
+                    //这里放的是邮政编码
+                }
+                
+                self.youzhengFd = _addressField;
+            }
+
+
         [lable addSubview:_addressField];
         [cell addSubview:lable];
-            
 
+            
         }
     }
     cell.backgroundColor = MainBackGround;
@@ -202,7 +232,7 @@
         [button setFrame:CGRectMake(10, 10, kMainWidth - 20 , 40)];
         [button setTitle:@"确定" forState:(UIControlStateNormal)];
         [button setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
-        [button addTarget:self action:@selector(sureAddress) forControlEvents:(UIControlEventTouchUpInside)];
+        [button addTarget:self action:@selector(sureAddress:) forControlEvents:(UIControlEventTouchUpInside)];
         
         
         [cell addSubview:button];
@@ -216,9 +246,20 @@
     
 }
 
--(void)sureAddress
+-(void)sureAddress:(UITextField *)tag
 {
     NSLog(@"确定添加新地址");
+    
+    
+    if ([_delegate respondsToSelector:@selector(addObjectnameFd:addressFd:phoneFd:youzhengFd:)]) {
+        [_delegate addObjectnameFd:_nameFd addressFd:_addressFd phoneFd:_phoneFd youzhengFd:_youzhengFd];
+    }
+    
+    
+
+    [self.navigationController popViewControllerAnimated:YES];
+
+    
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField

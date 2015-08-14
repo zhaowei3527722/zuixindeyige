@@ -12,20 +12,16 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    
-    
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
-    view.backgroundColor = [UIColor blackColor];
-    [self addSubview:view];
     self.backimage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
     self.backimage.image = [UIImage imageNamed:@"未选.png"];
-    [view addSubview:self.backimage];
+    [self addSubview:self.backimage];
     
     UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
     visualEfView.frame = CGRectMake(0, 0, kMainWidth, 155);
-    self.backimage.frame = self.backgroundView.bounds;
     visualEfView.alpha = 1.0;
     [self.backimage addSubview:visualEfView];
+    [self sendSubviewToBack:self.backimage];
+
 }
 
 

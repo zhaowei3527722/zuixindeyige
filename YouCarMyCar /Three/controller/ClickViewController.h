@@ -11,4 +11,7 @@
 @interface ClickViewController : UIViewController
 @property (nonatomic)int i;
 @property (nonatomic,copy)NSString *sexStr;
+@property (nonatomic,strong)UIButton *bianjiBT;
+@property (nonatomic,strong)UIButton *shanchuBT;
+@property (nonatomic,strong)NSIndexPath *myIndexPath;
 @end
