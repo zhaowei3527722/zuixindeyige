@@ -125,8 +125,6 @@
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     
-    
-    
        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,model.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         

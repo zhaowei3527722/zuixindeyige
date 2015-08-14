@@ -12,11 +12,15 @@
 #import "SureAddressViewController.h"
 #import "LiftButtonViewController.h"
 #import "RightButtonViewController.h"
-
 #import "SpeckWqTableViewCell.h"
+#import "TryReportModel.h"
+#import "AFNetworking.h"
 
+#import "UIImageView+WebCache.h"
 
 @interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate>
+@property (nonatomic)NSInteger indextnumber;//记录获取试用报告列表的 第几页
+@property (nonatomic,strong)NSMutableArray *myArray;
 
 @end
 
@@ -30,8 +34,13 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.indextnumber = 1;
+
     // Do any additional setup after loading the view.
-    self.title = @"往期详细";
+    self.title = @"往期详情";
+    
+    [self coustom];//获取数据;
+    
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.modalPresentationCapturesStatusBarAppearance = NO;
@@ -58,11 +67,51 @@
     self.myTableView.dataSource = self;
     
     
+}//获取数据
+
+-(void)coustom
+{
+    
+    self.myArray = [[NSMutableArray alloc]init];
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=report&tryId=%@&curpage=%ld&eachNum=10",kMainHttp,self.wangqiModel.myID,(long)self.indextnumber];
+    
+    NSLog(@"Try- id = %@",self.wangqiModel.myID);
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+        
+        for (NSDictionary *dic in array) {
+            TryReportModel *model = [[ TryReportModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            
+            [self .myArray addObject:model];
+            
+            
+            
+        }
+        
+        [self.myTableView  reloadData];//刷新;
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    
+    
+    
 }
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 20;
+    return self.myArray.count + 1;
     
 }
 -(NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
@@ -97,14 +146,16 @@
             wqCell = [[SpeckWqTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:wpindext1];
             
         }
+        TryReportModel *model = self.myArray[indexPath.row -1];
         
         
-        wqCell.myToImageView.image = [UIImage imageNamed:@"2.png"];
-        wqCell.myNameLable.text  = @"王老五";
-        wqCell.myPriceLableJ.text = @"价格 哪里来的价格 不要钱好不";
-        wqCell.myWeithtLableZ.text = @"质量 质量   很重";
-        wqCell.myAspectLableW.text = @"一个字   就一个字";
-        wqCell.myImageView.image = [UIImage imageNamed:@"2.png"];
+        [wqCell.myToImageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
+        
+        wqCell.myNameLable.text  = model.member_name;
+        wqCell.myPriceLableJ.text = model.price_info;
+        wqCell.myWeithtLableZ.text = model.quality_info;
+        wqCell.myAspectLableW.text = model.appearance_info;
+        [wqCell.myImageView sd_setImageWithURL:[NSURL URLWithString:model.img]];
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
         wqCell.mySpeckXingNumberInteger = 2;
         
@@ -149,6 +200,9 @@
 -(void)rigthButton:(UIButton *)button
 {
     RightButtonViewController *right = [[RightButtonViewController alloc]init];
+    right.myModel = self.wangqiModel;
+    
+    
     [self.navigationController pushViewController:right animated:YES];
     
 }
