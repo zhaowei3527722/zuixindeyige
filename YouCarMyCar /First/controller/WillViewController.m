@@ -38,7 +38,7 @@
     
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=3",kMainHttp];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
-    
+   
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         self.miao = [dat timeIntervalSince1970];

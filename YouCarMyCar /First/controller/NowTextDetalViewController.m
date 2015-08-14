@@ -14,6 +14,8 @@
 #import "UIImageView+WebCache.h"
 #import "TsGoodViewController.h"
 
+#import "AFNetworking.h"
+
 
 @interface NowTextDetalViewController ()<UIScrollViewDelegate,GoodDetalTableviewDelegate,SpeckTableviewDelegate>
 @property (nonatomic ,strong)GoodDetalTableViewController *nowVC;
@@ -110,9 +112,48 @@
     
     
 }
--(void)speckButtonAction:(UIButton *)button
+-(void)speckButtonAction:(UIButton *)button content:(NSString *)content
+
+
 {
     NSLog(@"评论");
+    /*	请求参数：
+     •	act=try
+     •	op=subComment
+     •	content：评论内容
+     •	member_id：会员id
+     •	try_id：试用产品id
+     •	返回数据：*/
+    
+    NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    NSLog(@"%@ , %@ %@",member_id,self.myModelnoW.myid,content);
+    
+    
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&try_id=%@",kMainHttp,content,member_id,self.myModelnoW.myid];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+    NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"----%@",[responseObject valueForKey:@"status"]);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+        
+    }];
+    
+    
+
+    
+    
+    
     
     
 }

@@ -117,11 +117,42 @@
     NSInteger aa = button.tag - 100;
     NSLog(@"%ld",(long)aa);
     
-    NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
-    detal.iSbutton  = YES;
+    NowViewModel *model = self.myArray[aa];
+    NSLog(@"%@",model.myid);
+    NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    NSLog(@"%@",member);
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+    
+    
+    
+       [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,model.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        NSLog(@" - - %@ === === =",[responseObject valueForKey:@"status"]);
+        
+        
+        NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
+        detal.iSbutton  = YES;
+        
+        [[super navigationController] pushViewController:detal animated:NO];
+        detal.myModelnoW = self.myArray[aa];
+           
+           
+           NSLog(@" - -- --  -%@",responseObject);
+        
 
-    [[super navigationController] pushViewController:detal animated:NO];
-    detal.myModelnoW = self.myArray[aa];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"  == 失败 原因%@",error);
+        
+    }];
+    
+    
+    
+    
     
 
     

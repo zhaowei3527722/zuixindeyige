@@ -21,9 +21,9 @@
 #import "ZWTextView.h"
 #import "XieYiViewController.h"
 #import "AFNetworking.h"
-
 #import "CommUtils.h"
-
+#import "JSONKit.h"
+#import "Urljson.h"
 @interface LiftButtonViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,GradeTableViewCellDelegate>
 @property (nonatomic,strong)UITableView *shiYongTableView;
 @property (nonatomic,strong)ZWTextView *zwTextView;
@@ -61,7 +61,7 @@
     
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [button setImage:[UIImage imageNamed:@"向左白色箭头.png"]
-                         forState :(UIControlStateNormal)];
+           forState :(UIControlStateNormal)];
     [button setFrame:CGRectMake(0, 0, 15, 25)];
     [button addTarget:self action:@selector(pop) forControlEvents:(UIControlEventTouchUpInside)];
     UIBarButtonItem *lift = [[UIBarButtonItem alloc]initWithCustomView:button];
@@ -162,96 +162,86 @@
     }
 }
 
-/*
- •	请求参数：
-	•	act=try
-	•	op=subReport
-	•	member_id：会员id
-	•	key 登录tokon
-	•	try_id：试用id
-	•	appearance_info:外观
-	•	score:评分
-	•	quality_info:质量
-	•	price_info:价格
-	•	img:图片
-
- */
 //cell 的点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 5) {
         
-          NSMutableArray *imageArray = [[NSMutableArray alloc]init];
-//        NSDictionary *imageDic = [[];
         
         
         if (self.zhaoxiangImage.image) {
             NSData *imageData = UIImageJPEGRepresentation(self.zhaoxiangImage.image, 1.0);
             self.base64string = [imageData base64Encoding];
-            self.md5String = [CommUtils md5:self.base64string];
-          //：[{"img":"sdfdsfsfsdfsdfs","type":"jpg","size":"100","width":"12","height":"12","md5":"sssss"}] （数组方式，可
-            
         }
-        
-        NSDictionary *imagedic = @{@"img":self.base64string,@"type":@"jpg",@"size":[NSString stringWithFormat:@"%lu",(unsigned long)self.base64string.length],@"width":[NSString stringWithFormat:@"%f",self.zhaoxiangImage.image.size.width],@"heigth":[NSString stringWithFormat:@"%f",self.zhaoxiangImage.image.size.width],@"md5":self.md5String};
-        
-        
-        
-        [imageArray addObject:imagedic];
         
         NSString *mymember_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
         NSString *mykey = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+        NSLog(@"%@",self.wangqiModel.myID);
         
         
         NSLog(@"key = %@ id =  %@" ,mykey,mymember_id);
         NSLog(@" == == = = == %@ ===== %@ ====  == =%@",self.wai.text,self.zhi.text ,self.jia.text);
- 
-        
-        /*act=try
-         •	op=subReport
-         •	member_id：会员id
-         •	key 登录tokon
-         •	try_id：试用id
-         •	appearance_info:外观
-         •	score:评分
-         •	quality_info:质量
-         •	price_info:价格
-         •	img:图片
-*/
         
         
         
-        NSDictionary *parameters = @{@"act":@"try",@"op":@"subReport",@"member_id":mymember_id,@"key":mykey,@"try_id":@"1",@"appearance_info":self.wai,@"score":[NSString stringWithFormat:@"%ld",(long)self.numberXing],@"quality_info":self.zhi,@"price_info":self.jia,@"img":imageArray};
+        
+        
+        
+        NSDictionary *parameters = @{@"act":@"try",@"op":@"subReport",@"member_id":mymember_id,@"key":mykey,@"try_id":self.wangqiModel.myID,@"appearance_info":self.wai.text,@"score":[NSString stringWithFormat:@"%ld",(long)self.numberXing],@"quality_info":self.zhi.text,@"price_info":self.jia.text,@"img":self.base64string};
+        
         
         
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
-        [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        //申明请求的数据是json类型
+        manager.requestSerializer=[AFJSONRequestSerializer serializer];
+        //如果报接受类型不一致请替换一致text/html或别的
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        
+        
+        
+        
+        [manager POST:kMainHttp parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             
-//            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"img"]);
             
-            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
-                NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+            
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@" responeObject = %@",responseObject);
+            
+            
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+            if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                XieYiViewController *xiexieVC= [[XieYiViewController alloc]init];
+                xiexieVC.k = 1;
+                
+                [self.navigationController   pushViewController:xiexieVC animated:YES];
+                
+            }else {
+                
+                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale show];
                 
             }
             
             
-            XieYiViewController *xiexieVC= [[XieYiViewController alloc]init];
-            xiexieVC.k = 1;
-            
-            [self.navigationController   pushViewController:xiexieVC animated:YES];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-            NSLog(@"%@",error);
-            
             
         }];
         
         
         
         
-       
+        
+        
+        
+        
+        
     }
 }
 
@@ -296,14 +286,14 @@
             
             self.zwTextView.placeholder = @"请您写下您使用该产品的质量问题和建议...";
             self.zhi = cell.zwTextView;
-
+            
         }else{
             cell.shiyongIcon.image = [UIImage imageNamed:@"产品价格.png"];
             cell.shiyongTitle.text = @"产品价格";
             self.jia = cell.zwTextView;
             NSLog( @"%@",cell.zwTextView.text);
             
-
+            
             
         }
         

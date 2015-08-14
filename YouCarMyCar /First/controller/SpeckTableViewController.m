@@ -62,17 +62,30 @@
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-        self.miao = [dat timeIntervalSince1970];
-//        NSMutableArray *array = [responseObject valueForKey:@"list"];
-        for (NSDictionary *dic in responseObject) {
-            SpeckModel *model = [[SpeckModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-            [self.myArray addObject:model];
+        
+        
+        if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
+            
+            
+            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            self.miao = [dat timeIntervalSince1970];
+            //        NSMutableArray *array = [responseObject valueForKey:@"list"];
+            for (NSDictionary *dic in responseObject) {
+                SpeckModel *model = [[SpeckModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                [self.myArray addObject:model];
+                
+            }
+            
+            [self.tableView reloadData];//刷新;
+
+            
+        }else {
+            
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
             
         }
         
-        [self.tableView reloadData];//刷新;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -254,8 +267,8 @@
 }
 -(void)myspeckButton:(UIButton *)button
 {
-    if ([self.delegate respondsToSelector:@selector(speckButtonAction:)]) {
-        [self.delegate speckButtonAction:button];
+    if ([self.delegate respondsToSelector:@selector(speckButtonAction:content:)]) {
+        [self.delegate speckButtonAction:button content:self.myTextView.text];
         
     }
 
@@ -369,8 +382,31 @@
 
 -(void)actionButton:(UIButton *)button
 {
-    TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-    [self.navigationController pushViewController:ts animated:NO];
+    NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    NSLog(@"%@",member);
+    
+    AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+   
+    [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+        [self.navigationController pushViewController:ts animated:NO];
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"  == 失败 原因%@",error);
+        
+    }];
+    
+    
+    
+    
+
     
     
 }

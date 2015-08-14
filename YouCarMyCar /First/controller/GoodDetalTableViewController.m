@@ -14,6 +14,8 @@
 
 #import "TsGoodViewController.h"
 
+#import "AFNetworking.h"
+
 
 @interface GoodDetalTableViewController ()<MylistFirstbleDelegate>
 @property (nonatomic ,strong)NowViewModel *myModelnoW;
@@ -210,9 +212,9 @@
 
         }
         mycell.delegagate = self;
-        NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-        NSTimeInterval a = [dat timeIntervalSince1970];
-        mycell.mytimeInteger = 1000; //- (a - self.miao) ;
+       // NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+        //NSTimeInterval a = [dat timeIntervalSince1970];
+        mycell.mytimeInteger = 1000 ;//- (a - self.miao) ;
         mycell.mydescritionLable.text = self.myModelnoW.small_info;
         mycell.myallGoodsCount.text = self.myModelnoW.number;
         mycell.mynowPerson.text = self.myModelnoW.try_people;
@@ -272,8 +274,35 @@
 
 -(void)actionButton:(UIButton *)button
 {
-    TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-    [self.navigationController pushViewController:ts animated:NO];
+    
+    NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    NSLog(@"%@",member);
+    
+   AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+        [self.navigationController pushViewController:ts animated:NO];
+        
+
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"  == 失败 原因%@",error);
+        
+    }];
+    
+    
+    
+    
+
+    
+    
+    
+    
     
     
 }

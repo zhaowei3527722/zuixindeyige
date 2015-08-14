@@ -14,7 +14,8 @@
 @protocol SpeckTableviewDelegate <NSObject>
 
 -(void)lightButtonAction:(UIButton *)button;
--(void)speckButtonAction:(UIButton *)button;
+-(void)speckButtonAction:(UIButton *)button content:(NSString *)content;
+
 
 
 @end
