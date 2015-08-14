@@ -8,10 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol addressTableViewCellDelegate <NSObject>
+
+-(void)buttonAction1:(UIButton *)button;
+-(void)buttonAction2:(UIButton *)button;
+
+@end
+
+
 @interface addressTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLable;
 @property (weak, nonatomic) IBOutlet UILabel *phoneLable;
 @property (weak, nonatomic) IBOutlet UILabel *addressLable;
-@property (weak, nonatomic) IBOutlet UIView *backGround;
+
+@property (weak, nonatomic) IBOutlet UIButton *bianjiBT;
+@property (weak, nonatomic) IBOutlet UIButton *shanchuBT;
+
+@property (nonatomic,assign)id<addressTableViewCellDelegate>delegate;
 @end

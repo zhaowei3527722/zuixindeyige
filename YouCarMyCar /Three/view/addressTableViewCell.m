@@ -14,10 +14,14 @@
     // Initialization code
 }
 - (IBAction)bianjiButton:(id)sender {
-    NSLog(@"这个是编辑");
+    if ([self.delegate respondsToSelector:@selector(buttonAction1:)]) {
+        [self.delegate buttonAction1:sender];
+    }
 }
 - (IBAction)shanchuButton:(id)sender {
-     NSLog(@"这个是删除");
+    if ([self.delegate respondsToSelector:@selector(buttonAction2:)]) {
+        [self.delegate buttonAction2:sender];
+    }
     
 }
 

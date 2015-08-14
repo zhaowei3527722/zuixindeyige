@@ -202,6 +202,7 @@
 		0AFF80FD1B6383360009C5C3 /* 免费试用@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */; };
 		0AFF80FF1B63862E0009C5C3 /* 免费试用dianji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FE1B63862E0009C5C3 /* 免费试用dianji@2x.png */; };
 		0AFF81021B6390E50009C5C3 /* MZTimerLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF81011B6390E50009C5C3 /* MZTimerLabel.m */; };
+		9526D4DD1B7CCDDB0097D68E /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9526D4DC1B7CCDDB0097D68E /* AddressModel.m */; };
 		956CE17C1B6864A200545644 /* 背景框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE1791B6864A200545644 /* 背景框@2x.png */; };
 		956CE17D1B6864A200545644 /* +86框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17A1B6864A200545644 /* +86框@2x.png */; };
 		956CE17E1B6864A200545644 /* 获取验证码框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17B1B6864A200545644 /* 获取验证码框@2x.png */; };
@@ -592,6 +593,8 @@
 		0AFF80FE1B63862E0009C5C3 /* 免费试用dianji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "免费试用dianji@2x.png"; sourceTree = "<group>"; };
 		0AFF81001B6390E50009C5C3 /* MZTimerLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZTimerLabel.h; sourceTree = "<group>"; };
 		0AFF81011B6390E50009C5C3 /* MZTimerLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZTimerLabel.m; sourceTree = "<group>"; };
+		9526D4DB1B7CCDDB0097D68E /* AddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressModel.h; sourceTree = "<group>"; };
+		9526D4DC1B7CCDDB0097D68E /* AddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressModel.m; sourceTree = "<group>"; };
 		95651C221B671DC100EAB2FC /* DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissKeyboard.h; sourceTree = "<group>"; };
 		956CE1791B6864A200545644 /* 背景框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "背景框@2x.png"; sourceTree = "<group>"; };
 		956CE17A1B6864A200545644 /* +86框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+86框@2x.png"; sourceTree = "<group>"; };
@@ -1409,6 +1412,8 @@
 			children = (
 				959312A51B5C9DBD0006142F /* ZWTextView.h */,
 				959312A61B5C9DBD0006142F /* ZWTextView.m */,
+				9526D4DB1B7CCDDB0097D68E /* AddressModel.h */,
+				9526D4DC1B7CCDDB0097D68E /* AddressModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1783,6 +1788,7 @@
 				0AE06C281B6876EE00EE6B22 /* GoodTableTableViewCell.m in Sources */,
 				0ACAF2501B411E830029ACC9 /* MJRefreshNormalHeader.m in Sources */,
 				0AE06C2E1B68AD4F00EE6B22 /* WqDetalTableViewCell.m in Sources */,
+				9526D4DD1B7CCDDB0097D68E /* AddressModel.m in Sources */,
 				0AE06C451B68D2B800EE6B22 /* RightButtonViewController.m in Sources */,
 				0ACAF2461B411E830029ACC9 /* MJRefreshComponent.m in Sources */,
 				0ACAF25A1B411E830029ACC9 /* SDWebImageCompat.m in Sources */,

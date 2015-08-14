@@ -13,8 +13,9 @@
 #import "ZWTextView.h"
 #import "ActivityTableViewCell.h"
 #import "SureViewController.h"
+#import "AddressModel.h"
 #import "AFHTTPRequestOperationManager.h"
-@interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate>
+@interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,SureViewControllerDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)ZWTextView *textView;
 @property (nonatomic,strong)UIButton *button;
@@ -23,6 +24,8 @@
 @property (nonatomic,strong)UITextField *codeField;
 @property (nonatomic,strong)UIButton *nextButton;
 @property (nonatomic,strong)UIImageView *choiceImage;
+@property (nonatomic,strong)NSMutableArray *myArray;
+
 @end
 
 @implementation ClickViewController
@@ -144,7 +147,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     if (self.i == 11) {
-        return 5;
+        return self.myArray.count;
     }else if (self.i == 13){
         return 4;
     }else{
@@ -200,8 +203,16 @@
     
     if (self.i == 11) {
 
+        AddressModel *addressMd = [[AddressModel alloc]init];
+        addressMd = _myArray[_myArray.count - 1 - indexPath.row];
         addressTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"addressCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.nameLable.text = addressMd.name;
+        cell.phoneLable.text = addressMd.telephone;
+        self.bianjiBT = cell.bianjiBT;
+        self.shanchuBT = cell.shanchuBT;
+        self.bianjiBT.tag = indexPath.row;
+        cell.delegate = self;
         cell.backgroundColor = MainBackGround;
         return cell;
         
@@ -237,7 +248,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
         [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
-        cell.baoGao.tag = 100  + indexPath.row ;
+        cell.baoGao.tag = indexPath.row ;
         cell.thingImage.image = [UIImage imageNamed:@"2.png"];
         cell.selectionStyle = UITableViewCellAccessoryNone;
             NSLog(@"%ld",(long)indexPath);
@@ -249,6 +260,43 @@
 
 
 
+-(void)buttonAction1:(UIButton *)button
+{
+
+    SureViewController *sure = [[SureViewController alloc]init];
+    sure.j = 111;
+    sure.addressMd = self.myArray[self.myIndexPath.row];
+    [self.navigationController pushViewController:sure animated:YES];
+    
+    
+}
+
+-(void)buttonAction2:(UIButton *)button
+{
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定删除该地址?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alert show];
+    
+    
+    UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
+    self.myIndexPath = [self.tableView indexPathForCell:cell];
+    
+    }
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex == 0) {
+        
+    }else if (buttonIndex == 1) {
+        
+        [self.myArray removeObjectAtIndex:self.myIndexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:@[self.myIndexPath] withRowAnimation:(UITableViewRowAnimationFade)];
+    }
+
+}
+
 -(void)baogao:(UIButton *)sender
 {
     NSLog(@"这个是提交报告 %ld",(long)sender.tag);
@@ -259,6 +307,7 @@
 -(void)layoutAddress
 {
     self.title = @"地址管理";
+    self.myArray = [NSMutableArray array];
     self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
@@ -270,7 +319,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView setBackgroundColor:MainBackGround];;
     
-    //返回的箭头
+    //添加
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [button setImage:[UIImage imageNamed:@"添加按钮.png"] forState:(UIControlStateNormal)];
     [button setFrame:CGRectMake(0, 0, 25, 25)];
@@ -283,11 +332,37 @@
     
 }
 
+
+
 -(void)add
 {
     SureViewController *sure = [[SureViewController alloc]init];
     sure.j = 11;
+    sure.delegate = self;
+    
+    
+    
     [self.navigationController pushViewController:sure animated:YES];
+}
+
+-(void)addObjectnameFd:(UITextField *)nameFd addressFd:(UITextField *)addressFd phoneFd:(UITextField *)phoneFd youzhengFd:(UITextField *)youzhengFd
+{
+    AddressModel *address = [[AddressModel alloc]init];
+    address.name = nameFd.text;
+    address.telephone = phoneFd.text;
+    [self.myArray addObject:address];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.myArray.count - 1 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:(UITableViewRowAnimationMiddle)];
+
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (self.i == 11) {
+        [super viewDidAppear:animated];
+        [_tableView reloadData];
+    }
+    
 }
 //***********************************修改密码********************************
 -(void)layoutPassword
@@ -605,10 +680,8 @@
     self.phoneField.placeholder = @"请输入您的手机号";
     self.phoneField.keyboardType = UIKeyboardTypeNumberPad;
     self.phoneField.delegate = self;
-    
     [imageView addSubview:self.phoneField];
 
-    
     
     UIImageView *codeimageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, imageView.frame.origin.y +70, kMainWidth - 20, 50)];
     codeimageView.image = [UIImage imageNamed: @"获取验证码框.png"];
