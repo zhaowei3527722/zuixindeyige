@@ -64,6 +64,37 @@
     NSString *urlF8 = [url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+            
+            
+            NSLog(@"%@",[responseObject valueForKey:@"list"]);
+            
+        
+            
+            
+            if ([responseObject valueForKey:@"list"] != NULL){
+
+                
+                NSArray *array = [responseObject valueForKey:@"list"];
+                
+                for (NSDictionary *dic in array) {
+                    RightModel *model = [[RightModel alloc]init];
+                    [model setValuesForKeysWithDictionary:dic];
+                    [self.myArray addObject:model];
+                }
+                [self.myTableview reloadData];//刷新数据
+                
+                
+
+                
+            }
+            
+         
+            
+        }
+        
+        
+        
         NSArray *array = [responseObject valueForKey:@"list"];
         
         for (NSDictionary *dic in array) {

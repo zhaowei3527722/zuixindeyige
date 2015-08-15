@@ -203,6 +203,7 @@
 		0AED02781B7D9BAD00F13B9A /* Urljson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02771B7D9BAD00F13B9A /* Urljson.m */; };
 		0AED027C1B7DD6F300F13B9A /* TryReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027B1B7DD6F300F13B9A /* TryReportModel.m */; };
 		0AED027F1B7E153D00F13B9A /* RightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027E1B7E153D00F13B9A /* RightModel.m */; };
+		0AF994B11B7EDBC00056A339 /* GoodDetalWQViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */; };
 		0AFBFE711B422A8600C3C98B /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE6F1B422A8600C3C98B /* 1.jpg */; };
 		0AFBFE721B422A8600C3C98B /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE701B422A8600C3C98B /* 2.jpg */; };
 		0AFF80FD1B6383360009C5C3 /* 免费试用@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */; };
@@ -603,6 +604,8 @@
 		0AED027B1B7DD6F300F13B9A /* TryReportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryReportModel.m; sourceTree = "<group>"; };
 		0AED027D1B7E153D00F13B9A /* RightModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightModel.h; sourceTree = "<group>"; };
 		0AED027E1B7E153D00F13B9A /* RightModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightModel.m; sourceTree = "<group>"; };
+		0AF994AF1B7EDBC00056A339 /* GoodDetalWQViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoodDetalWQViewController.h; sourceTree = "<group>"; };
+		0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoodDetalWQViewController.m; sourceTree = "<group>"; };
 		0AFBFE6F1B422A8600C3C98B /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1.jpg; path = ../1.jpg; sourceTree = "<group>"; };
 		0AFBFE701B422A8600C3C98B /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 2.jpg; path = ../2.jpg; sourceTree = "<group>"; };
 		0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "免费试用@2x.png"; sourceTree = "<group>"; };
@@ -1486,6 +1489,8 @@
 				0AE06C441B68D2B800EE6B22 /* RightButtonViewController.m */,
 				95DFE7811B6B65BA000B03EE /* XieYiViewController.h */,
 				95DFE7821B6B65BA000B03EE /* XieYiViewController.m */,
+				0AF994AF1B7EDBC00056A339 /* GoodDetalWQViewController.h */,
+				0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */,
 			);
 			path = contriller;
 			sourceTree = "<group>";
@@ -1827,6 +1832,7 @@
 				0ACAF25A1B411E830029ACC9 /* SDWebImageCompat.m in Sources */,
 				0AED02751B7D8C9A00F13B9A /* README.md in Sources */,
 				0ACAF1D61B411E710029ACC9 /* RootTaBarViewController.m in Sources */,
+				0AF994B11B7EDBC00056A339 /* GoodDetalWQViewController.m in Sources */,
 				0ACAF2611B411E830029ACC9 /* UIImage+GIF.m in Sources */,
 				0A6DB6FD1B74AD090007C7C2 /* UIImage+Color.m in Sources */,
 				0A7B82CD1B7CC9C500D3EEDE /* AFURLConnectionOperation.m in Sources */,
