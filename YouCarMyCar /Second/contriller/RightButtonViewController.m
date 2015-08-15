@@ -72,7 +72,7 @@
         
             
             
-            if ([responseObject valueForKey:@"list"] != NULL){
+            if (!([responseObject valueForKey:@"list"]==[NSNull null]) ){
 
                 
                 NSArray *array = [responseObject valueForKey:@"list"];

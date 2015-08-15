@@ -204,6 +204,9 @@
 		0AED027C1B7DD6F300F13B9A /* TryReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027B1B7DD6F300F13B9A /* TryReportModel.m */; };
 		0AED027F1B7E153D00F13B9A /* RightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED027E1B7E153D00F13B9A /* RightModel.m */; };
 		0AF994B11B7EDBC00056A339 /* GoodDetalWQViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */; };
+		0AF994B41B7EE8190056A339 /* DetaGoodLiftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF994B31B7EE8190056A339 /* DetaGoodLiftViewController.m */; };
+		0AF994B71B7EE82B0056A339 /* SpectGoodRigthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF994B61B7EE82B0056A339 /* SpectGoodRigthViewController.m */; };
+		0AF994BA1B7F123B0056A339 /* AllDeteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF994B91B7F123B0056A339 /* AllDeteModel.m */; };
 		0AFBFE711B422A8600C3C98B /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE6F1B422A8600C3C98B /* 1.jpg */; };
 		0AFBFE721B422A8600C3C98B /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFBFE701B422A8600C3C98B /* 2.jpg */; };
 		0AFF80FD1B6383360009C5C3 /* 免费试用@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */; };
@@ -606,6 +609,12 @@
 		0AED027E1B7E153D00F13B9A /* RightModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightModel.m; sourceTree = "<group>"; };
 		0AF994AF1B7EDBC00056A339 /* GoodDetalWQViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoodDetalWQViewController.h; sourceTree = "<group>"; };
 		0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoodDetalWQViewController.m; sourceTree = "<group>"; };
+		0AF994B21B7EE8190056A339 /* DetaGoodLiftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetaGoodLiftViewController.h; sourceTree = "<group>"; };
+		0AF994B31B7EE8190056A339 /* DetaGoodLiftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetaGoodLiftViewController.m; sourceTree = "<group>"; };
+		0AF994B51B7EE82B0056A339 /* SpectGoodRigthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectGoodRigthViewController.h; sourceTree = "<group>"; };
+		0AF994B61B7EE82B0056A339 /* SpectGoodRigthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpectGoodRigthViewController.m; sourceTree = "<group>"; };
+		0AF994B81B7F123B0056A339 /* AllDeteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllDeteModel.h; sourceTree = "<group>"; };
+		0AF994B91B7F123B0056A339 /* AllDeteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllDeteModel.m; sourceTree = "<group>"; };
 		0AFBFE6F1B422A8600C3C98B /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1.jpg; path = ../1.jpg; sourceTree = "<group>"; };
 		0AFBFE701B422A8600C3C98B /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 2.jpg; path = ../2.jpg; sourceTree = "<group>"; };
 		0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "免费试用@2x.png"; sourceTree = "<group>"; };
@@ -1460,6 +1469,8 @@
 				0AED027B1B7DD6F300F13B9A /* TryReportModel.m */,
 				0AED027D1B7E153D00F13B9A /* RightModel.h */,
 				0AED027E1B7E153D00F13B9A /* RightModel.m */,
+				0AF994B81B7F123B0056A339 /* AllDeteModel.h */,
+				0AF994B91B7F123B0056A339 /* AllDeteModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1491,6 +1502,10 @@
 				95DFE7821B6B65BA000B03EE /* XieYiViewController.m */,
 				0AF994AF1B7EDBC00056A339 /* GoodDetalWQViewController.h */,
 				0AF994B01B7EDBC00056A339 /* GoodDetalWQViewController.m */,
+				0AF994B21B7EE8190056A339 /* DetaGoodLiftViewController.h */,
+				0AF994B31B7EE8190056A339 /* DetaGoodLiftViewController.m */,
+				0AF994B51B7EE82B0056A339 /* SpectGoodRigthViewController.h */,
+				0AF994B61B7EE82B0056A339 /* SpectGoodRigthViewController.m */,
 			);
 			path = contriller;
 			sourceTree = "<group>";
@@ -1852,6 +1867,7 @@
 				0ACAF24B1B411E830029ACC9 /* MJRefreshAutoStateFooter.m in Sources */,
 				0ACAF2661B411E830029ACC9 /* UIView+WebCacheOperation.m in Sources */,
 				0ACAF2511B411E830029ACC9 /* MJRefreshStateHeader.m in Sources */,
+				0AF994BA1B7F123B0056A339 /* AllDeteModel.m in Sources */,
 				0AD9C2831B60C1DA00188AE8 /* EmailForgetViewController.m in Sources */,
 				0ADEC4A01B661B4E001C26F1 /* GoodDetalTableViewController.m in Sources */,
 				0ACAF2571B411E830029ACC9 /* MKAnnotationView+WebCache.m in Sources */,
@@ -1882,6 +1898,7 @@
 				95C7BA8D1B5E4116009604D7 /* ActivityTableViewCell.m in Sources */,
 				95D661BC1B44D44500E9992E /* TongyongTableViewCell.m in Sources */,
 				0ACAF2581B411E830029ACC9 /* NSData+ImageContentType.m in Sources */,
+				0AF994B71B7EE82B0056A339 /* SpectGoodRigthViewController.m in Sources */,
 				0ADC1A9B1B72091900368248 /* UIWebView+AFNetworking.m in Sources */,
 				0AED027C1B7DD6F300F13B9A /* TryReportModel.m in Sources */,
 				959281B01B6A1FD400F122B8 /* ShiYongTitleTableViewCell.m in Sources */,
@@ -1907,6 +1924,7 @@
 				0ACAF1B11B411E300029ACC9 /* main.m in Sources */,
 				0A7B82CF1B7CC9C500D3EEDE /* AFURLResponseSerialization.m in Sources */,
 				959281BA1B6A202800F122B8 /* GradeTableViewCell.m in Sources */,
+				0AF994B41B7EE8190056A339 /* DetaGoodLiftViewController.m in Sources */,
 				0AED02741B7D8C9A00F13B9A /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

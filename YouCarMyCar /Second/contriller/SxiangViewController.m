@@ -15,8 +15,8 @@
 #import "SpeckWqTableViewCell.h"
 #import "TryReportModel.h"
 #import "AFNetworking.h"
-
 #import "UIImageView+WebCache.h"
+#import "GoodDetalWQViewController.h"
 
 @interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate>
 @property (nonatomic)NSInteger indextnumber;//记录获取试用报告列表的 第几页
@@ -85,16 +85,22 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+
         
-        for (NSDictionary *dic in array) {
-            TryReportModel *model = [[ TryReportModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
+        if (!([[responseObject valueForKey:@"datas"] valueForKey:@"list"] == [NSNull null])) {
             
-            [self .myArray addObject:model];
-            
-            
-            
+            for (NSDictionary *dic in array) {
+                TryReportModel *model = [[ TryReportModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                
+                [self .myArray addObject:model];
+                
+                
+                
+            }
+
         }
+        
         
         [self.myTableView  reloadData];//刷新;
         
@@ -168,6 +174,25 @@
     
     
 }
+
+
+//进入详情
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (indexPath.row == 0) {
+        
+        
+        GoodDetalWQViewController *goodVC = [[GoodDetalWQViewController alloc]init];
+        goodVC.myModel = self.wangqiModel;
+        
+        [self.navigationController pushViewController:goodVC animated:YES];
+
+        
+    }
+    
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -204,6 +229,11 @@
     
     
     [self.navigationController pushViewController:right animated:YES];
+    
+}
+-(void)goodDescription
+{
+    
     
 }
 - (void)didReceiveMemoryWarning {

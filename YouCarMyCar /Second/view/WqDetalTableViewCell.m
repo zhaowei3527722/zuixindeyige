@@ -44,8 +44,12 @@
     
     self.myGoodDescritionLable= [[UILabel alloc]initWithFrame:CGRectMake(10, 168 * kMainWidth / 320, 190, 40)];
     self.myGoodDescritionLable.font = [UIFont systemFontOfSize:12];
-    self.myGoodDescritionLable.textColor = [UIColor grayColor];
+    self.myGoodDescritionLable.textColor = [UIColor redColor];
     self.myGoodDescritionLable.numberOfLines = 0;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+    
+    
     [self addSubview:self.myGoodDescritionLable];
     
     self.myGoodDescritionLable.text = @"我打算打发阿萨德飞机阿道夫阿里山东方大神阿斯顿发生大发撒旦法阿斯达发";
@@ -189,4 +193,13 @@
     // Configure the view for the selected state
 }
 
+//点击商品的描述 进入详情页面
+-(void)tap
+{
+    if ([self.delegate respondsToSelector:@selector(goodDescription)]) {
+        [self.delegate goodDescription];
+        
+    }
+    
+}
 @end

@@ -13,6 +13,8 @@
 -(void)sureAddress:(UIButton *)button;
 -(void)liftButton:(UIButton *)button;
 -(void)rigthButton:(UIButton *)button;
+-(void)goodDescription;
+
 
 @end
 
