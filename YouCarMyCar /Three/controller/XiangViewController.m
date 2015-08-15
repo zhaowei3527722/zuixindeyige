@@ -200,8 +200,6 @@
             NSString *url = [NSString stringWithFormat:@"%@?act=login&op=outlogin&member_id=%@&key=%@",kMainHttp,member_id,key];
             
             NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            
-            
             [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 
@@ -222,8 +220,7 @@
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 if (error) {
-                    NSLog(@"%@",error);
-                    
+                    NSLog(@"错误 = = %@",error);
                     
                     
                 }
