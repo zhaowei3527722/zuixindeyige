@@ -14,6 +14,7 @@
 #import "TongyongTableViewCell.h"
 #import "PrefixHeader.pch"
 #import "XiangViewController.h"
+#import "UIImageView+WebCache.h"
 #define kModaD self.view.frame.origin.x
 
 @interface ThreeViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -175,8 +176,11 @@
         
         cell.photoImage.layer.cornerRadius = cell.photoImage.frame.size.height/2;
         cell.photoImage.layer.masksToBounds = YES;
-        cell.photoImage.image = [UIImage imageNamed:@"2.png"];
-        cell.backimage.image = [UIImage imageNamed:@"2.png"];
+        NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
+        
+        [cell.photoImage sd_setImageWithURL:url];
+        [cell.backimage sd_setImageWithURL:url];
+        cell.nameLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
         cell.photoImage.userInteractionEnabled = YES;
         cell.superview.superview.backgroundColor = MainBackGround;
         

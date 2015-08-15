@@ -107,7 +107,9 @@
     WangQiModel *model = self.myArray[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
     cell.mylabel.text = model.title;
-    cell.myimageView.image = [UIImage imageNamed:model.img];
+//    cell.myimageView.image = [UIImage imageNamed:model.img];
+    NSURL *url = [NSURL URLWithString:model.img];
+    [cell.myimageView sd_setImageWithURL:url];
  
 
     

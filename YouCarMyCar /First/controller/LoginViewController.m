@@ -461,13 +461,33 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"sex"] forKey:@"sex"];
+                
+                
+                
 
                NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
+                
+                if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
+                }else {
+                    [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"address"];
+                }
+                NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"address"]);
+                
                 
                 [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"address"];
                 NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"address"]);
 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
+                
+
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:@"1" forKey:@"member_truename"];
+                    NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"]);
+                }else {
+                    [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+                }
+                
                 
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_id"] forKey:@"member_id"];
