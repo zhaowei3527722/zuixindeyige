@@ -14,7 +14,7 @@
 #import "DataSexTableViewCell.h"
 #import "TuiChuTableViewCell.h"
 #import "AFNetworking.h"
-
+#import "UIImageView+WebCache.h"
 
 
 @interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
@@ -255,8 +255,12 @@
         cell.photoImage.layer.cornerRadius = cell.photoImage.frame.size.height/2;
         cell.photoImage.layer.masksToBounds = YES;
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        cell.photoImage.image = self.myimage;
-        cell.backimage.image = self.myimage;
+        
+        NSURL *url = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
+        
+        [cell.photoImage sd_setImageWithURL:url];
+        [cell.backimage sd_setImageWithURL:url];
+        
         cell.superview.superview.backgroundColor = MainBackGround;
         
         
@@ -278,7 +282,7 @@
         DataNameTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"nameCell" forIndexPath:indexPath];
         cell.nameLable.text = str;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.nameField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"username"];
+        cell.nameField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
         return cell;
         
         
@@ -315,16 +319,12 @@
             }
 
             }else if ( indexPath.row == 4 ) {
-//                NSDictionary *dic = [NSDictionary dictionary];
-               
-//                dic = [[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
-//                NSLog(@"77777777777%@",dic);
-//                if ( [dic valueForKey:@"address"] == nil) {
+                if ( [[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
                     cell.myLable.text = @"请添加地址";
                     cell.myLable.textColor = COLOR(200, 200, 200, 1);
-//                }else{
-//                    cell.myLable.text = [dic valueForKey:@"address"];
-//                }
+                }else{
+                    cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
+                }
         }else if ( indexPath.row == 5 ) {
             cell.myLable.text = @"修改密码";
         }
