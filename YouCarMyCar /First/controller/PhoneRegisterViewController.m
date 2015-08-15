@@ -173,7 +173,7 @@
 {
     
     if ([CommUtils validatePwd:self.pasWordMY1.mytextField.text]&&[CommUtils validatePwd:self.psaWordMY2.mytextField.text]) {
-        NSDictionary *dic = @{@"act":@"login",@"op":@"register",@"username":self.nickNameMY.mytextField.text,@"mobile":self.userNameMY.mytextField.text,@"code":self.numberMY.mytextField.text,@"type":@"1",@"password":self.pasWordMY1.mytextField.text,@"password_confirm":self.psaWordMY2.mytextField.text,@"email":@"q1",@"client":@"wechat"};
+        NSDictionary *dic = @{@"act":@"login",@"op":@"register",@"username":self.nickNameMY.mytextField.text,@"mobile":self.userNameMY.mytextField.text,@"code":self.numberMY.mytextField.text,@"type":@"2",@"password":self.pasWordMY1.mytextField.text,@"password_confirm":self.psaWordMY2.mytextField.text,@"email":@"q1",@"client":@"wechat"};
         
         
         

@@ -8,7 +8,8 @@
 
 #import "SureViewController.h"
 #import "PrefixHeader.pch"
-@interface SureViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "AFNetworking.h"
+@interface SureViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 @property (nonatomic,strong)UITextField *addressField;
 @property (nonatomic,strong)UITableView *addressTableView;
 @property (nonatomic,strong)UITableView *myTableView;
@@ -250,16 +251,59 @@
 {
     NSLog(@"确定添加新地址");
     
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
+    
+    NSDictionary *dic = @{@"act":@"member_address",@"op":@"address_add",@"member_id":userID,@"key":key,@"true_name":_nameFd.text,@"address":_addressFd.text,@"mob_phone":_phoneFd.text,@"zip_code":_youzhengFd.text};
+    
+    AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
+    [manger POST:kMainHttp parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+           NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+        
+        if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 100;
+            
+            
+            [aller show];
+            
+            
+        }else {
+            
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"添加成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 101;
+            
+        
+            [aller show];
+        }
+
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+
     if ([_delegate respondsToSelector:@selector(addObjectnameFd:addressFd:phoneFd:youzhengFd:)]) {
         [_delegate addObjectnameFd:_nameFd addressFd:_addressFd phoneFd:_phoneFd youzhengFd:_youzhengFd];
     }
     
     
 
-    [self.navigationController popViewControllerAnimated:YES];
+    
 
     
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (alertView.tag == 101) {
+
+    if (buttonIndex == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+  }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField

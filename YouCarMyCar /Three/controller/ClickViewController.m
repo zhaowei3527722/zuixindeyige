@@ -15,6 +15,8 @@
 #import "SureViewController.h"
 #import "AddressModel.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "AFNetworking.h"
+#import "CommUtils.h"
 @interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,SureViewControllerDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)ZWTextView *textView;
@@ -25,6 +27,7 @@
 @property (nonatomic,strong)UIButton *nextButton;
 @property (nonatomic,strong)UIImageView *choiceImage;
 @property (nonatomic,strong)NSMutableArray *myArray;
+@property (nonatomic,strong)NSMutableArray *addressArray;
 
 @end
 
@@ -328,8 +331,12 @@
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = right;
     
+    //数据请求
     
-    
+//    self.addressArray = [[NSMutableArray alloc]init];
+//    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+//    NSString *url = [NSString stringWithFormat:@"%@?act=member_address&op=address_info&key=%@",]
+//    
 }
 
 
@@ -417,7 +424,42 @@
 //获取验证码
 -(void)verify:(UIButton *)button
 {
-    NSLog(@"这里是获取验证码");
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.phoneField.text];
+    NSLog(@"  wode url = = %@",url);
+    
+    if ([CommUtils validatePhoneNumber:self.phoneField.text]) {
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd=%@",kMainHttp,self.phoneField.text];
+        NSLog(@"  wode url = = %@",url);
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"%@",[responseObject valueForKey:@"code"]);
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"%@",error);
+            
+            
+        }];
+        
+        
+        
+    }else {
+        
+        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号有误 " delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [aller show];
+        
+        
+        
+    }
+
+
 }
 
 

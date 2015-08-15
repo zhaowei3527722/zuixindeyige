@@ -278,7 +278,7 @@
         DataNameTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"nameCell" forIndexPath:indexPath];
         cell.nameLable.text = str;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.nameField.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"userName"];
+        cell.nameField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"username"];
         return cell;
         
         
@@ -293,18 +293,38 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.myLable.font = [UIFont systemFontOfSize:15];
         if ( indexPath.row == 1) {
-            if ([[NSUserDefaults standardUserDefaults]objectForKey:@"mobile"] == nil) {
+            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"] isEqualToString:@""]) {
                 cell.myLable.text = @"请绑定手机号";
                 cell.myLable.textColor = COLOR(200, 200, 200, 1);
             }else{
-            cell.myLable.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"mobile"];
+            cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
             }
         }else if ( indexPath.row == 2 ) {
-//            cell.myLable.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"email"];
+            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"email"] isEqualToString:@""]) {
+                cell.myLable.text = @"请绑定邮箱";
+                cell.myLable.textColor = COLOR(200, 200, 200, 1);
+            }else{
+                cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
+            }
         }else if ( indexPath.row == 3 ) {
-//            cell.myLable.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"sex"];
-        }else if ( indexPath.row == 4 ) {
-//            cell.myLable.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"address"];
+            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"sex"] isEqualToString:@""]) {
+                cell.myLable.text = @"请选择性别";
+                cell.myLable.textColor = COLOR(200, 200, 200, 1);
+            }else{
+                cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
+            }
+
+            }else if ( indexPath.row == 4 ) {
+//                NSDictionary *dic = [NSDictionary dictionary];
+               
+//                dic = [[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
+//                NSLog(@"77777777777%@",dic);
+//                if ( [dic valueForKey:@"address"] == nil) {
+                    cell.myLable.text = @"请添加地址";
+                    cell.myLable.textColor = COLOR(200, 200, 200, 1);
+//                }else{
+//                    cell.myLable.text = [dic valueForKey:@"address"];
+//                }
         }else if ( indexPath.row == 5 ) {
             cell.myLable.text = @"修改密码";
         }
