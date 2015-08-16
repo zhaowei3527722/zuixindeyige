@@ -83,6 +83,8 @@
 
 -(void)pop
 {
+    
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

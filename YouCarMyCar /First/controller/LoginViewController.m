@@ -479,14 +479,11 @@
                 NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"address"]);
 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
+        
+                [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
                 
-
-                if ([[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"]) {
-                    [[NSUserDefaults standardUserDefaults]setValue:@"1" forKey:@"member_truename"];
-                    NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"]);
-                }else {
-                    [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
-                }
+                
+                [[NSUserDefaults standardUserDefaults]setValue:@"" forKey:@"code"];
                 
                 
                 

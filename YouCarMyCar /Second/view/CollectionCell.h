@@ -12,4 +12,5 @@
 @property (nonatomic,strong)UILabel *mylabel;
 @property (nonatomic,strong)UIImageView *myimageView;
 @property (nonatomic,strong)UIView *myView;
+@property (nonatomic,strong)UILabel *qishuLable;
 @end
