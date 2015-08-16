@@ -14,6 +14,9 @@
 #import "AFNetworking.h"
 #import "UIImageView+WebCache.h"
 #import "WangQiModel.h"
+
+#import "MJRefresh.h"
+
 @interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong)UICollectionView *collectionView;
 @end
@@ -31,15 +34,73 @@
     [super viewDidLoad];
     //获取数据
     [self custom];
+//    self.collectionView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+//    
+//    [self.collectionView.header beginRefreshing];
+//    
+//    self.collectionView.footer = [MJRefreshAutoNormalFooter forwardingTargetForSelector:@selector(forderrefreshin)];
+//    
+//    
+    
+    // 下拉刷新
+    self.collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 增加5条假数据
+        NSLog(@"zhge");
+        
+        [self headerRefreshing];
+        
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+    }];
+    [self.collectionView.header beginRefreshing];
+    
+    // 上拉刷新
+    self.collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 增加5条假数据
+        [self forderrefreshin];
+        
+    }];
+    // 默认先隐藏footer
+    [self.collectionView.footer beginRefreshing];
+
+    
+//    // 上拉刷新
+//    self.collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//        // 增加5条假数据
+//        for (int i = 0; i<5; i++) {
+//            [weakSelf.colors addObject:MJRandomColor];
+//        }
+//        
+//        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MJDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [weakSelf.collectionView reloadData];
+//            
+//            // 结束刷新
+//            [weakSelf.collectionView.footer endRefreshing];
+//        });
+//    }];
+    // 默认先隐藏footer
+    self.collectionView.footer.hidden = NO;
+
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"往期试用";
     //自定义View
     [self layoutView];
 }
+-(void)headerRefreshing
+{
+    NSLog(@"也可以用  ");
+    
+}
+-(void)forderrefreshin
+{
+    NSLog(@"加载");
+    
+}
 -(void)custom
 {
     self.myArray = [NSMutableArray array];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=2",kMainHttp];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10type=2",kMainHttp];
     AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
     [manger GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
@@ -95,7 +156,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.myArray.count;
+    return 23;
     
 }
 
@@ -103,14 +164,14 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIndentifier" forIndexPath:indexPath];
-   
-    WangQiModel *model = self.myArray[indexPath.row];
+//   
+//    WangQiModel *model = self.myArray[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
-    cell.mylabel.text = model.title;
-//    cell.myimageView.image = [UIImage imageNamed:model.img];
-    NSURL *url = [NSURL URLWithString:model.img];
-    [cell.myimageView sd_setImageWithURL:url];
- 
+//    cell.mylabel.text = model.title;
+////    cell.myimageView.image = [UIImage imageNamed:model.img];
+//    NSURL *url = [NSURL URLWithString:model.img];
+//    [cell.myimageView sd_setImageWithURL:url];
+// 
 
     
     return cell;

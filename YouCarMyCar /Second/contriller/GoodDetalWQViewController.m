@@ -60,13 +60,13 @@
 {
     self.liftButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     self.liftButton.frame =CGRectMake(0, 64, self.view.frame.size.width / 2 ,40);
-    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"正在进行@2x.png"] forState:(UIControlStateNormal)];
+    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x.png"] forState:(UIControlStateNormal)];
     [self.liftButton addTarget:self action:@selector(lift) forControlEvents:(UIControlEventTouchUpInside)];
     [self.view addSubview:self.liftButton];
     
     self.rightButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     self.rightButton.frame =CGRectMake(self.view.frame.size.width / 2, 64, self.view.frame.size.width / 2 ,40);
-    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"即将开启未选中@2x.png"] forState:(UIControlStateNormal)];
+    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"形状-6@2x.png"] forState:(UIControlStateNormal)];
     [self.rightButton addTarget:self action:@selector(right) forControlEvents:(UIControlEventTouchUpInside)];
     [self.view addSubview:self.rightButton];
     
@@ -89,8 +89,8 @@
     
     self.liftGoodVC = [[DetaGoodLiftViewController alloc]initWithModel:self.myModel];
     self.rigntSpeckVC = [[SpectGoodRigthViewController alloc]initWithModel:self.myModel];
-    self.rigntSpeckVC.view.frame = CGRectMake(0, kMainY, kMainWidth, kMainHeight);
-    self.rigntSpeckVC.view.frame = CGRectMake(kMainWidth, kMainY, kMainWidth, kMainHeight);
+    self.rigntSpeckVC.view.frame = CGRectMake(0, kMainY , kMainWidth, kMainHeight - 104);
+    self.rigntSpeckVC.view.frame = CGRectMake(kMainWidth, kMainY , kMainWidth, kMainHeight - 104);
     
     [self addChildViewController:self.liftGoodVC];
     [self.myscrollView addSubview:self.liftGoodVC.view];
@@ -102,8 +102,8 @@
 
 -(void)lift
 {
-    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"正在进行@2x.png"] forState:(UIControlStateNormal)];
-    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"即将开启未选中@2x.png"] forState:(UIControlStateNormal)];
+    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x.png"] forState:(UIControlStateNormal)];
+    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"形状-6@2x.png"] forState:(UIControlStateNormal)];
     self.myscrollView.contentOffset = CGPointMake(0, 0);
     
 
@@ -111,10 +111,29 @@
 }
 -(void)right
 {
-    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"正在进行未选中@2x.png"] forState:(UIControlStateNormal)];
-    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"即将开启选中@2x.png"] forState:(UIControlStateNormal)];
+    [self.liftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@3x.png"] forState:(UIControlStateNormal)];
+    [self.rightButton setBackgroundImage:[UIImage imageNamed:@"形状-7@2x.png"] forState:(UIControlStateNormal)];
     self.myscrollView.contentOffset = CGPointMake(self.view.frame.size.width, 0);
 }
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (self.myscrollView.contentOffset.x/kMainWidth == 0) {
+        [self.liftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x.png"] forState:(UIControlStateNormal)];
+        [self.rightButton setBackgroundImage:[UIImage imageNamed:@"形状-6@2x.png"] forState:(UIControlStateNormal)];
+        
+        
+        
+    }else if (self.myscrollView.contentOffset.x/kMainWidth == 1){
+        
+        [self.liftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@3x.png"] forState:(UIControlStateNormal)];
+        [self.rightButton setBackgroundImage:[UIImage imageNamed:@"形状-7@2x.png"] forState:(UIControlStateNormal)];
+        
+        
+    }
+    
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

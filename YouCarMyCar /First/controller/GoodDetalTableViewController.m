@@ -15,10 +15,14 @@
 #import "TsGoodViewController.h"
 
 #import "AFNetworking.h"
-
-
-@interface GoodDetalTableViewController ()<MylistFirstbleDelegate>
+#import "AllDeteModel.h"
+#import "UIImageView+WebCache.h"
+#import "LoginViewController.h"
+#import "MJRefresh.h"
+@interface GoodDetalTableViewController ()<MylistFirstbleDelegate,UIAlertViewDelegate>
 @property (nonatomic ,strong)NowViewModel *myModelnoW;
+@property (nonatomic,strong)NSMutableArray *myArray;
+@property (nonatomic,strong)AllDeteModel *myAllDetallModel;
 
 @end
 
@@ -42,16 +46,73 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.myArray = [NSMutableArray array];
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
     
-    [self coustom]; // 获取数据
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
     
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.tableView.header = header;
+    
+
     self.modalPresentationCapturesStatusBarAppearance = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.extendedLayoutIncludesOpaqueBars = NO;
    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-}
+    
+//    [self.tableView addHeaderWithTarget:self action:@selector(headerRefreshing)];
+//    [self.tableView headerBeginRefreshing];
+//    
+    
+    
 
+}
+-(void)headerRefreshing
+{
+    
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.myModelnoW.myid];
+    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",responseObject);
+        [self.myArray removeAllObjects];
+
+        if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
+            NSDictionary *dic = [responseObject valueForKey:@"datas"];
+            self.myAllDetallModel  = [[AllDeteModel alloc]init];
+            [self.myAllDetallModel setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:self.myAllDetallModel];
+            
+            [self.tableView reloadData];
+            NSLog(@"%@",self.myAllDetallModel.big_img);
+            
+        }
+       
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"请求出问题了");
+        
+    }];
+    
+    
+    [self.tableView.header endRefreshing];
+    
+
+    
+}
 -(CGFloat )tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     
@@ -85,14 +146,7 @@
     
 }
 
-//获取数据
--(void)coustom
-{
-    
-    
-    
-    
-}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (kMainHeight == 480) {
@@ -190,7 +244,7 @@
         
     }else {
     
-    return 20;
+    return 1;
     }
 }
 
@@ -233,14 +287,14 @@
         GoodTableTableViewCell *goodcell = [self.tableView dequeueReusableCellWithIdentifier:goodindext];
         if (!goodcell) {
             goodcell = [[GoodTableTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:goodindext];
-            goodcell.myImageView.image = [UIImage imageNamed:@"33.jpg"];
             
             
             
             
             
         }
-        
+        [goodcell.myImageView sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.big_img]];
+
         goodcell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         return goodcell;
@@ -278,33 +332,46 @@
     NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
     NSLog(@"%@",member);
-    
-   AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
-    
+    if (!([[[NSUserDefaults standardUserDefaults] valueForKey:@"key"] isEqualToString:@""])) {
+        AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
         [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+            [self.navigationController pushViewController:ts animated:NO];
+            
+            
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"  == 失败 原因%@",error);
+            
+        }];
         
-        TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-        [self.navigationController pushViewController:ts animated:NO];
         
-
+    }else {
         
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"登陆" otherButtonTitles:@"取消", nil];
+        [al show];
         
-        NSLog(@"  == 失败 原因%@",error);
         
-    }];
-    
-    
-    
-    
-
+    }
     
     
     
     
     
     
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    if (buttonIndex == 0) {
+        LoginViewController *login = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:login animated:YES];
+        
+    }
 }
 /*
 // Override to support conditional editing of the table view.

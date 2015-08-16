@@ -29,6 +29,7 @@
 @property  (nonatomic ,strong)UILabel *myGoodDescritionLable;//商品的描述
 @property (nonatomic,strong)UILabel *myGoodNumberLable;//商品的数量;
 @property (nonatomic ,strong)UILabel *myPeopleNumberLable;//参与人数
+@property (nonatomic,strong)NSString *lunboUrl;
 
 
 @end

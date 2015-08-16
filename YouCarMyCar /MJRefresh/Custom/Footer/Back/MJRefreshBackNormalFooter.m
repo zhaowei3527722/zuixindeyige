@@ -1,21 +1,21 @@
 //
-//  MJRefreshNormalHeader.m
+//  MJRefreshBackNormalFooter.m
 //  MJRefreshExample
 //
 //  Created by MJ Lee on 15/4/24.
 //  Copyright (c) 2015年 小码哥. All rights reserved.
 //
 
-#import "MJRefreshNormalHeader.h"
+#import "MJRefreshBackNormalFooter.h"
 
-@interface MJRefreshNormalHeader()
+@interface MJRefreshBackNormalFooter()
 {
     __weak UIImageView *_arrowView;
 }
 @property (weak, nonatomic) UIActivityIndicatorView *loadingView;
 @end
 
-@implementation MJRefreshNormalHeader
+@implementation MJRefreshBackNormalFooter
 #pragma mark - 懒加载子控件
 - (UIImageView *)arrowView
 {
@@ -29,15 +29,28 @@
 - (UIActivityIndicatorView *)loadingView
 {
     if (!_loadingView) {
-        UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.activityIndicatorViewStyle];
         loadingView.hidesWhenStopped = YES;
         [self addSubview:_loadingView = loadingView];
     }
     return _loadingView;
 }
 
-
+- (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
+{
+    _activityIndicatorViewStyle = activityIndicatorViewStyle;
+    
+    self.loadingView = nil;
+    [self setNeedsLayout];
+}
 #pragma makr - 重写父类的方法
+- (void)prepare
+{
+    [super prepare];
+    
+    self.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+}
+
 - (void)placeSubviews
 {
     [super placeSubviews];
@@ -62,35 +75,35 @@
     // 根据状态做事情
     if (state == MJRefreshStateIdle) {
         if (oldState == MJRefreshStateRefreshing) {
-            self.arrowView.transform = CGAffineTransformIdentity;
-            
+            self.arrowView.transform = CGAffineTransformMakeRotation(0.000001 - M_PI);
             [UIView animateWithDuration:MJRefreshSlowAnimationDuration animations:^{
                 self.loadingView.alpha = 0.0;
             } completion:^(BOOL finished) {
-                // 如果执行完动画发现不是idle状态，就直接返回，进入其他状态
-                if (self.state != MJRefreshStateIdle) return;
-                
                 self.loadingView.alpha = 1.0;
                 [self.loadingView stopAnimating];
+                
                 self.arrowView.hidden = NO;
             }];
         } else {
-            [self.loadingView stopAnimating];
             self.arrowView.hidden = NO;
+            [self.loadingView stopAnimating];
             [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
-                self.arrowView.transform = CGAffineTransformIdentity;
+                self.arrowView.transform = CGAffineTransformMakeRotation(0.000001 - M_PI);
             }];
         }
     } else if (state == MJRefreshStatePulling) {
-        [self.loadingView stopAnimating];
         self.arrowView.hidden = NO;
+        [self.loadingView stopAnimating];
         [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
-            self.arrowView.transform = CGAffineTransformMakeRotation(0.000001 - M_PI);
+            self.arrowView.transform = CGAffineTransformIdentity;
         }];
     } else if (state == MJRefreshStateRefreshing) {
-        self.loadingView.alpha = 1.0; // 防止refreshing -> idle的动画完毕动作没有被执行
-        [self.loadingView startAnimating];
         self.arrowView.hidden = YES;
+        [self.loadingView startAnimating];
+    } else if (state == MJRefreshStateNoMoreData) {
+        self.arrowView.hidden = YES;
+        [self.loadingView stopAnimating];
     }
 }
+
 @end

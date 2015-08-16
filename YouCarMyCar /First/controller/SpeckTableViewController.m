@@ -13,14 +13,16 @@
 #import "AFNetworking.h"
 #import "TsGoodViewController.h"
 #import "SpeckModel.h"
+#import "LoginViewController.h"
+#import "MJRefresh.h"
 
-
-@interface SpeckTableViewController ()<MylistFirstbleDelegate>
+@interface SpeckTableViewController ()<MylistFirstbleDelegate,UIAlertViewDelegate>
 @property (nonatomic ,strong)NowViewModel *myModelnow;
 @property (nonatomic ,strong)NSMutableArray *myArray;
 @property (nonatomic )CGFloat miao;
 
 
+@property (nonatomic)NSInteger indextnumber;
 
 
 @end
@@ -49,19 +51,54 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.extendedLayoutIncludesOpaqueBars = NO;
     
-    [self coustom];//获取数据;
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
+    
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.tableView.header = header;
+    
+    /////
+    // 添加默认的上拉刷新
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshing)];
+    
+    // 设置文字
+    //    [footer setTitle:@"加载更多.." forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载.." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多.." forState:MJRefreshStateNoMoreData];
+    
+    // 设置字体
+    footer.stateLabel.font = [UIFont systemFontOfSize:17];
+    
+    // 设置颜色
+    footer.stateLabel.textColor = [UIColor blueColor];
+    
+    // 设置footer
+    self.tableView.footer = footer;
     
 
     
 }
-//获取数据
--(void)coustom
+-(void)headerRefreshing
 {
-    self.myArray = [[NSMutableArray alloc]init];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@",kMainHttp,self.myModelnow.myid];
+    
+    self.indextnumber = 1;
+
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=5",kMainHttp,self.myModelnow];
+    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
@@ -69,8 +106,10 @@
             
             NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
             self.miao = [dat timeIntervalSince1970];
-            //        NSMutableArray *array = [responseObject valueForKey:@"list"];
-            for (NSDictionary *dic in responseObject) {
+            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            [self.myArray removeAllObjects];
+
+            for (NSDictionary *dic in array) {
                 SpeckModel *model = [[SpeckModel alloc]init];
                 [model setValuesForKeysWithDictionary:dic];
                 [self.myArray addObject:model];
@@ -78,13 +117,16 @@
             }
             
             [self.tableView reloadData];//刷新;
-
+            
+            
             
         }else {
             
             NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
             
+            
         }
+        
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -94,34 +136,65 @@
         
     }];
     
+    [self.tableView.header endRefreshing];
     
     
+}
+-(void)footerRefreshing
+{
+    self.indextnumber ++;
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=%ldeachNum=5",kMainHttp,self.myModelnow.myid,(long)self.indextnumber];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
+        if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
+            
+            
+            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            self.miao = [dat timeIntervalSince1970];
+            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            for (NSDictionary *dic in array) {
+                SpeckModel *model = [[SpeckModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                [self.myArray addObject:model];
+                
+            }
+            
+            [self.tableView reloadData];//刷新;
+            
+            
+            
+        }else {
+            
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+        
+        }
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+        
+    }];
+    
+    [self.tableView.footer endRefreshing];
     
     
-//    [manager POST:@"" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        
-//        UIImage *image = [UIImage imageNamed:@"头像1"];
-//     NSData *data = UIImagePNGRepresentation([UIImage imageNamed:@"1.gph"]);
-//        
-//        
-//        
-//        [formData appendPartWithFileData:data name:@"123" fileName:@"32" mimeType:nil];
-//        
-//        
-//    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
-//    
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
     
-    
-    
-    
-    
-    
-    
-
+    if (buttonIndex == 0) {
+        LoginViewController *login = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:login animated:YES];
+        
+    }
     
 }
 -(CGFloat )tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -328,34 +401,23 @@
         [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myModelnow.img]];
         mycell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
-
-        
         return mycell;
         
-
     }else {
         
         SpeckModel *model = self.myArray[indexPath.row];
-        
-        
        static NSString *speckindext = @"indext";
         SpeckTableViewCell *speckCell = [self.tableView dequeueReusableCellWithIdentifier:speckindext];
         if (!speckCell) {
             speckCell = [[SpeckTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:speckindext];
             
         }
-        
-        
         speckCell.myPersonTimageView.layer.cornerRadius = 15;
         speckCell.myPersonTimageView.layer.masksToBounds = YES;
         [speckCell.myPersonTimageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
         speckCell.myNameLable.text = model.member_name;//昵称
         speckCell.myNameLable.textColor = [UIColor brownColor];
         speckCell.mySpeckLable .text  = model.content;//评论的内容赋值
-        
-        
-        
         speckCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return speckCell;
         
@@ -386,27 +448,35 @@
     
     NSLog(@"%@",member);
     
-    AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
     
-   
-    [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if (!([[[NSUserDefaults standardUserDefaults] valueForKey:@"key"] isEqualToString:@""])) {
+        AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
-        TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-        [self.navigationController pushViewController:ts animated:NO];
+        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+            [self.navigationController pushViewController:ts animated:NO];
+            
+            
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"  == 失败 原因%@",error);
+            
+        }];
         
-        
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"  == 失败 原因%@",error);
-        
-    }];
-    
-    
-    
-    
 
+    }else {
+        
+        
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"登陆" otherButtonTitles:@"取消", nil];
+        [al show];
+        
+        
+    }
+    
+    
     
     
 }

@@ -74,8 +74,9 @@
     
     self.myArray = [[NSMutableArray alloc]init];
     
-    
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=report&tryId=%@&curpage=%ld&eachNum=10",kMainHttp,self.wangqiModel.myID,(long)self.indextnumber];
+ 
+
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=report&tryId=%@&curpage=1&eachNum=10",kMainHttp,self.wangqiModel.myID];
     
     NSLog(@"Try- id = %@",self.wangqiModel.myID);
     
@@ -138,8 +139,12 @@
         }
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
         wqCell.myGoodsNameLable.text = self.wangqiModel.title;
-//        wqCell.myGoodDescritionLable.text = self.wangqiModel.
         wqCell.myreportNumberLable .text = @"一共是100万份";
+        wqCell.myGoodDescritionLable.text = self.wangqiModel.small_info;
+        wqCell.myGoodNumberLable.text = self.wangqiModel.number;
+        wqCell.myPeopleNumberLable.text = self.wangqiModel.try_people;
+        wqCell.lunboUrl = self.wangqiModel.big_img;
+        
         wqCell.delegate = self;
         
         return wqCell;

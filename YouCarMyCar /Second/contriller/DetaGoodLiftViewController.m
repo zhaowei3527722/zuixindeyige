@@ -33,9 +33,6 @@
     if ([super init]) {
         
         self.mymodel = model;
-        [self coustom];//获取数据
-
-        
     }
     return self;
     
@@ -56,7 +53,7 @@
     self.mytableView.delegate = self;
     self.mytableView.dataSource = self;
     self.mytableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    [self coustom];//获取数据
     // Do any additional setup after loading the view.
 }
 //获取数据
@@ -87,7 +84,6 @@
             [self.myArray addObject:self.myAllDetallModel];
             
             [self.mytableView reloadData];
-            
             NSLog(@"%@",self.myAllDetallModel.big_img);
             
         }
@@ -129,12 +125,13 @@
         NSLog(@" image = %@"  ,  self.myAllDetallModel.big_img);
         
         
-        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.big_img]];
         
         
         
     }
     
+    [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.big_img]];
+
     return cell;
     
 }

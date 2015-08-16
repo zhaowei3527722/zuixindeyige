@@ -7,18 +7,27 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>A67ECE95-BDE2-41A9-AB4B-593C3FC20CFC</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>YouCarMyCar</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>60b5c825-4fb8-4975-a861-cdc06fd4b25b++3673</key>
+		<string>svn://115.28.227.1/BJS150101/zhiliao/ZLNews_Version1.0/ThirdClass/MJRefresh</string>
 		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
 		<string>https://github.com/zhaowei3527722/zuixindeyige.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>YouCarMyCar /YouCarMyCar.xcodeproj/project.xcworkspace</string>
+	<string>YouCarMyCar /YouCarMyCar.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>60b5c825-4fb8-4975-a861-cdc06fd4b25b++3673</key>
+		<string>../../../YouCarMyCar%20/%E5%B7%A5%E5%85%B7%E7%B1%BB/MJRefresh</string>
 		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
 		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>60b5c825-4fb8-4975-a861-cdc06fd4b25b++3673</key>
+		<string>svn://115.28.227.1</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/zhaowei3527722/zuixindeyige.git</string>
@@ -30,11 +39,19 @@
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>60b5c825-4fb8-4975-a861-cdc06fd4b25b++3673</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MJRefresh</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</string>
 			<key>IDESourceControlWCCName</key>
-			<string>zuxinde</string>
+			<string>ZUI</string>
 		</dict>
 	</array>
 </dict>

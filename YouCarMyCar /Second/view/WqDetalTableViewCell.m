@@ -27,17 +27,27 @@
     return self;
     
 }
+
+-(void)setLunboUrl:(NSString *)lunboUrl
+{
+    if (_lunboUrl !=lunboUrl) {
+        _lunboUrl = lunboUrl;
+        NSArray *images = @[[NSURL URLWithString:self.lunboUrl]];
+        HEInfiniteScrollView *infiniteScrollView = [[HEInfiniteScrollView alloc] initWithFrame:CGRectMake(0, 0, kMainWidth, 150 * kMainWidth / 320)];
+        [self addSubview:infiniteScrollView];
+        [infiniteScrollView setContentObjs:images Placeholder:nil];
+        infiniteScrollView.pageControlContentMode = kHEPageControlContentModeBottomCenter;
+        infiniteScrollView.switchType = kHESwitchTypeFadeOut;
+        
+
+        
+    }
+    
+}
 -(void)coustom
 {
     
-    NSArray *images = @[ [UIImage imageNamed:@"Untitled2.jpg"],
-                         [UIImage imageNamed:@"33.jpg"],
-                         [UIImage imageNamed:@"45.jpg"],];
-    HEInfiniteScrollView *infiniteScrollView = [[HEInfiniteScrollView alloc] initWithFrame:CGRectMake(0, 0, kMainWidth, 150 * kMainWidth / 320)];
-    [self addSubview:infiniteScrollView];
-    [infiniteScrollView setContentObjs:images Placeholder:nil];
-    infiniteScrollView.pageControlContentMode = kHEPageControlContentModeBottomCenter;
-    infiniteScrollView.switchType = kHESwitchTypeFadeOut;
+    
     
     self.myGoodsNameLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 150 * kMainWidth / 320, kMainWidth, 20)];
     [self addSubview:self.myGoodsNameLable];
@@ -46,9 +56,6 @@
     self.myGoodDescritionLable.font = [UIFont systemFontOfSize:12];
     self.myGoodDescritionLable.textColor = [UIColor redColor];
     self.myGoodDescritionLable.numberOfLines = 0;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-    
     
     [self addSubview:self.myGoodDescritionLable];
     
@@ -93,16 +100,6 @@
     ren.text = @"人";
     ren.font = [UIFont systemFontOfSize:12];
     [self addSubview:ren];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     self.mySureAddressButton = [UIButton buttonWithType:(UIButtonTypeCustom)];

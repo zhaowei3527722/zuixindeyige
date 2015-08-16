@@ -117,43 +117,17 @@
 
 {
     NSLog(@"评论");
-    /*	请求参数：
-     •	act=try
-     •	op=subComment
-     •	content：评论内容
-     •	member_id：会员id
-     •	try_id：试用产品id
-     •	返回数据：*/
-    
-//   	•	请求参数：
-//    •	act=try
-//    •	op=getComment
-//    •	tryId 试用产品id
-//    •	返回数据：
-//    •	"member_name": "wei3527722",
-//    •	member_avatar": null,
-//    •	"id": "19",
-//    •	"content": "特别好",
-//    •	"member_id": "6097",
-//    •	"try_id": "2",
-//    •	"add_time": "1438219113"
-//    
-//    16、发表评论（）
-//    
-//    act=try
-//    •	op=getComment
-//    •	tryId 试用产品id
-    
     
     
     NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     
     NSLog(@"%@ , %@ %@",member_id,self.myModelnoW.myid,content);
     
     
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&try_id=%@",kMainHttp,content,member_id,self.myModelnoW.myid];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,content,member_id,key, self.myModelnoW.myid];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -161,6 +135,23 @@
     [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"----%@",[responseObject valueForKey:@"status"]);
+        
+       
+        
+        if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"] ) {
+            
+            UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [al show];
+            
+            
+            
+        }
+        
+        
+        
+        
+        
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
