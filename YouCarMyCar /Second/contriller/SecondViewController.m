@@ -101,6 +101,8 @@
 {
     self.myArray = [NSMutableArray array];
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10type=2",kMainHttp];
+
+    NSLog(@"%@",url);
     AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
     [manger GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
@@ -164,7 +166,7 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIndentifier" forIndexPath:indexPath];
-//   
+//
 //    WangQiModel *model = self.myArray[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
 //    cell.mylabel.text = model.title;
@@ -172,6 +174,14 @@
 //    NSURL *url = [NSURL URLWithString:model.img];
 //    [cell.myimageView sd_setImageWithURL:url];
 // 
+   
+    WangQiModel *model = self.myArray[indexPath.row];
+    cell.mylabel.text = model.title;
+    NSString *str = [NSString stringWithFormat:@"%@期",model.period_no];
+    cell.qishuLable.text = str;
+    NSURL *url = [NSURL URLWithString:model.img];
+    [cell.myimageView sd_setImageWithURL:url];
+ 
 
     
     return cell;

@@ -15,15 +15,25 @@
 #import "TuiChuTableViewCell.h"
 #import "AFNetworking.h"
 #import "UIImageView+WebCache.h"
+#import "JSONKit.h"
+#import "Urljson.h"
+#import "CommUtils.h"
 
 
-@interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ClickViewControllerDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)NSMutableDictionary *dic;
 @property (nonatomic,strong)UIView *myView;
 @property (nonatomic,strong)UIImage *myimage;
 @property (nonatomic,strong)NSArray *sexArray;
+@property (nonatomic,copy)NSString *base64string;
 @property (nonatomic,copy)NSString *str;
+@property (nonatomic,copy)NSString *sexString;
+@property (nonatomic)BOOL isYes;
+@property (nonatomic)BOOL isSex;
+
+@property (nonatomic,strong)UIImageView *myBackImage;
+@property (nonatomic,strong)UIImageView *myXiangImage;
 @end
 
 @implementation XiangViewController
@@ -37,6 +47,8 @@
     //布局view
     [self layoutView];
 
+    //数据请求
+    [self requset];
     
     self.tabBarController.tabBar.hidden = YES;
     
@@ -105,6 +117,7 @@
     [self.view addSubview:self.tableView];
 
     
+    self.isYes = YES;
     //右item
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [button setFrame:CGRectMake(0, 0, 45, 25)];
@@ -114,15 +127,86 @@
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = right;
     
+    self.myBackImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
+     NSURL *url = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
+    [self.myBackImage sd_setImageWithURL:url];
+    [self.tableView addSubview:self.myBackImage];
     
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = CGRectMake(0, 0, kMainWidth, 155);
+    visualEfView.alpha = 1.0;
+    [self.myBackImage addSubview:visualEfView];
+    
+    self.myXiangImage = [[UIImageView alloc]initWithFrame:CGRectMake(kMainWidth/2 - 40, 20, 80, 80)];
+    [self.myXiangImage sd_setImageWithURL:url];
+   self.myXiangImage.layer.cornerRadius = self.myXiangImage.frame.size.height/2;
+    self.myXiangImage.layer.masksToBounds = YES;
+    self.myXiangImage.userInteractionEnabled = YES;
+    [self.tableView addSubview:self.myXiangImage];
+    
+    //轻怕手势
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
+                                                                          action:@selector(push:)];
+    self.view.userInteractionEnabled = YES;
+    [self.myXiangImage addGestureRecognizer:tap1];
+    
+    
+}
+
+-(void)requset
+{
 }
 
 
 //完成的点击事件
 -(void)wancheng
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
     
+    NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+//    NSString *sex = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
+//    NSString *truename = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
+//    NSString *photo = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
+//    NSString *touxiang = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
+//    NSString *email = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
+    
+    NSData  *imageData = UIImageJPEGRepresentation(self.imageView.image, 1.0);
+    self.base64string = [imageData base64Encoding];
+    
+    NSString *codeString = [[NSUserDefaults standardUserDefaults]valueForKey:@"code"];
+
+    NSString *sexString = [NSString string];
+    if ([self.sexLable.text isEqualToString:@""]) {
+        sexString = @"";
+    }else if ([self.sexLable.text isEqualToString:@"男"]){
+        sexString = @"1";
+    }else if ([self.sexLable.text isEqualToString:@"女"]) {
+        sexString = @"2";
+    }
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.trueName.text,@"avatar":self.base64string,@"code":codeString,@"mobile":self.photoLable.text,@"email":self.emailLable.text};
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    //申明请求的数据是json类型
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];
+    //如果报接受类型不一致请替换一致text/html或别的
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    
+    [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@" responeObject = %@",responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
+    
+
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
+-(void)sender:(NSString *)sexString
+{
+    self.sexString = sexString;
 }
 
 
@@ -170,6 +254,7 @@
     clichVC.i = 10;
     if (indexPath.section == 1 && indexPath.row == 3 ){
         clichVC.i = 13;
+        clichVC.delegate = self;
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 4) {
         clichVC.i = 11;
@@ -213,8 +298,6 @@
                     [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
                     [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
                     
-                    
-                    
                 }
                 
                 
@@ -251,27 +334,17 @@
         
         TouxiangTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"imageCell" forIndexPath:indexPath];
         
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.photoImage.layer.cornerRadius = cell.photoImage.frame.size.height/2;
-        cell.photoImage.layer.masksToBounds = YES;
-        cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        
-        NSURL *url = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
-        
-        [cell.photoImage sd_setImageWithURL:url];
-        [cell.backimage sd_setImageWithURL:url];
-        
-        cell.superview.superview.backgroundColor = MainBackGround;
-        
-        
+        [cell.photoImage removeFromSuperview];
         [cell.xiaoImage removeFromSuperview];
         [cell.nameLable removeFromSuperview];
-        [cell.photoImage setUserInteractionEnabled:YES];
-        //轻怕手势
-        UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
-                                                                              action:@selector(push:)];
-        self.view.userInteractionEnabled = YES;
-        [cell.photoImage addGestureRecognizer:tap1];
+        [cell.backimage removeFromSuperview];
+        
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+        cell.superview.superview.backgroundColor = MainBackGround;
+        
+       
         
         return cell;
         
@@ -283,12 +356,10 @@
         cell.nameLable.text = str;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.nameField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
+        self.trueName = cell.nameField;
         return cell;
         
-        
     }else if (indexPath.section == 1 && indexPath.row > 0 && indexPath.row < 6){
-        
-        
         
         DataSexTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"sexCell" forIndexPath:indexPath];
         cell.sexLable.text = str;
@@ -303,6 +374,8 @@
             }else{
             cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
             }
+            
+            self.photoLable = cell.myLable;
         }else if ( indexPath.row == 2 ) {
             if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"email"] isEqualToString:@""]) {
                 cell.myLable.text = @"请绑定邮箱";
@@ -310,14 +383,22 @@
             }else{
                 cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
             }
+            self.emailLable = cell.myLable;
         }else if ( indexPath.row == 3 ) {
+            
+            
+            
             if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"sex"] isEqualToString:@""]) {
                 cell.myLable.text = @"请选择性别";
                 cell.myLable.textColor = COLOR(200, 200, 200, 1);
             }else{
                 cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
             }
+            self.sexLable = cell.myLable;
 
+            
+            
+            
             }else if ( indexPath.row == 4 ) {
                 if ( [[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
                     cell.myLable.text = @"请添加地址";
@@ -325,6 +406,7 @@
                 }else{
                     cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
                 }
+                
         }else if ( indexPath.row == 5 ) {
             cell.myLable.text = @"修改密码";
         }
@@ -345,6 +427,8 @@
 //头像的点击事件
 -(void)push:(UITapGestureRecognizer *)tap
 {
+    
+    self.isYes = NO;
     
     UIAlertController  *view=   [UIAlertController
                                  alertControllerWithTitle:nil
@@ -427,11 +511,13 @@
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
     {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);//把图片存到图片库
-        self.myimage = image;
+        self.myBackImage.image = image;
+        self.myXiangImage.image = image;
+        
     }else{
-        self.myimage = image;
+        self.myBackImage.image = image;
+        self.myXiangImage.image = image;;
     }
-    [self.tableView  reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
     
     

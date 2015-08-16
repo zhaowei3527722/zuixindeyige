@@ -91,6 +91,10 @@
 
 -(void)pop
 {
+    if ([_delegate respondsToSelector:@selector(sender:)]) {
+        [_delegate sender:_sexString];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -189,12 +193,15 @@
         
         if (indexPath.row == 1) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
+            self.sexString = @"男";
             [self.tableView addSubview:self.choiceImage];
         }else if (indexPath.row == 2) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 75, 20, 20)];
+            self.sexString = @"女";
             [self.tableView addSubview:self.choiceImage];
         }else if (indexPath.row == 3) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 125, 20, 20)];
+            self.sexString = @"保密";
             [self.tableView addSubview:self.choiceImage];
         }
     }
@@ -256,6 +263,7 @@
         cell.selectionStyle = UITableViewCellAccessoryNone;
             NSLog(@"%ld",(long)indexPath);
         cell.superview.superview.backgroundColor = COLOR(251, 246, 240, 1);
+        
 
         return cell;
        }

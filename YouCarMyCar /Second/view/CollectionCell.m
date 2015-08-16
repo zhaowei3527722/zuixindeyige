@@ -21,19 +21,25 @@
 //用来添加子视图
 -(void)addAllViews
 {
-    UIView *view = [[UIView alloc]initWithFrame:self.bounds];
-    [self addSubview:view];
-//    view.layer.cornerRadius = 15;
-//    view.layer.masksToBounds = 15;
-    view.backgroundColor = [UIColor grayColor];
     
-    [view addSubview:self.myimageView];
-    [view addSubview:self.myView];
-    [view addSubview:self.mylabel];
-//    self.mylabel.textAlignment = NSTextAlignmentCenter;
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:self.frame];
+    NSLog(@"%f",self.frame.size.width);
+    imageView.image = [UIImage imageNamed:@"往期背景.png"];
+    self.backgroundView = imageView;
+
+    [imageView addSubview:self.myimageView];
+    
+        [imageView addSubview:self.myView];
     self.mylabel.textColor = [UIColor whiteColor];
-    self.myView.backgroundColor = [UIColor blueColor];
-    self.myView.alpha = 0.3;
+    self.qishuLable.textColor = [UIColor whiteColor];
+    self.qishuLable.textAlignment = NSTextAlignmentCenter;
+    self.mylabel.font = [UIFont systemFontOfSize:12];
+    self.qishuLable.font = [UIFont systemFontOfSize:16];
+    self.myView.backgroundColor = COLOR(0, 162, 246, 0.9);
+
+    [imageView addSubview:self.mylabel];
+    [imageView addSubview:self.qishuLable];
    
 }
 -(UILabel *)mylabel
@@ -58,14 +64,25 @@
     return _myimageView;
 }
 
+-(UILabel *)qishuLable
+{
+    if (!_qishuLable) {
+        _qishuLable = [[UILabel alloc]init];
+    }
+    return _qishuLable;
+}
+
 //当 父类的farm  设置的时候 走的这个方法
 -(void)layoutSubviews
 {
     
     //调用父类的方法
     [super layoutSubviews];
-    [self.mylabel setFrame:CGRectMake(20, kMainWidth*1/2.65, kMainWidth*9/20,kMainWidth*1.4/18.75 )];
-    [self.myimageView setFrame:CGRectMake(0, 0, kMainWidth*9/20, kMainWidth*9/20)];
-    [self.myView setFrame:CGRectMake(0, kMainWidth*1/2.65, kMainWidth*9/20,kMainWidth*1.4/18.75 )];
+    
+    
+    [self.myimageView setFrame:CGRectMake(1, 1, self.frame.size.width - 3, self.frame.size.height - 2)];
+    [self.myView setFrame:CGRectMake(0, self.frame.size.height*27/32, self.frame.size.width, self.frame.size.height*5/32)];
+    [self.qishuLable setFrame:CGRectMake(0, self.frame.size.height*27/32, self.frame.size.width/4, self.myView.frame.size.height )];
+    [self.mylabel setFrame:CGRectMake(self.frame.size.width/4, self.frame.size.height*27/32,self.frame.size.width*3/4,self.myView.frame.size.height )];
 }
 @end

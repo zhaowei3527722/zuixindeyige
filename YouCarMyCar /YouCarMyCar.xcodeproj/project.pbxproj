@@ -216,6 +216,7 @@
 		0AFF80FD1B6383360009C5C3 /* 免费试用@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FC1B6383360009C5C3 /* 免费试用@2x.png */; };
 		0AFF80FF1B63862E0009C5C3 /* 免费试用dianji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFF80FE1B63862E0009C5C3 /* 免费试用dianji@2x.png */; };
 		0AFF81021B6390E50009C5C3 /* MZTimerLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF81011B6390E50009C5C3 /* MZTimerLabel.m */; };
+		951783A91B7EE9940012E102 /* 往期背景@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 951783A81B7EE9940012E102 /* 往期背景@2x.png */; };
 		9526D4DD1B7CCDDB0097D68E /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9526D4DC1B7CCDDB0097D68E /* AddressModel.m */; };
 		956CE17C1B6864A200545644 /* 背景框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE1791B6864A200545644 /* 背景框@2x.png */; };
 		956CE17D1B6864A200545644 /* +86框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17A1B6864A200545644 /* +86框@2x.png */; };
@@ -629,6 +630,7 @@
 		0AFF80FE1B63862E0009C5C3 /* 免费试用dianji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "免费试用dianji@2x.png"; sourceTree = "<group>"; };
 		0AFF81001B6390E50009C5C3 /* MZTimerLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZTimerLabel.h; sourceTree = "<group>"; };
 		0AFF81011B6390E50009C5C3 /* MZTimerLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZTimerLabel.m; sourceTree = "<group>"; };
+		951783A81B7EE9940012E102 /* 往期背景@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "往期背景@2x.png"; sourceTree = "<group>"; };
 		9526D4DB1B7CCDDB0097D68E /* AddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressModel.h; sourceTree = "<group>"; };
 		9526D4DC1B7CCDDB0097D68E /* AddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressModel.m; sourceTree = "<group>"; };
 		95651C221B671DC100EAB2FC /* DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissKeyboard.h; sourceTree = "<group>"; };
@@ -952,6 +954,7 @@
 				0AF994BF1B7F48710056A339 /* 形状-6@2x.png */,
 				0AF994BB1B7F48620056A339 /* 产品详情@2x.png */,
 				0AF994BD1B7F48690056A339 /* 产品详情未选中@3x.png */,
+				951783A81B7EE9940012E102 /* 往期背景@2x.png */,
 				0A295D531B7B2EA100F41C92 /* 未选@2x.png */,
 				0A295D571B7B2FBC00F41C92 /* shape-203@2x(1).png */,
 				0AB132521B7887D40026E7F2 /* bulbs@2x(1).png */,
@@ -1761,6 +1764,7 @@
 				95C7BA8E1B5E4116009604D7 /* ActivityTableViewCell.xib in Resources */,
 				0AE06C381B68C1F300EE6B22 /* 未选评分@2x.png in Resources */,
 				0AE3C7581B5CDDA6007153A3 /* 头像@2x.png in Resources */,
+				951783A91B7EE9940012E102 /* 往期背景@2x.png in Resources */,
 				0A0E46191B62277400A52286 /* Untitled2.jpg in Resources */,
 				95DD9FA31B75D37200B750B1 /* 试用报告小@2x.png in Resources */,
 				0A0E45971B61D21F00A52286 /* 正在进行未选中@2x.png in Resources */,

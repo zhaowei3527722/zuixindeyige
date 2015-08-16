@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ClickViewControllerDelegate <NSObject>
+
+-(void)sender:(NSString*)sexString;
+
+@end
+
 @interface ClickViewController : UIViewController
 @property (nonatomic)int i;
 @property (nonatomic,copy)NSString *sexStr;
 @property (nonatomic,strong)UIButton *bianjiBT;
 @property (nonatomic,strong)UIButton *shanchuBT;
 @property (nonatomic,strong)NSIndexPath *myIndexPath;
+@property (nonatomic,copy)NSString *sexString;
+@property (nonatomic,assign)id<ClickViewControllerDelegate>delegate;
 @end
