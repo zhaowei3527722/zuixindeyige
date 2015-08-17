@@ -515,6 +515,40 @@
         
         
         
+    }else if (self.i ==12){
+        if ([CommUtils validatePhoneNumber:self.phoneField.text]) {
+            
+            NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.phoneField.text];
+            NSLog(@"  wode url = = %@",url);
+            
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            
+            [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSLog(@"%@",[responseObject valueForKey:@"code"]);
+                
+                
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+                NSLog(@"%@",error);
+                
+                
+            }];
+            
+            
+            
+        }else {
+            
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号有误 " delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [aller show];
+            
+            
+            
+        }
+
     }
     
 }
@@ -527,6 +561,10 @@
     ClickTViewController *clicktView = [[ClickTViewController alloc]init];
     
     if (self.i == 12) {
+        
+        clicktView.coder = self.codeField.text;
+        clicktView.phonge = self.phoneField.text;
+        
         
         clicktView.k = 100;
         [self.navigationController pushViewController:clicktView animated:YES];

@@ -10,6 +10,8 @@
 #import "PrefixHeader.pch"
 #import "SureViewController.h"
 #import "AFNetworking.h"
+
+#import "CommUtils.h"
 @interface ClickTViewController ()<UITextFieldDelegate>
 @property (nonatomic,strong)UITextField *newpasswordField;
 @property (nonatomic,strong)UITextField *surepasswordField;
@@ -86,9 +88,36 @@
 }
 -(void)sure
 {
-    SureViewController *sureVC = [[SureViewController alloc]init];
-    sureVC.j = 10;
-    [self.navigationController pushViewController:sureVC animated:YES];
+    
+    
+    
+    NSString *strin = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd&code=%@&password=%@&password_confirm=%@&parameter=%@&type=2",kMainHttp,self.coder,self.newpasswordField.text,self.surepasswordField.text,self.phonge];
+    NSLog(@"123 == == =%@",strin);
+    
+    
+    NSString *srtinF8 = [strin stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:srtinF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        SureViewController *sureVC = [[SureViewController alloc]init];
+        sureVC.j = 10;
+        [self.navigationController pushViewController:sureVC animated:YES];
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+
+    
+    
+    
+    
+    
+    
 }
 
 //键盘回收
