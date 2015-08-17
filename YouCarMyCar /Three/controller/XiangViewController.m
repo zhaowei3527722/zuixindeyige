@@ -28,7 +28,12 @@
 @property (nonatomic,strong)NSArray *sexArray;
 @property (nonatomic,copy)NSString *base64string;
 @property (nonatomic,copy)NSString *str;
-@property (nonatomic,copy)NSString *sexString;
+@property (nonatomic,strong)UITextField *myTextF;
+@property (nonatomic,strong)UITextField *nameTextField;
+@property (nonatomic,strong)UILabel *photoLable;
+@property (nonatomic,strong)UILabel *emailLabel;
+@property (nonatomic,strong)UILabel *sexLabel;
+@property (nonatomic,strong)UILabel *addressLabel;
 @property (nonatomic)BOOL isYes;
 @property (nonatomic)BOOL isSex;
 
@@ -147,8 +152,70 @@
     //轻怕手势
     UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                           action:@selector(push:)];
-    self.view.userInteractionEnabled = YES;
+    self.view.userInteractionEnabled = YES; 
     [self.myXiangImage addGestureRecognizer:tap1];
+    
+    
+    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(kMainWidth - 210, 165, 200, 21)];
+    if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"] isEqualToString:@""]) {
+        self.nameTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
+    }else{
+        self.nameTextField.placeholder = @"添加昵称";
+    }
+    self.nameTextField.font = [UIFont systemFontOfSize:14];
+    self.nameTextField.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.nameTextField];
+    
+    
+    self.photoLable = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 205, 200, 21)];
+    
+    if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"] isEqualToString:@""]) {
+        self.photoLable.text = @"请绑定手机号";
+        self.photoLable.textColor = COLOR(200, 200, 200, 1);
+    }else{
+        self.photoLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
+    }
+    self.photoLable.font = [UIFont systemFontOfSize:14];
+    self.photoLable.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.photoLable];
+    
+    self.emailLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 245, 200, 21)];
+    
+    if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"email"] isEqualToString:@""]) {
+        self.emailLabel.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
+    }else{
+        self.emailLabel.text = @"请绑定邮箱";
+        self.emailLabel.textColor = COLOR(200, 200, 200, 1);
+    }
+    self.emailLabel.font = [UIFont systemFontOfSize:14];
+    self.emailLabel.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.emailLabel];
+    
+    self.sexLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 285, 200, 21)];
+    
+    if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"sex"] isEqualToString:@""]) {
+        self.sexLabel.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
+    }else{
+        self.sexLabel.text = @"请选择性别";
+        self.sexLabel.textColor = COLOR(200, 200, 200, 1);
+    }
+    self.sexLabel.font = [UIFont systemFontOfSize:14];
+    self.sexLabel.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.sexLabel];
+    
+    self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 325, 200, 21)];
+    self.addressLabel.text = @"北京房山区小西庄大学生创业园";
+    if ( ![[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
+        self.addressLabel.text =[[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
+    }else{
+        self.addressLabel.text = @"添加地址";
+        self.addressLabel.textColor = COLOR(200, 200, 200, 1);
+    }
+    self.addressLabel.font = [UIFont systemFontOfSize:14];
+    self.addressLabel.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.addressLabel];
+
+    
     
     
 }
@@ -170,20 +237,20 @@
 //    NSString *touxiang = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
 //    NSString *email = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
     
-    NSData  *imageData = UIImageJPEGRepresentation(self.imageView.image, 1.0);
+    NSData  *imageData = UIImageJPEGRepresentation(self.myXiangImage.image, 1.0);
     self.base64string = [imageData base64Encoding];
     
     NSString *codeString = [[NSUserDefaults standardUserDefaults]valueForKey:@"code"];
 
     NSString *sexString = [NSString string];
-    if ([self.sexLable.text isEqualToString:@""]) {
+    if ([self.sexLabel.text isEqualToString:@""]) {
         sexString = @"";
-    }else if ([self.sexLable.text isEqualToString:@"男"]){
+    }else if ([self.sexLabel.text isEqualToString:@"男"]){
         sexString = @"1";
-    }else if ([self.sexLable.text isEqualToString:@"女"]) {
+    }else if ([self.sexLabel.text isEqualToString:@"女"]) {
         sexString = @"2";
     }
-    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.trueName.text,@"avatar":self.base64string,@"code":codeString,@"mobile":self.photoLable.text,@"email":self.emailLable.text};
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
@@ -206,7 +273,8 @@
 }
 -(void)sender:(NSString *)sexString
 {
-    self.sexString = sexString;
+    self.sexLabel.textColor = [UIColor blackColor];
+    self.sexLabel.text = sexString;
 }
 
 
@@ -353,10 +421,10 @@
         
         
         DataNameTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"nameCell" forIndexPath:indexPath];
-        cell.nameLable.text = str;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.nameField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
-        self.trueName = cell.nameField;
+        [cell.nameField removeFromSuperview];
+        cell.nameLable.text = str;
+        
         return cell;
         
     }else if (indexPath.section == 1 && indexPath.row > 0 && indexPath.row < 6){
@@ -367,48 +435,9 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.myLable.font = [UIFont systemFontOfSize:15];
-        if ( indexPath.row == 1) {
-            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"] isEqualToString:@""]) {
-                cell.myLable.text = @"请绑定手机号";
-                cell.myLable.textColor = COLOR(200, 200, 200, 1);
-            }else{
-            cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
-            }
-            
-            self.photoLable = cell.myLable;
-        }else if ( indexPath.row == 2 ) {
-            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"email"] isEqualToString:@""]) {
-                cell.myLable.text = @"请绑定邮箱";
-                cell.myLable.textColor = COLOR(200, 200, 200, 1);
-            }else{
-                cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
-            }
-            self.emailLable = cell.myLable;
-        }else if ( indexPath.row == 3 ) {
-            
-            
-            
-            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"sex"] isEqualToString:@""]) {
-                cell.myLable.text = @"请选择性别";
-                cell.myLable.textColor = COLOR(200, 200, 200, 1);
-            }else{
-                cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
-            }
-            self.sexLable = cell.myLable;
-
-            
-            
-            
-            }else if ( indexPath.row == 4 ) {
-                if ( [[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
-                    cell.myLable.text = @"请添加地址";
-                    cell.myLable.textColor = COLOR(200, 200, 200, 1);
-                }else{
-                    cell.myLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
-                }
-                
-        }else if ( indexPath.row == 5 ) {
+        if ( indexPath.row == 5) {
             cell.myLable.text = @"修改密码";
+            cell.myLable.textColor = COLOR(100, 100, 100, 1);
         }
         return cell;
         

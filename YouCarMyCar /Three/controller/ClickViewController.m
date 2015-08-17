@@ -28,7 +28,6 @@
 @property (nonatomic,strong)UIImageView *choiceImage;
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)NSMutableArray *addressArray;
-
 @end
 
 @implementation ClickViewController
