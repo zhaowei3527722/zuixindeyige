@@ -349,10 +349,12 @@
     
     //数据请求
     
-//    self.addressArray = [[NSMutableArray alloc]init];
-//    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
-//    NSString *url = [NSString stringWithFormat:@"%@?act=member_address&op=address_info&key=%@",]
-//    
+    self.addressArray = [[NSMutableArray alloc]init];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *member = [[NSUserDefaults standardUserDefaults] valueForKey:@"member_id"];
+    NSString *url = [NSString stringWithFormat:@"%@?act=member_address&op=address_list&member_id=%@&ke=%@",kMainHttp,member,key];
+    NSLog(@"%@",url);
+
 }
 
 
@@ -804,6 +806,7 @@
     
     self.nextButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
     [self.nextButton setTitle:@"确定" forState:(UIControlStateNormal)];
+    
     [self.nextButton addTarget:self action:@selector(surePhone) forControlEvents:(UIControlEventTouchUpInside)];
     self.nextButton.titleLabel.font = MyButtonFont;
     self.nextButton.frame = CGRectMake(10, codeimageView.frame.origin.y + 100, kMainWidth - 20, 50);
@@ -875,7 +878,7 @@
     [self.nextButton addTarget:self action:@selector(changeEmail) forControlEvents:(UIControlEventTouchUpInside)];
     [self.nextButton.titleLabel setFont:MyButtonFont];
     [self.nextButton setFrame:CGRectMake(10, codeimageView.frame.origin.y + 100, kMainWidth - 20, 50)];
-    [self.nextButton setBackgroundColor:MainBackGround];
+    [self.nextButton setBackgroundColor:COLOR(49, 219, 224, 1)];
     [self.nextButton setTintColor:[UIColor whiteColor]];
     [self.view addSubview:self.nextButton];
     
