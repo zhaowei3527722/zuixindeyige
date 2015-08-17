@@ -8,8 +8,13 @@
 
 #import "PhoneForgetViewController.h"
 #import "PrefixHeader.pch"
+#import "AFNetworking.h"
 
-@interface PhoneForgetViewController ()<MyTextFiedNoimageDelegete,UIScrollViewDelegate,MyTextFiedDelegete>
+#import "CommUtils.h"
+
+
+
+@interface PhoneForgetViewController ()<MyTextFiedNoimageDelegete,UIScrollViewDelegate,MyTextFiedDelegete,UIAlertViewDelegate>
 
 
 @end
@@ -40,23 +45,6 @@
     [self.phoneScrollView addGestureRecognizer:tap];
     [self.view addSubview:self.phoneScrollView];
     
-    //头像
-    //1photo
-    // 布局登录
-//    
-//    //1photo
-//    self.photoImabeView  = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width / 2 - 40, 20, 80, 80)];
-//    
-//    self.photoImabeView.image = [UIImage imageNamed:@"头像@2x.png"];
-//    self.photoImabeView.layer.cornerRadius = 40;
-//    self.photoImabeView.layer.masksToBounds = YES;
-//    [self.phoneScrollView addSubview:self.photoImabeView];
-//    
-    
-    //2
-//    self.nickNameMY  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, 40)];
-//    self.nickNameMY.mytextField.placeholder = @"请输入您的昵称";
-//    
     self.userNameMY  = [[MyTextFied alloc]initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, 40)];
     self.userNameMY.mytextField.placeholder = @"请输入手机号";
     self.userNameMY.mytextField.keyboardType = UIKeyboardTypeNumberPad;
@@ -116,13 +104,98 @@
 -(void)numberButton:(UIButton *)button
 {
     NSLog(@"获取验证码");
+    [self.userNameMY.mytextField resignFirstResponder];
+    [self.numberMY.mytextField resignFirstResponder];
+    [self.pasWordMY1.mytextField resignFirstResponder];
+    [self.psaWordMY2.mytextField resignFirstResponder];
+    
+//    NSLog(@"%hhd",[CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]);
+    
+    if ([CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]) {
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.userNameMY.mytextField.text];
+        NSLog(@"  wode url = = %@",url);
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"%@",[responseObject valueForKey:@"code"]);
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"%@",error);
+            
+            
+        }];
+        
+        
+        
+    }else {
+        
+        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号有误 " delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [aller show];
+        
+        
+        
+    }
+    
+    
+    
+
     
 }
-//注册点击事件
--(void)registerButton:(UIButton *)button
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"注册成功");
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (buttonIndex == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }
+    
+}
+//点击确定 的点击事件
+-(void)registerButton:(UIButton *)button
+{//act=member_security
+//    •	op=reset_pwd
+//    •	code 验证码
+//    •	password 密码
+//    •	password_confirm 确认密码
+//    •	parameter 依照参数【手机号/邮箱】
+//    •	type 类型，2手机号，3邮箱
+//    
+
+    
+    
+    NSString *strin = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd&code=%@&password=%@&password_confirm=%@&parameter=%@&type=2",kMainHttp,self.numberMY.mytextField.text,self.pasWordMY1.mytextField.text,self.psaWordMY2.mytextField.text,self.userNameMY.mytextField.text];
+    NSLog(@"123 == == =%@",strin);
+    
+    
+    NSString *srtinF8 = [strin stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:srtinF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+   NSString *string =[[[responseObject valueForKey:@"datas"]valueForKey:@"error"] valueForKey:@"msg"];
+        
+            
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:string delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [al show];
+        
+        
+        
+                
+            
+     
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
     
     
 }

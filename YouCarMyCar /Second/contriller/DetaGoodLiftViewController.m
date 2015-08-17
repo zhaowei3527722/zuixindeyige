@@ -13,6 +13,7 @@
 #import "PrefixHeader.pch"
 #import "AllDeteModel.h"
 
+#import "MJRefresh.h"
 @interface DetaGoodLiftViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic ,strong)WangQiModel *mymodel;
 @property (nonatomic ,strong)UITableView *mytableView;
@@ -47,28 +48,38 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.myArray = [NSMutableArray array];
 
     self.mytableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:self.mytableView];
     self.mytableView.delegate = self;
     self.mytableView.dataSource = self;
     self.mytableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self coustom];//获取数据
-    // Do any additional setup after loading the view.
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
+    
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.mytableView.header = header;
+    
+    /////
+    // 添加默认的上拉刷新
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshing)];
+    
 }
 //获取数据
 
--(void)coustom
+-(void)headerRefreshing
 {
-    /*请求参数：
-     •	act=try
-     •	op=info
-     •	id：产品ID
-     •	返回数据：
     
-*/
-    
-    self.myArray = [NSMutableArray array];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.mymodel.myID];
@@ -76,6 +87,9 @@
     
     [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        NSLog(@"%@",responseObject);
+        
+        
+        [self.myArray removeAllObjects];
         
         if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
             NSDictionary *dic = [responseObject valueForKey:@"datas"];
@@ -94,6 +108,9 @@
         NSLog(@"请求出问题了");
         
     }];
+    
+    [self.mytableView .header endRefreshing];
+    
     
     
 }

@@ -9,6 +9,10 @@
 #import "EmailForgetViewController.h"
 #import "PrefixHeader.pch"
 
+#import "AFNetworking.h"
+
+#import "CommUtils.h"
+
 @interface EmailForgetViewController ()<MyTextFiedNoimageDelegete,UIScrollViewDelegate,MyTextFiedDelegete>
 
 
@@ -31,34 +35,60 @@
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
     
+    
+    
     self.phoneScrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
-    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 20 );
+    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 640);
     self.phoneScrollView.backgroundColor = COLOR(243, 233, 221, 1);
     self.phoneScrollView.delegate = self;
     [self.phoneScrollView addGestureRecognizer:tap];
     [self.view addSubview:self.phoneScrollView];
     
+    self.userNameMY  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, 40)];
+    self.userNameMY.mytextField.placeholder = @"请输入邮箱";
+    self.userNameMY.mytextField.keyboardType = UIKeyboardTypeNumberPad;
     
-    // 布局登录
+    self.userNameMY.mySmallimageView.frame =CGRectMake(0, 0, 40, 40);
+    self.userNameMY.mytextField.frame = CGRectMake(40, 0, self.view.frame.size.width - 60, 40);
     
     
-    //2
-    self.nickNameMY  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 20, self.view.frame.size.width - 20, 40)];
-    self.nickNameMY.mytextField.placeholder = @"请输入您的昵称";
     
-    self.userNameMY  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 80, self.view.frame.size.width - 20, 40)];
-    self.userNameMY.mytextField.placeholder = @"请输入您绑定的邮箱";
+    self.numberMY  = [[MyTextFied alloc]initWithFrame:CGRectMake(10, 80, self.view.frame.size.width - 20, 40)];
+    self.numberMY.mytextField.placeholder = @"输入您的邮箱验证码";
+    self.numberMY.mytextField.frame = CGRectMake(100, 0, 200, 40);
+    self.numberMY.mySmallimageView.frame = CGRectMake(0, 0, 100, 40);
+    self.numberMY.mytextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.numberMY.mySmallimageView.image = [UIImage imageNamed:@"获取验证码@2x.png"];
+    self.numberButton  = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    self.numberButton.frame = CGRectMake(0, 0, 100, 40);
+    [self.numberButton addTarget:self action:@selector(numberButton:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.numberMY addSubview:self.numberButton];
     
-    self.nickNameMY.delegate = self;
+    
+    
+    self.pasWordMY1  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 140, self.view.frame.size.width - 20, 40)];
+    self.pasWordMY1.mytextField.placeholder = @"请您设置6位以上密码";
+    self.psaWordMY2  = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 200, self.view.frame.size.width - 20, 40)];
+    
+    self.psaWordMY2.mytextField.placeholder = @"请确认您的密码";
+    
+    //    self.nickNameMY.delegate = self;
     self.userNameMY.delegate  = self;
+    self.numberMY.delegate = self;
+    self.pasWordMY1.delegate = self;
+    self.psaWordMY2.delegate = self;
     
     
-    [self.phoneScrollView addSubview:self.nickNameMY];
+    //    [self.phoneScrollView addSubview:self.nickNameMY];
     [self.phoneScrollView addSubview:self.userNameMY];
+    [self.phoneScrollView addSubview:self.numberMY];
+    [self.phoneScrollView addSubview:self.pasWordMY1];
+    [self.phoneScrollView addSubview:self.psaWordMY2];
+    
     
     //点击注册
     self.registerButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    self.registerButton.frame = CGRectMake(10,150, self.view.frame.size.width - 20, 40);
+    self.registerButton.frame = CGRectMake(10,270, self.view.frame.size.width - 20, 40);
     [self.registerButton setTitle:@"确定" forState:(UIControlStateNormal)];
     [self.registerButton  setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     [self.registerButton setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
@@ -73,7 +103,77 @@
 //确定点击事件
 -(void)registerButton:(UIButton *)button
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    NSString *strin = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd&code=%@&password=%@&password_confirm=%@&parameter=%@&type=3",kMainHttp,self.numberMY.mytextField.text,self.pasWordMY1.mytextField.text,self.psaWordMY2.mytextField.text,self.userNameMY.mytextField.text];
+    NSLog(@"123 == == =%@",strin);
+    
+    
+    NSString *srtinF8 = [strin stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:srtinF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        NSString *string =[[[responseObject valueForKey:@"datas"]valueForKey:@"error"] valueForKey:@"msg"];
+        
+        
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:string delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [al show];
+        
+        
+        
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+
+-(void)numberButton:(UIButton *)button
+{
+    NSLog(@"获取验证码");
+    [self.userNameMY.mytextField resignFirstResponder];
+    [self.numberMY.mytextField resignFirstResponder];
+    [self.pasWordMY1.mytextField resignFirstResponder];
+    [self.psaWordMY2.mytextField resignFirstResponder];
+    
+    //    NSLog(@"%hhd",[CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]);
+    
+    if ([CommUtils validateEmail:self.userNameMY.mytextField.text]) {
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.userNameMY.mytextField.text];
+        NSLog(@"  wode url = = %@",url);
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"%@",[responseObject valueForKey:@"code"]);
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"%@",error);
+            
+            
+        }];
+        
+        
+        
+    }else {
+        
+        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"输入的邮箱有误 " delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [aller show];
+        
+        
+        
+    }
+    
+    
+    
     
     
 }

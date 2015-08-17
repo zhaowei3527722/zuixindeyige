@@ -11,6 +11,9 @@
 @protocol ClickViewControllerDelegate <NSObject>
 
 -(void)sender:(NSString*)sexString;
+-(void)coderNstring:(NSString *)coder moblePhone:(NSString *)moblePhone;
+-(void)codernstring:(NSString *)coder email:(NSString *)email;
+
 
 @end
 

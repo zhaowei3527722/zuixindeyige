@@ -46,7 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.myArray = [NSMutableArray array];
     self.modalPresentationCapturesStatusBarAppearance = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.extendedLayoutIncludesOpaqueBars = NO;
@@ -91,24 +91,25 @@
 {
     
     self.indextnumber = 1;
-
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=5",kMainHttp,self.myModelnow];
-    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
+    NSLog(@" = == myid = %@",self.myModelnow.myid);
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=100",kMainHttp,self.myModelnow.myid];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
-    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        NSLog(@"   %@",responseObject);
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
             
             
-            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-            self.miao = [dat timeIntervalSince1970];
+            //            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            //            self.miao = [dat timeIntervalSince1970];
             NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
             [self.myArray removeAllObjects];
-
+            
             for (NSDictionary *dic in array) {
                 SpeckModel *model = [[SpeckModel alloc]init];
                 [model setValuesForKeysWithDictionary:dic];
@@ -119,14 +120,11 @@
             [self.tableView reloadData];//刷新;
             
             
-            
         }else {
             
             NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
             
-            
         }
-        
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -147,7 +145,7 @@
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
+        NSLog(@"00000000 %@",responseObject);
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
@@ -187,15 +185,24 @@
     
     
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.tabBarController.tabBar.hidden = NO;
+    
+}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     
-    if (buttonIndex == 0) {
-        LoginViewController *login = [[LoginViewController alloc]init];
-        [self.navigationController pushViewController:login animated:YES];
-        
+    if (alertView.tag == 1005) {
+        if (buttonIndex == 0) {
+            LoginViewController *login = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }else {
+            
+            
+        }
     }
-    
 }
 -(CGFloat )tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -313,15 +320,12 @@
             self.myTextView.backgroundColor = COLOR(233, 233, 233, 1);
             self.myTextView.placeholder = @"请在这里输入您想说的话...";
             
-            
             self.myspeckButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
             self.myspeckButton.frame = CGRectMake(kMainWidth - 60, 60, 50, 50);
             [self.myspeckButton setBackgroundImage:[UIImage imageNamed:@"发表@2x.png"] forState:(UIControlStateNormal)];
             [self.myspeckButton addTarget:self action:@selector(myspeckButton:) forControlEvents:(UIControlEventTouchUpInside)];
             
-            
             [self.myView addSubview:self.myspeckButton];
-            
             
             return self.myView;
             
@@ -340,11 +344,51 @@
 }
 -(void)myspeckButton:(UIButton *)button
 {
-    if ([self.delegate respondsToSelector:@selector(speckButtonAction:content:)]) {
-        [self.delegate speckButtonAction:button content:self.myTextView.text];
+    
+    NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+//    NSLog(@" =%@ ,=  %@ =%@ =key = %@",member_id,self.mymodel.myID,self.myTextView.text,key);
+    
+    
+    if (![key isEqualToString:@""]) {
+        NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,self.myTextView.text,member_id,key,self.myModelnow.myid];
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
-    }
+        NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                
+                [al show];
+                
+            }
+            
+            [self.tableView.header beginRefreshing];
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"%@",error);
+            
+            
+        }];
+        
+        
+        
 
+    }else {
+        
+        
+        
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        ale.tag = 1005;
+        
+        [ale show];
+    }
     
     
 }
@@ -377,6 +421,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    
+    
     if (indexPath.section == 0) {
         static NSString *cell = @"index";
         MyListFirstTableViewCell *mycell = [self.tableView dequeueReusableCellWithIdentifier:cell];
@@ -404,8 +451,9 @@
         return mycell;
         
     }else {
-        
         SpeckModel *model = self.myArray[indexPath.row];
+        NSLog(@"=====================================================%@",model.member_avatar);
+
        static NSString *speckindext = @"indext";
         SpeckTableViewCell *speckCell = [self.tableView dequeueReusableCellWithIdentifier:speckindext];
         if (!speckCell) {
@@ -415,6 +463,9 @@
         speckCell.myPersonTimageView.layer.cornerRadius = 15;
         speckCell.myPersonTimageView.layer.masksToBounds = YES;
         [speckCell.myPersonTimageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
+        
+        NSLog(@"%@ == =youzhi a @",model.member_avatar);
+        
         speckCell.myNameLable.text = model.member_name;//昵称
         speckCell.myNameLable.textColor = [UIColor brownColor];
         speckCell.mySpeckLable .text  = model.content;//评论的内容赋值
@@ -471,6 +522,9 @@
         
         
         UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"登陆" otherButtonTitles:@"取消", nil];
+        
+        al.tag = 1005;
+        
         [al show];
         
         

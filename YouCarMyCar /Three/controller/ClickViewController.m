@@ -298,13 +298,22 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex == 0) {
+    
+    
         
-    }else if (buttonIndex == 1) {
+  
         
-        [self.myArray removeObjectAtIndex:self.myIndexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:@[self.myIndexPath] withRowAnimation:(UITableViewRowAnimationFade)];
-    }
+        if (buttonIndex == 0) {
+            
+        }else if (buttonIndex == 1) {
+            
+            [self.myArray removeObjectAtIndex:self.myIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[self.myIndexPath] withRowAnimation:(UITableViewRowAnimationFade)];
+        }
+
+    
+    
+    
 
 }
 
@@ -433,12 +442,11 @@
 -(void)verify:(UIButton *)button
 {
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.phoneField.text];
-    NSLog(@"  wode url = = %@",url);
+    if (self.i == 14) {
     
     if ([CommUtils validatePhoneNumber:self.phoneField.text]) {
         
-        NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd=%@",kMainHttp,self.phoneField.text];
+        NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.phoneField.text];
         NSLog(@"  wode url = = %@",url);
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
@@ -466,8 +474,50 @@
         
         
     }
+    
 
+    }else if(self.i == 15){
+        
+        
+        if ([CommUtils validateEmail:self.phoneField.text]) {
+            
+            
 
+            NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_bind_email&email=%@",kMainHttp,self.phoneField.text];
+            NSLog(@"  wode url = = %@",url);
+            
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            
+            [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSLog(@"%@",[responseObject valueForKey:@"code"]);
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+                NSLog(@"%@",error);
+                
+                
+            }];
+            
+            
+            
+        }else {
+            
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机号有误 " delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [aller show];
+            
+            
+            
+        }
+
+        
+        
+        
+        
+    }
+    
 }
 
 
@@ -769,8 +819,20 @@
 
 -(void)surePhone
 {
-    [self.navigationController popViewControllerAnimated:YES];
+  
+    
+        if ([self.delegate respondsToSelector:@selector(coderNstring:moblePhone:)]) {
+            [self.delegate coderNstring:self.codeField.text moblePhone:self.phoneField.text];
+            
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+
+  
+    
+    
 }
+
 //********************************布局更改邮箱*********************************
 -(void)layoutEmail
 {
@@ -822,7 +884,16 @@
 }
 -(void)changeEmail
 {
-    NSLog(@"改变邮箱");
+    if ([self.delegate respondsToSelector:@selector(codernstring:email:)]) {
+            [self.delegate codernstring:self.codeField.text email:self.phoneField.text];
+            
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+        
+        
+    
+    
 }
 
 

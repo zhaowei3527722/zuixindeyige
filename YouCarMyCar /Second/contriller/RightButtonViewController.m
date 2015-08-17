@@ -12,11 +12,13 @@
 #import "RightListTableViewCell.h"
 #import "AFNetworking.h"
 #import "RightModel.h"
-
+#import "MJRefresh.h"
 #import "UIImageView+WebCache.h"
 
 @interface RightButtonViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic ,strong)NSMutableArray *myArray;
+@property (nonatomic)NSInteger indextnumber;
+
 
 @end
 
@@ -24,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.myArray = [[NSMutableArray alloc]init];
     self.title = @"中奖名单";
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -32,31 +35,53 @@
     [button addTarget:self action:@selector(pop) forControlEvents:(UIControlEventTouchUpInside)];
     UIBarButtonItem *lift = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = lift;
+    self.myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, kMainHeight)];
     
+    self.myTableview.delegate = self;
+    self.myTableview.dataSource  = self;
+    [self.view addSubview:self.myTableview];
+    self.myTableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
     
-    [self coustom1];//获取数据
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
     
-    [self coustom];//布局
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.myTableview.header = header;
+    
+    /////
+    // 添加默认的上拉刷新
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshing)];
+    
+    // 设置文字
+    //    [footer setTitle:@"加载更多.." forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载.." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多.." forState:MJRefreshStateNoMoreData];
+    
+    // 设置字体
+    footer.stateLabel.font = [UIFont systemFontOfSize:17];
+    
+    // 设置颜色
+    footer.stateLabel.textColor = [UIColor blueColor];
+    
+    // 设置footer
+    self.myTableview.footer = footer;
 
     // Do any additional setup after loading the view.
 }
 //获取 数据
 
--(void)coustom1
-{/*	请求参数：
-  •	act=try
-  •	op=getWinning
-  •	try_id 试用产品ID
-  •	curpage:第几页，
-  •	eachNum:几条一页
-  •	返回数据：
-  •	Page totalPage  总页数
-  •	list 用户列表（数组）
-  •	member_name 昵称
-  •	member _avatar 头像*/
+-(void)headerRefreshing
+{
     
-    self.myArray = [[NSMutableArray alloc]init];
-    
+    self.indextnumber = 1;
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager  alloc]init];
     
@@ -76,6 +101,7 @@
 
                 
                 NSArray *array = [responseObject valueForKey:@"list"];
+                [self.myArray removeAllObjects];
                 
                 for (NSDictionary *dic in array) {
                     RightModel *model = [[RightModel alloc]init];
@@ -83,16 +109,12 @@
                     [self.myArray addObject:model];
                 }
                 [self.myTableview reloadData];//刷新数据
-                
-                
-
+            
                 
             }
             
-         
             
         }
-        
         
         
         NSArray *array = [responseObject valueForKey:@"list"];
@@ -113,19 +135,63 @@
         
     }];
     
+    [self.myTableview.header endRefreshing];
     
     
 }
-
--(void)coustom
+-(void)footerRefreshing
 {
-    self.myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, kMainHeight)];
+    self.indextnumber ++;
     
-    self.myTableview.delegate = self;
-    self.myTableview.dataSource  = self;
-    [self.view addSubview:self.myTableview];
-    self.myTableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager  alloc]init];
     
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getWinning&try_id=%@&curpage=%ld&eachNum=100",kMainHttp,self.myModel.myID,(long)self.indextnumber];
+    NSString *urlF8 = [url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+            
+            
+            NSLog(@"%@",[responseObject valueForKey:@"list"]);
+            
+            
+            
+            
+            if (!([responseObject valueForKey:@"list"]==[NSNull null]) ){
+                
+                
+                NSArray *array = [responseObject valueForKey:@"list"];
+                
+                for (NSDictionary *dic in array) {
+                    RightModel *model = [[RightModel alloc]init];
+                    [model setValuesForKeysWithDictionary:dic];
+                    [self.myArray addObject:model];
+                }
+                [self.myTableview reloadData];//刷新数据
+                
+                
+            }
+            
+            
+        }
+        
+        
+        
+        NSArray *array = [responseObject valueForKey:@"list"];
+        
+        for (NSDictionary *dic in array) {
+            RightModel *model = [[RightModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:model];
+        }
+        [self.myTableview reloadData];//刷新数据
+    
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    [self.myTableview.footer endRefreshing];
+
     
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -145,10 +211,8 @@
     NSLog(@"%ld",indexPath.row *2 + 1);
     
     
-    
     RightModel *model1 = self.myArray[indexPath.row * 2];
     RightModel *model2 = self.myArray[indexPath.row * 2 +1];
-    
     static NSString *indext = @"indext";
     RightListTableViewCell *cell = [self.myTableview dequeueReusableCellWithIdentifier:indext];   
     if (!cell) {

@@ -15,12 +15,14 @@
 #import "ZWTextView.h"
 #import "SpeckTableViewCell.h"
 
+#import "MJRefresh.h"
 @interface SpectGoodRigthViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)UITableView *mytableView;
 @property (nonatomic ,strong)ZWTextView *mytextvie;
 @property (nonatomic ,strong)UIView *myView;
 @property (nonatomic,strong)UIButton *myspeckButton;
+@property (nonatomic )NSInteger indextnumber;
 
 
 @end
@@ -43,23 +45,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.myArray = [[NSMutableArray alloc]init];
+
     self.mytableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:self.mytableView];
     self.mytableView.delegate = self;
     self.mytableView.dataSource = self;
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
+    
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.mytableView.header = header;
+    
+    /////
+    // 添加默认的上拉刷新
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshing)];
+    
+    // 设置文字
+    //    [footer setTitle:@"加载更多.." forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载.." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多.." forState:MJRefreshStateNoMoreData];
+    
+    // 设置字体
+    footer.stateLabel.font = [UIFont systemFontOfSize:17];
+    
+    // 设置颜色
+    footer.stateLabel.textColor = [UIColor blueColor];
+    
+    // 设置footer
+    self.mytableView.footer = footer;
     
     
-    [self coustom];
-    
-    // Do any additional setup after loading the view.
 }
--(void)coustom
+-(void)headerRefreshing
 {
     
-
+    self.indextnumber = 1;
     
-    self.myArray = [[NSMutableArray alloc]init];
     NSLog(@" = == myid = %@",self.mymodel.myID);
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=100",kMainHttp,self.mymodel.myID];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
@@ -73,6 +104,8 @@
 //            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
 //            self.miao = [dat timeIntervalSince1970];
                     NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            [self.myArray removeAllObjects];
+            
             for (NSDictionary *dic in array) {
                 SpeckModel *model = [[SpeckModel alloc]init];
                 [model setValuesForKeysWithDictionary:dic];
@@ -96,6 +129,52 @@
         
         
     }];
+    
+    [self.mytableView.header endRefreshing];
+    
+    
+
+}
+-(void)footerRefreshing
+{
+    NSLog(@" = == myid = %@",self.mymodel.myID);
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=%ldeachNum=100",kMainHttp,self.mymodel.myID,(long)self.indextnumber];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
+            
+            
+            //            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            //            self.miao = [dat timeIntervalSince1970];
+            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            for (NSDictionary *dic in array) {
+                SpeckModel *model = [[SpeckModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                [self.myArray addObject:model];
+                
+            }
+            
+            [self.mytableView reloadData];//刷新;
+            
+            
+        }else {
+            
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+        
+    }];
+    
+    [self.mytableView.footer endRefreshing];
     
     
     
@@ -193,6 +272,9 @@
             [al show];
     
         }
+        
+        [self.mytableView.header beginRefreshing];
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
