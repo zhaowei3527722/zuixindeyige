@@ -34,6 +34,7 @@
 @property (nonatomic,strong)UILabel *emailLabel;
 @property (nonatomic,strong)UILabel *sexLabel;
 @property (nonatomic,strong)UILabel *addressLabel;
+@property (nonatomic,copy)NSString *codeString;
 @property (nonatomic)BOOL isYes;
 @property (nonatomic)BOOL isSex;
 
@@ -240,8 +241,7 @@
     NSData  *imageData = UIImageJPEGRepresentation(self.myXiangImage.image, 1.0);
     self.base64string = [imageData base64Encoding];
     
-    NSString *codeString = [[NSUserDefaults standardUserDefaults]valueForKey:@"code"];
-
+    self.codeString = @"";
     NSString *sexString = [NSString string];
     if ([self.sexLabel.text isEqualToString:@""]) {
         sexString = @"";
@@ -250,7 +250,7 @@
     }else if ([self.sexLabel.text isEqualToString:@"女"]) {
         sexString = @"2";
     }
-    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
@@ -276,7 +276,17 @@
     self.sexLabel.textColor = [UIColor blackColor];
     self.sexLabel.text = sexString;
 }
-
+-(void)codernstring:(NSString *)coder email:(NSString *)email
+{
+    self.emailLabel.textColor = [UIColor blackColor];
+    self.emailLabel.text =email;
+    self.codeString = coder;
+}
+-(void)coderNstring:(NSString *)coder moblePhone:(NSString *)moblePhone
+{
+    self.photoLable.text = moblePhone;
+    self.codeString = coder;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -332,9 +342,11 @@
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 1){
         clichVC.i = 14;
+        clichVC.delegate = self;
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 2) {
         clichVC.i = 15;
+        clichVC.delegate = self;
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 2 && indexPath.row == 0) {
         

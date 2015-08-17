@@ -176,7 +176,7 @@
                 if (self.j == 11) {
                     _addressField.placeholder = @"请输入收货人姓名";
                 }else if (self.j == 111) {
-                    _addressField.text = self.addressMd.name;
+                    _addressField.text = self.addressMd.true_name;
                 }
                 self.nameFd = _addressField;
             }else if (indexPath.row == 2) {
@@ -190,7 +190,7 @@
                 if (self.j == 11) {
                     _addressField.placeholder = @"请输入您的联系电话";
                 }else if (self.j == 111) {
-                    _addressField.text = self.addressMd.telephone;
+                    _addressField.text = self.addressMd.mob_phone;
                 }
                 self.phoneFd = _addressField;
             }else if (indexPath.row == 4) {

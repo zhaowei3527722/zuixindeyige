@@ -153,7 +153,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     if (self.i == 11) {
-        return self.myArray.count;
+        return _addressArray.count;
     }else if (self.i == 13){
         return 4;
     }else{
@@ -213,11 +213,14 @@
     if (self.i == 11) {
 
         AddressModel *addressMd = [[AddressModel alloc]init];
-        addressMd = _myArray[_myArray.count - 1 - indexPath.row];
+        addressMd = _addressArray[_addressArray.count - 1 - indexPath.row];
         addressTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"addressCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.nameLable.text = addressMd.name;
-        cell.phoneLable.text = addressMd.telephone;
+        cell.nameLable.text = addressMd.true_name;
+        NSLog(@"%@",addressMd.true_name);
+        cell.phoneLable.text = addressMd.mob_phone;
+        cell.addressLable.text = addressMd.address;
+        
         self.bianjiBT = cell.bianjiBT;
         self.shanchuBT = cell.shanchuBT;
         self.bianjiBT.tag = indexPath.row;
@@ -275,7 +278,7 @@
 
     SureViewController *sure = [[SureViewController alloc]init];
     sure.j = 111;
-    sure.addressMd = self.myArray[self.myIndexPath.row];
+    sure.addressMd = _addressArray[self.myIndexPath.row];
     [self.navigationController pushViewController:sure animated:YES];
     
     
@@ -289,7 +292,7 @@
     
     [alert show];
     
-    
+   
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
     
@@ -306,8 +309,35 @@
             
         }else if (buttonIndex == 1) {
             
-            [self.myArray removeObjectAtIndex:self.myIndexPath.row];
+            [self.addressArray removeObjectAtIndex:self.myIndexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[self.myIndexPath] withRowAnimation:(UITableViewRowAnimationFade)];
+            
+            
+            //删除地址
+            NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+            NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+            AddressModel *addressModel = _addressArray[_myIndexPath.row];
+            NSString *addressID = addressModel.address_id;
+            
+            NSDictionary *params = @{@"act":@"member_address",@"op":@"address_del",@"member_id":member_id,@"key":key,@"address_id":addressID};
+            
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            
+            [manager POST:kMainHttp parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"成功");
+                
+                NSLog(@"%@",[responseObject valueForKey:@"datas"]);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+            
+            
+            
+            
+            
+            
+            
+            
         }
 
     
@@ -349,10 +379,29 @@
     
     //数据请求
     
-//    self.addressArray = [[NSMutableArray alloc]init];
-//    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
-//    NSString *url = [NSString stringWithFormat:@"%@?act=member_address&op=address_info&key=%@",]
-//    
+    self.addressArray = [[NSMutableArray alloc]init];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *member = [[NSUserDefaults standardUserDefaults] valueForKey:@"member_id"];
+    NSString *url = [NSString stringWithFormat:@"%@?act=member_address&op=address_list&member_id=%@&key=%@",kMainHttp,member,key];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"])) {
+
+            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            for (NSDictionary *dic in array) {
+                AddressModel *addressModel = [[AddressModel alloc]init];
+                [addressModel setValuesForKeysWithDictionary:dic];
+                [self.addressArray addObject:addressModel];
+
+            }
+            
+            [self.tableView reloadData];//刷新;
+            
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"%@",error);
+    }];
+
 }
 
 
@@ -371,8 +420,8 @@
 -(void)addObjectnameFd:(UITextField *)nameFd addressFd:(UITextField *)addressFd phoneFd:(UITextField *)phoneFd youzhengFd:(UITextField *)youzhengFd
 {
     AddressModel *address = [[AddressModel alloc]init];
-    address.name = nameFd.text;
-    address.telephone = phoneFd.text;
+//    address.true_name = nameFd.text;
+//    address.telephone = phoneFd.text;
     [self.myArray addObject:address];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.myArray.count - 1 inSection:0];
@@ -842,6 +891,7 @@
     
     self.nextButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
     [self.nextButton setTitle:@"确定" forState:(UIControlStateNormal)];
+    
     [self.nextButton addTarget:self action:@selector(surePhone) forControlEvents:(UIControlEventTouchUpInside)];
     self.nextButton.titleLabel.font = MyButtonFont;
     self.nextButton.frame = CGRectMake(10, codeimageView.frame.origin.y + 100, kMainWidth - 20, 50);
@@ -924,7 +974,7 @@
     [self.nextButton addTarget:self action:@selector(changeEmail) forControlEvents:(UIControlEventTouchUpInside)];
     [self.nextButton.titleLabel setFont:MyButtonFont];
     [self.nextButton setFrame:CGRectMake(10, codeimageView.frame.origin.y + 100, kMainWidth - 20, 50)];
-    [self.nextButton setBackgroundColor:MainBackGround];
+    [self.nextButton setBackgroundColor:COLOR(49, 219, 224, 1)];
     [self.nextButton setTintColor:[UIColor whiteColor]];
     [self.view addSubview:self.nextButton];
     
