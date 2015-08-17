@@ -19,6 +19,8 @@
 
 @interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong)UICollectionView *collectionView;
+@property (nonatomic)NSInteger indextNumber;
+
 @end
 
 @implementation SecondViewController
@@ -32,15 +34,8 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //获取数据
-    [self custom];
-//    self.collectionView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
-//    
-//    [self.collectionView.header beginRefreshing];
-//    
-//    self.collectionView.footer = [MJRefreshAutoNormalFooter forwardingTargetForSelector:@selector(forderrefreshin)];
-//    
-//    
+    self.myArray = [NSMutableArray array];
+    [self layoutView];
     
     // 下拉刷新
     self.collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -48,9 +43,7 @@
         NSLog(@"zhge");
         
         [self headerRefreshing];
-        
-        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
-    }];
+        }];
     [self.collectionView.header beginRefreshing];
     
     // 上拉刷新
@@ -59,49 +52,45 @@
         [self forderrefreshin];
         
     }];
-    // 默认先隐藏footer
-    [self.collectionView.footer beginRefreshing];
-
-    
-//    // 上拉刷新
-//    self.collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//        // 增加5条假数据
-//        for (int i = 0; i<5; i++) {
-//            [weakSelf.colors addObject:MJRandomColor];
-//        }
-//        
-//        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MJDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [weakSelf.collectionView reloadData];
-//            
-//            // 结束刷新
-//            [weakSelf.collectionView.footer endRefreshing];
-//        });
-//    }];
-    // 默认先隐藏footer
-    self.collectionView.footer.hidden = NO;
-
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"往期试用";
     //自定义View
-    [self layoutView];
 }
 -(void)headerRefreshing
 {
-    NSLog(@"也可以用  ");
+    self.indextNumber = 1;
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10type=2",kMainHttp];
+
+    NSLog(@"%@",url);
+    AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
+    [manger GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+        [self.myArray removeAllObjects];
+        
+        for (NSDictionary *dic in array) {
+            WangQiModel *model = [[WangQiModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:model];
+        }
+        [self.collectionView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    [self.collectionView reloadData];
+    [self.collectionView.header endRefreshing];
     
 }
 -(void)forderrefreshin
 {
-    NSLog(@"加载");
     
-}
--(void)custom
-{
-    self.myArray = [NSMutableArray array];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10type=2",kMainHttp];
-
+    
+    self.indextNumber ++;
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=10type=2",kMainHttp,(long)self.indextNumber];
+    
     NSLog(@"%@",url);
     AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
     [manger GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -115,6 +104,13 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@",error);
     }];
+    
+    [self.collectionView reloadData];
+    
+    
+    [self.collectionView.footer endRefreshing];
+    
+
 }
 
 //自定义View
@@ -158,7 +154,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 23;
+    return self.myArray.count;
     
 }
 
@@ -167,22 +163,17 @@
 {
     CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIndentifier" forIndexPath:indexPath];
 //
-//    WangQiModel *model = self.myArray[indexPath.row];
-    cell.backgroundColor = [UIColor clearColor];
-//    cell.mylabel.text = model.title;
-////    cell.myimageView.image = [UIImage imageNamed:model.img];
-//    NSURL *url = [NSURL URLWithString:model.img];
-//    [cell.myimageView sd_setImageWithURL:url];
-// 
-   
     WangQiModel *model = self.myArray[indexPath.row];
+    cell.backgroundColor = [UIColor clearColor];
     cell.mylabel.text = model.title;
-    NSString *str = [NSString stringWithFormat:@"%@期",model.period_no];
-    cell.qishuLable.text = str;
+    cell.myimageView.image = [UIImage imageNamed:model.img];
     NSURL *url = [NSURL URLWithString:model.img];
     [cell.myimageView sd_setImageWithURL:url];
  
-
+   
+    cell.mylabel.text = model.title;
+    NSString *str = [NSString stringWithFormat:@"%@期",model.period_no];
+    cell.qishuLable.text = str;
     
     return cell;
     

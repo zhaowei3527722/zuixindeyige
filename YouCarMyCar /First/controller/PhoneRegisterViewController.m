@@ -124,6 +124,9 @@
     [self.numberMY.mytextField resignFirstResponder];
     [self.pasWordMY1.mytextField resignFirstResponder];
     [self.psaWordMY2.mytextField resignFirstResponder];
+    
+    NSLog(@"%hhd",[CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]);
+    
     if ([CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]) {
         
         NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.userNameMY.mytextField.text];

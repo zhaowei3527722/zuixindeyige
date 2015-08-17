@@ -17,10 +17,12 @@
 #import "AFNetworking.h"
 #import "UIImageView+WebCache.h"
 #import "GoodDetalWQViewController.h"
+#import "MJRefresh.h"
 
 @interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate>
 @property (nonatomic)NSInteger indextnumber;//记录获取试用报告列表的 第几页
 @property (nonatomic,strong)NSMutableArray *myArray;
+
 
 @end
 
@@ -35,11 +37,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.indextnumber = 1;
+    self.myArray = [[NSMutableArray alloc]init];
 
     // Do any additional setup after loading the view.
     self.title = @"往期详情";
-    
-    [self coustom];//获取数据;
     
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -67,14 +68,48 @@
     self.myTableView.dataSource = self;
     
     
-}//获取数据
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    header.automaticallyChangeAlpha = YES;
+    
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    
+    // 马上进入刷新状态
+    [header beginRefreshing];
+    
+    // 设置header
+    self.myTableView.header = header;
+    
+    /////
+    // 添加默认的上拉刷新
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshing)];
+    
+    // 设置文字
+    //    [footer setTitle:@"加载更多.." forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载.." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多.." forState:MJRefreshStateNoMoreData];
+    
+    // 设置字体
+    footer.stateLabel.font = [UIFont systemFontOfSize:17];
+    
+    // 设置颜色
+    footer.stateLabel.textColor = [UIColor blueColor];
+    
+    // 设置footer
+    self.myTableView.footer = footer;
+    
 
--(void)coustom
+    
+    
+}//获取数据 ==== 刷新
+-(void)headerRefreshing
 {
     
-    self.myArray = [[NSMutableArray alloc]init];
+    self.indextnumber = 1;
     
- 
 
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=report&tryId=%@&curpage=1&eachNum=10",kMainHttp,self.wangqiModel.myID];
     
@@ -89,6 +124,8 @@
 
         
         if (!([[responseObject valueForKey:@"datas"] valueForKey:@"list"] == [NSNull null])) {
+            
+            [self.myArray removeAllObjects];
             
             for (NSDictionary *dic in array) {
                 TryReportModel *model = [[ TryReportModel alloc]init];
@@ -112,6 +149,51 @@
     }];
     
     
+    [self.myTableView.header endRefreshing];
+    
+    
+}
+-(void)footerRefreshing
+{
+    self.indextnumber ++;
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=report&tryId=%@&curpage=%ld&eachNum=10",kMainHttp,self.wangqiModel.myID,(long)self.indextnumber];
+    
+    NSLog(@"Try- id = %@",self.wangqiModel.myID);
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+        
+        
+        if (!([[responseObject valueForKey:@"datas"] valueForKey:@"list"] == [NSNull null])) {
+            
+            for (NSDictionary *dic in array) {
+                TryReportModel *model = [[ TryReportModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                
+                [self .myArray addObject:model];
+                
+                
+                
+            }
+            
+        }
+        
+        
+        [self.myTableView  reloadData];//刷新;
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    [self.myTableView.footer endRefreshing];
     
     
 }
