@@ -820,14 +820,25 @@
 -(void)surePhone
 {
   
-    
+    if ( [CommUtils validatePhoneNumber:self.phoneField.text]&&[CommUtils validateNumber:self.codeField.text]) {
+        
         if ([self.delegate respondsToSelector:@selector(coderNstring:moblePhone:)]) {
             [self.delegate coderNstring:self.codeField.text moblePhone:self.phoneField.text];
             
         }
         [self.navigationController popViewControllerAnimated:YES];
         
+        
+        
+    }else {
+        
+        UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"格式有误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [ale show];
+        
+    }
 
+    
+    
   
     
     
@@ -884,16 +895,23 @@
 }
 -(void)changeEmail
 {
-    if ([self.delegate respondsToSelector:@selector(codernstring:email:)]) {
+
+    if ( [CommUtils validateEmail:self.phoneField.text]&&[CommUtils validateNumber:self.codeField.text]) {
+
+        if ([self.delegate respondsToSelector:@selector(codernstring:email:)]) {
             [self.delegate codernstring:self.codeField.text email:self.phoneField.text];
             
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            
         }
-        [self.navigationController popViewControllerAnimated:YES];
         
+    }else {
         
+        UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"格式有误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [ale show];
         
-    
-    
+    }
 }
 
 
