@@ -10,7 +10,6 @@
 
 @interface DataSexTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *sexLable;
-@property (weak, nonatomic) IBOutlet UIImageView *yourImage;
 @property (weak, nonatomic) IBOutlet UIView *back;
 @property (weak, nonatomic) IBOutlet UILabel *myLable;
 
