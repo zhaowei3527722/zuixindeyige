@@ -49,7 +49,7 @@
             
             [self addSubview:self.myTimeLable];
             self.timLable = [[MZTimerLabel alloc] initWithLabel:self.myTimeLable andTimerType:MZTimerLabelTypeTimer];
-            [self.timLable setCountDownTime:self.mytimeInteger];
+            [self.timLable setCountDownTime:_mytimeInteger];
             self.timLable.timeLabel.textColor = [UIColor brownColor];
             [self.timLable start];
             self.timLable.timeLabel.textAlignment = NSTextAlignmentCenter;
@@ -173,7 +173,7 @@
         
         
         
-        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(38+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60, 20)];
+        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(35+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60, 20)];
         lable.text = @"剩余时间:";
         
         [self addSubview:lable];
@@ -263,8 +263,7 @@
         
         
         
-        
-        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(50+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60 , 20)];
+        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(45+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60 , 20)];
         lable.text = @"剩余时间:";
         
         [self addSubview:lable];

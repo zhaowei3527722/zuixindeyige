@@ -81,8 +81,23 @@
 -(void)loadNewData
 {    self.indextnumber = 1;
 
+//    act=try
+//    •	op=list
+//    •	curpage:第几页，默认1
+//    •	eachNum:几条一页，默认10
+//    •	type:类型（1最新、2往期,3 即将开始）
+//    •	member_id 用户ID （选传）
+//    •	key 登录令牌 （选传）
+//
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=1",kMainHttp];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *member_id =  [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=1&member_id=%@&key=%@",kMainHttp,member_id,key];
+    
+    NSLog(@"- - --- --- --- -- - -%@",url);
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -125,38 +140,43 @@
     NSLog(@" = = = = == = ==%ld",(long)self.indextnumber);
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=5type=1",kMainHttp,(long)self.indextnumber];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *member_id =  [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=%ld&member_id=%@&key%@",kMainHttp,(long)self.indextnumber, member_id,key];
+    
+    NSLog(@"- - --- --- --- -- - -%@",url);
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+        self.miao = [dat timeIntervalSince1970];
+        NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+        [self.myArray removeAllObjects];
         
-        
-        if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"])) {
-            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-            self.miao = [dat timeIntervalSince1970];
-            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
-            for (NSDictionary *dic in array) {
-                NowViewModel *model = [[NowViewModel alloc]init];
-                [model setValuesForKeysWithDictionary:dic];
-                [self.myArray addObject:model];
-                
-            }
+        for (NSDictionary *dic in array) {
+            NowViewModel *model = [[NowViewModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.myArray addObject:model];
             
-            [self.mytable reloadData];//刷新;
-
         }
         
-//        [self.mytable footerEndRefreshing];
+        [self.mytable reloadData];//刷新;
+        //        [self.mytable headerEndRefreshing];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         NSLog(@"%@",error);
-//        [self.mytable footerEndRefreshing];
-
+        //        [self.mytable headerEndRefreshing];
+        
         
     }];
     
-    [self.mytable.footer endRefreshing];
+    [self.mytable.header endRefreshing];
+    
+    
     
     
 }
@@ -196,13 +216,24 @@
     mycell.delegagate = self;
     NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
     NSTimeInterval a = [dat timeIntervalSince1970];
-    mycell.mytimeInteger = 1000 - (a - self.miao) ;
     NowViewModel *model = self.myArray[indexPath.row];
+
+    NSInteger tim =  [model.date integerValue]*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
+    
+    mycell.mytimeInteger = tim - (a - self.miao) ;
     mycell.mydescritionLable.text = model.small_info;
     mycell.myallGoodsCount.text = model.number;
     mycell.mynowPerson.text = model.try_people;
     mycell.myGoodName.text = model.title;
     [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:model.img]];
+    
+    if ([model.presence integerValue]== 1) {
+        [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
+
+    }
+    
+    
+    
     
     return mycell;
     
@@ -213,19 +244,44 @@
     NSInteger aa = button.tag - 100;
     
     NowViewModel *model = self.myArray[aa];
+    
+    if ([model.presence integerValue] == 1) {
+        
+    }else {
+    
     NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    
 
-    if (!([[[NSUserDefaults standardUserDefaults] valueForKey:@"key"] isEqualToString:@""])) {
+    if (key) {
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         
-        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,model.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,model.myid]);
+        NSString *url = [NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,model.myid];
+        NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        
+        [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
-            detal.iSbutton  = YES;
             
-            [[super navigationController] pushViewController:detal animated:NO];
-            detal.myModelnoW = self.myArray[aa];
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                
+                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale show];
+                
+                
+            }else {
+                
+                NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
+                detal.iSbutton  = YES;
+                
+                [[super navigationController] pushViewController:detal animated:NO];
+                detal.myModelnoW = self.myArray[aa];
+                [self loadNewData];
+                
+
+            }
             
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -238,20 +294,24 @@
     }else  {
         
         
-        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"马上登录" otherButtonTitles:@"取消", nil];
         [ale show];
         
         
         
     }
-    
+    }
     
     
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    LoginViewController *login = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:login animated:YES];
+    if (buttonIndex == 0) {
+        LoginViewController *login = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:login animated:YES];
+        
+
+    }
     
     
 }

@@ -178,6 +178,7 @@
     cell.delegagate = self;
     NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
     NSTimeInterval a = [dat timeIntervalSince1970];
+    [cell.mybutton setBackgroundImage:[UIImage imageNamed:@"jingqgz.png"] forState:(UIControlStateNormal)];
     
     
     cell.mytimeInteger = 1000 - (a - self.miao) ;
