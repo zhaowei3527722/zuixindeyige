@@ -40,6 +40,8 @@
 
 @property (nonatomic,strong)UIImageView *myBackImage;
 @property (nonatomic,strong)UIImageView *myXiangImage;
+@property (nonatomic,strong)NSString *sex;
+
 @end
 
 @implementation XiangViewController
@@ -242,13 +244,41 @@
         _emailLabel.text = @"";
     }
     
+    if ((!self.sexLabel.text)||[self.sexLabel.text isEqualToString:@"保密"]) {
+        self.sex = @"0";
+        
+    }else if ([self.sexLabel.text isEqualToString:@"男"]){
+        self.sex = @"1";
+        
+    }else if ([self.sexLabel.text isEqualToString:@"女"]){
+        
+        self.sex = @"2";
+        
+    }
+    
+    
+    
+    if (!self.base64string) {
+        self.base64string = @"";
+        
+    }
+    if (!self.emailLabel.text) {
+        self.emailLabel.text = @"";
+        
+    }if (!self.nameTextField.text) {
+        self.nameTextField.text = @"";
+        
+    }if (!self.photoLable.text) {
+        self.photoLable.text = @"";
+        
+    }
     
     NSLog(@"%@",self.nameTextField.text);
     NSLog(@"%@",self.codeString);
     NSLog(@"%@",self.sexLabel.text);
     NSLog(@"%@",self.photoLable.text);
     NSLog(@"%@",self.emailLabel.text);
-    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sexLabel.text,@"truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     NSLog(@"%@",parameters);
     NSLog(@"%@",self.emailLabel.text);
     
@@ -260,14 +290,72 @@
     //如果报接受类型不一致请替换一致text/html或别的
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
-    [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@" responeObject = %@",responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-
+[manager POST:kMainHttp parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     
+    
+    
+} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    NSLog(@"%@",responseObject);
+    
+    if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [ale show];
+    }else {
+        
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
+        
+        NSString *sex = [[responseObject valueForKey:@"datas"] valueForKey:@"sex"];
+        if (!sex) {
+            
+            
+        }else if([sex isEqualToString:@"1"]){
+            
+            [[NSUserDefaults standardUserDefaults]setValue:@"男" forKey:@"sex"];
+            
+        }else if ([sex isEqualToString:@"2"]){
+            [[NSUserDefaults standardUserDefaults]setObject:@"女" forKey:@"sex"];
+            
+        }
 
+        
+        
+        
+        NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
+        
+        if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
+        }else {
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"address"];
+        }
+        
+        
+        [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"address"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
+        
+        [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+        
+        
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"mobile"]  forKey : @"mobile"];
+        
+        
+        UIAlertView *ale = [[UIAlertView  alloc]initWithTitle:@"提示" message:@"信息保存成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [ale show];
+        
+        
+        
+    }
+    
+    
+} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    
+}];
+    
 //    [self.navigationController popToRootViewControllerAnimated:YES];
     
 }
