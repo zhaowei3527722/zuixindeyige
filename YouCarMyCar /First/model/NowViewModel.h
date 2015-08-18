@@ -50,6 +50,8 @@
 @property (nonatomic ,strong)NSString *myid;
 @property (nonatomic ,strong)NSString *img;
 @property (nonatomic ,strong)NSString *info;
+@property (nonatomic ,strong)NSString *seconds;
+@property (nonatomic,strong)NSString *presence;
 
 
 @end

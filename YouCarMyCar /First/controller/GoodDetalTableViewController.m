@@ -268,7 +268,9 @@
         mycell.delegagate = self;
        // NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         //NSTimeInterval a = [dat timeIntervalSince1970];
-        mycell.mytimeInteger = 1000 ;//- (a - self.miao) ;
+        NSInteger tim =  [self.myAllDetallModel.date integerValue]*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
+        
+        mycell.mytimeInteger = tim;
         mycell.mydescritionLable.text = self.myModelnoW.small_info;
         mycell.myallGoodsCount.text = self.myModelnoW.number;
         mycell.mynowPerson.text = self.myModelnoW.try_people;
@@ -276,6 +278,11 @@
         [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myModelnoW.img]];
         mycell.selectionStyle = UITableViewCellSelectionStyleNone;
      
+        if ([self.myModelnoW.presence integerValue]==1) {
+            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
+            
+        }
+        
         
         
         return mycell;
@@ -332,14 +339,29 @@
     NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
     NSLog(@"%@",member);
-    if (!([[[NSUserDefaults standardUserDefaults] valueForKey:@"key"] isEqualToString:@""])) {
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    
+    
+    if (key) {
         AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
-        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-            [self.navigationController pushViewController:ts animated:NO];
-            
+        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                
+                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale show];
+                
+                
+            }else {
+                
+                
+                TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+                [self.navigationController pushViewController:ts animated:NO];
+                [self headerRefreshing];
+                
+                
+            }
+
             
             
             
@@ -353,7 +375,7 @@
     }else {
         
         
-        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"登陆" otherButtonTitles:@"取消", nil];
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
         [al show];
         
         

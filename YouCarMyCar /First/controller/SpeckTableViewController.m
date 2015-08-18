@@ -16,10 +16,13 @@
 #import "LoginViewController.h"
 #import "MJRefresh.h"
 
+#import "AllDeteModel.h"
+
 @interface SpeckTableViewController ()<MylistFirstbleDelegate,UIAlertViewDelegate>
 @property (nonatomic ,strong)NowViewModel *myModelnow;
 @property (nonatomic ,strong)NSMutableArray *myArray;
 @property (nonatomic )CGFloat miao;
+@property (nonatomic ,strong)AllDeteModel *myAllmodel;
 
 
 @property (nonatomic)NSInteger indextnumber;
@@ -46,6 +49,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self coustom];
+    
     self.myArray = [NSMutableArray array];
     self.modalPresentationCapturesStatusBarAppearance = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -86,6 +92,44 @@
     
 
     
+}
+-(void)coustom
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.myModelnow.myid];
+    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.myArray removeAllObjects];
+        
+        if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
+            NSDictionary *dic = [responseObject valueForKey:@"datas"];
+            self.myAllmodel  = [[AllDeteModel alloc]init];
+            [self.myAllmodel setValuesForKeysWithDictionary:dic];
+            [self.tableView reloadData];
+            NSLog(@"%@",self.myAllmodel.big_img);
+            NSDate* dat1 = [NSDate dateWithTimeIntervalSinceNow:0];
+            self.miao = [dat1 timeIntervalSince1970];
+
+            
+            NSLog(@"deat a= a= = =%@",self.myAllmodel.date);
+            
+        }
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"请求出问题了");
+        
+    }];
+    
+    
+    [self.tableView.header endRefreshing];
+    
+
 }
 -(void)headerRefreshing
 {
@@ -377,14 +421,12 @@
             
         }];
         
-        
-        
 
     }else {
         
         
         
-        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"马上登录" otherButtonTitles:@"取消", nil];
         ale.tag = 1005;
         
         [ale show];
@@ -440,14 +482,23 @@
         mycell.delegagate = self;
         NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         NSTimeInterval a = [dat timeIntervalSince1970];
-        mycell.mytimeInteger = 1000- (a - self.miao) ;
+        NSInteger tim =  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
+        
+        
+        NSLog(@" -- --- - %ld",(long)tim);
+        mycell.mytimeInteger = tim -(a - self.miao) ;
         mycell.mydescritionLable.text = self.myModelnow.small_info;
         mycell.myallGoodsCount.text = self.myModelnow.number;
         mycell.mynowPerson.text = self.myModelnow.try_people;
         mycell.myGoodName.text = self.myModelnow.title;
         [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myModelnow.img]];
         mycell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([self.myModelnow.presence integerValue]==1) {
+            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
+            
+        }
         
+
         return mycell;
         
     }else {
@@ -498,15 +549,28 @@
     NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
     NSLog(@"%@",member);
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
     
-    if (!([[[NSUserDefaults standardUserDefaults] valueForKey:@"key"] isEqualToString:@""])) {
+    if (key) {
         AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
-        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&try_id=%@",kMainHttp,member,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
-            [self.navigationController pushViewController:ts animated:NO];
+        [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                
+                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale show];
+                
+                
+            }else {
+                
+                
+                TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
+                [self.navigationController pushViewController:ts animated:NO];
+                [self headerRefreshing];
+                
+                
+            }
             
             
             
@@ -517,14 +581,11 @@
             
         }];
         
-
+        
     }else {
         
         
-        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"登陆" otherButtonTitles:@"取消", nil];
-        
-        al.tag = 1005;
-        
+        UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登陆" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
         [al show];
         
         
