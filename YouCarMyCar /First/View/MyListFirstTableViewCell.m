@@ -260,7 +260,7 @@
         [self addSubview:self.myGoodName];
         self.myGoodName.text = @"商品的名称是啥呢";
         
-            
+        
         
         
         UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(45+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60 , 20)];

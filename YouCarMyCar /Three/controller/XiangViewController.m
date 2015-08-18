@@ -205,7 +205,6 @@
     [self.tableView addSubview:self.sexLabel];
     
     self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 325, 200, 21)];
-    self.addressLabel.text = @"北京房山区小西庄大学生创业园";
     if ( ![[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
         self.addressLabel.text =[[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
     }else{
@@ -232,25 +231,26 @@
     
     NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-//    NSString *sex = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
-//    NSString *truename = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
-//    NSString *photo = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
-//    NSString *touxiang = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
-//    NSString *email = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
+
     
     NSData  *imageData = UIImageJPEGRepresentation(self.myXiangImage.image, 1.0);
     self.base64string = [imageData base64Encoding];
     
     self.codeString = @"";
-    NSString *sexString = [NSString string];
-    if ([self.sexLabel.text isEqualToString:@""]) {
-        sexString = @"";
-    }else if ([self.sexLabel.text isEqualToString:@"男"]){
-        sexString = @"1";
-    }else if ([self.sexLabel.text isEqualToString:@"女"]) {
-        sexString = @"2";
+
+    if ([_emailLabel.text isEqualToString:@"请绑定邮箱"]) {
+        _emailLabel.text = @"";
     }
-    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":sexString,@"member_truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
+    
+    
+    NSLog(@"%@",self.nameTextField.text);
+    NSLog(@"%@",self.codeString);
+    NSLog(@"%@",self.sexLabel.text);
+    NSLog(@"%@",self.photoLable.text);
+    NSLog(@"%@",self.emailLabel.text);
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sexLabel.text,@"truename ":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
+    NSLog(@"%@",parameters);
+    NSLog(@"%@",self.emailLabel.text);
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
@@ -287,7 +287,11 @@
     self.photoLable.text = moblePhone;
     self.codeString = coder;
 }
-
+-(void)senderAddress:(NSString *)addressStr
+{
+    self.addressLabel.text = addressStr;
+    NSLog(@"%@",addressStr);
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return 3;
@@ -336,6 +340,7 @@
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 4) {
         clichVC.i = 11;
+        clichVC.delegate = self;
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 5) {
         clichVC.i = 12;

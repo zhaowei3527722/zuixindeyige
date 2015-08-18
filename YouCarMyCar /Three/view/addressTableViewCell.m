@@ -24,6 +24,13 @@
     }
     
 }
+- (IBAction)moren:(id)sender {
+    
+    NSLog(@"设为默认地址");
+    if ([self.delegate respondsToSelector:@selector(buttonAction1:)]) {
+        [self.delegate changeButton:sender];
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

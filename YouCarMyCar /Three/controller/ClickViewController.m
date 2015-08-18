@@ -17,7 +17,7 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "AFNetworking.h"
 #import "CommUtils.h"
-@interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,SureViewControllerDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
+@interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)ZWTextView *textView;
 @property (nonatomic,strong)UIButton *button;
@@ -117,6 +117,29 @@
                                  nibWithNibName:@"DiJiQiTableViewCell"
                                  bundle:nil]
                                  forCellReuseIdentifier:@"dijiqiCell"];
+    
+    
+    
+    //加载
+    
+    NSString *memberID = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=userrecord&member_id=%@&key=%@&curpage=1&eachNum=100",kMainHttp,memberID,key];
+    NSLog(@"%@",url);
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    
+    
+    
+    
+    
 }
 
 //********************************性别改变*********************************
@@ -217,13 +240,16 @@
         addressTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"addressCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.nameLable.text = addressMd.true_name;
-        NSLog(@"%@",addressMd.true_name);
         cell.phoneLable.text = addressMd.mob_phone;
         cell.addressLable.text = addressMd.address;
         
+        if ([addressMd.is_default isEqualToString:@"1"]) {
+            [cell.morenBT setImage:[UIImage imageNamed:@"默认.png"] forState:(UIControlStateNormal)];
+        }
+        
         self.bianjiBT = cell.bianjiBT;
         self.shanchuBT = cell.shanchuBT;
-        self.bianjiBT.tag = indexPath.row;
+        self.morenBT = cell.morenBT;
         cell.delegate = self;
         cell.backgroundColor = MainBackGround;
         return cell;
@@ -278,7 +304,7 @@
 
     SureViewController *sure = [[SureViewController alloc]init];
     sure.j = 111;
-    sure.addressMd = _addressArray[self.myIndexPath.row];
+    sure.addressMd = _addressArray[_addressArray.count - 1 - self.myIndexPath.row];
     [self.navigationController pushViewController:sure animated:YES];
     
     
@@ -289,14 +315,34 @@
     
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定删除该地址?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
+    alert.tag = 110;
     [alert show];
     
    
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
     
-    }
+}
+-(void)changeButton:(UIButton *)button
+{
+    
+   
+//    [self layoutAddress];
+//    
+//     [button setImage:[UIImage imageNamed:@"默认.png"] forState:(UIControlStateNormal)];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定将改地址设置成默认地址?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 111;
+    
+    [alert show];
+
+    
+    UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
+    self.myIndexPath = [self.tableView indexPathForCell:cell];
+
+}
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     
@@ -313,7 +359,9 @@
     
     
         
-  
+    if (alertView.tag == 110) {
+        
+    
         
         if (buttonIndex == 0) {
             
@@ -325,15 +373,6 @@
             NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
             NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
             
-        
-            
-            NSLog(@"%ld",_addressArray.count);
-            
-//            if (self.addressArray.count == 1) {
-//                 self.addressModel = _addressArray[_addressArray.count  - _myIndexPath.row];
-//            }else {
-//                self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
-//            }
             self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
             
             NSLog(@"%lu  %ld",(unsigned long)self.addressArray.count,(long)self.myIndexPath.row);
@@ -355,7 +394,10 @@
                
            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                
-               [self layoutAddress];
+//               [self layoutAddress];
+               
+               [self.addressArray removeObjectAtIndex:_addressArray.count  - 1 - _myIndexPath.row];
+               [self.tableView deleteRowsAtIndexPaths:@[_myIndexPath] withRowAnimation:UITableViewRowAnimationFade];
                
                
                
@@ -368,7 +410,64 @@
         }
 
     
-    
+    }else if (alertView.tag == 111) {
+        
+        
+        if (buttonIndex == 0) {
+            
+        }else if (buttonIndex == 1) {
+            
+            
+            
+            //设置默认地址
+            NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+            NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+            
+            self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
+            
+            NSLog(@"%lu  %ld",(unsigned long)self.addressArray.count,(long)self.myIndexPath.row);
+            
+            NSLog(@"%lu",self.addressArray.count - 1 - self.myIndexPath.row);
+            
+            
+            NSString *addressID = _addressModel.address_id;
+            
+            NSDictionary *params = @{@"act":@"member_address",@"op":@"default_address",@"member_id":member_id,@"key":key,@"address_id":addressID};
+            
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            
+            [manager POST:kMainHttp parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                
+            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                              [self layoutAddress];
+                
+                    
+                    if ([self.delegate respondsToSelector:@selector(senderAddress:)]) {
+                        [self.delegate senderAddress:_addressModel.address];
+                        
+                    }
+                
+                [[NSUserDefaults standardUserDefaults] setValue:_addressModel.address forKey:@"address"];
+                
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+            
+            
+            
+        }
+
+        
+        
+        
+        
+        
+        
+        
+    }
     
 
 }
@@ -426,6 +525,7 @@
             
             [self.tableView reloadData];//刷新;
             
+            
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
          NSLog(@"%@",error);
@@ -439,24 +539,13 @@
 {
     SureViewController *sure = [[SureViewController alloc]init];
     sure.j = 11;
-    sure.delegate = self;
+
     
     
     
     [self.navigationController pushViewController:sure animated:YES];
 }
-//
-//-(void)addObjectnameFd:(UITextField *)nameFd addressFd:(UITextField *)addressFd phoneFd:(UITextField *)phoneFd youzhengFd:(UITextField *)youzhengFd
-//{
-//    AddressModel *address = [[AddressModel alloc]init];
-//    address.true_name = nameFd.text;
-//    address.mob_phone = phoneFd.text;
-//    [self.addressArray addObject:address];
-//    
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_addressArray.count - 1 inSection:0];
-//    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:(UITableViewRowAnimationMiddle)];
-//
-//}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     if (self.i == 11) {

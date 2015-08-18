@@ -282,6 +282,9 @@
 		95D6B3681B708C0000529907 /* 审核中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95C7BA901B5E4771009604D7 /* 审核中@2x.png */; };
 		95D6B3691B708C0000529907 /* 活动记录@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95C7BA801B5E2E09009604D7 /* 活动记录@2x.png */; };
 		95D6B36A1B708C0000529907 /* 活动介绍@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95C7BA811B5E2E09009604D7 /* 活动介绍@2x.png */; };
+		95D747971B8300470092F504 /* 选择@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95D747951B8300470092F504 /* 选择@2x.png */; };
+		95D747981B8300470092F504 /* 默认@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95D747961B8300470092F504 /* 默认@2x.png */; };
+		95D747CD1B833EC00092F504 /* Huodongjilu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D747CC1B833EC00092F504 /* Huodongjilu.m */; };
 		95DAF6DE1B4F60ED00B891DC /* 形状 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DAF6DD1B4F60ED00B891DC /* 形状 1.png */; };
 		95DD9F981B75A41500B750B1 /* TuiChuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DD9F961B75A41500B750B1 /* TuiChuTableViewCell.m */; };
 		95DD9F991B75A41500B750B1 /* TuiChuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95DD9F971B75A41500B750B1 /* TuiChuTableViewCell.xib */; };
@@ -722,6 +725,10 @@
 		95D661B61B44D44500E9992E /* TouxiangTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouxiangTableViewCell.m; sourceTree = "<group>"; };
 		95D661B71B44D44500E9992E /* TouxiangTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TouxiangTableViewCell.xib; sourceTree = "<group>"; };
 		95D661C01B44D46600E9992E /* ThreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
+		95D747951B8300470092F504 /* 选择@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选择@2x.png"; sourceTree = "<group>"; };
+		95D747961B8300470092F504 /* 默认@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "默认@2x.png"; sourceTree = "<group>"; };
+		95D747CB1B833EC00092F504 /* Huodongjilu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Huodongjilu.h; sourceTree = "<group>"; };
+		95D747CC1B833EC00092F504 /* Huodongjilu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Huodongjilu.m; sourceTree = "<group>"; };
 		95D8BE261B5DDD1E001C57EF /* 登录注册按钮背景@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "登录注册按钮背景@2x.png"; sourceTree = "<group>"; };
 		95DAF6DD1B4F60ED00B891DC /* 形状 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状 1.png"; sourceTree = "<group>"; };
 		95DD9F951B75A41500B750B1 /* TuiChuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TuiChuTableViewCell.h; sourceTree = "<group>"; };
@@ -960,6 +967,8 @@
 				0AB1FF1C1B831CFE00288858 /* 免费试用dianji@3x.png */,
 				0AB1FF1A1B82D74B00288858 /* jingqgz@2x.png */,
 				0AB1FF181B82D74100288858 /* jingqgz@3x.png */,
+				95D747951B8300470092F504 /* 选择@2x.png */,
+				95D747961B8300470092F504 /* 默认@2x.png */,
 				0AF994C11B7F487A0056A339 /* 形状-7@2x.png */,
 				0AF994BF1B7F48710056A339 /* 形状-6@2x.png */,
 				0AF994BB1B7F48620056A339 /* 产品详情@2x.png */,
@@ -1480,6 +1489,8 @@
 				959312A61B5C9DBD0006142F /* ZWTextView.m */,
 				9526D4DB1B7CCDDB0097D68E /* AddressModel.h */,
 				9526D4DC1B7CCDDB0097D68E /* AddressModel.m */,
+				95D747CB1B833EC00092F504 /* Huodongjilu.h */,
+				95D747CC1B833EC00092F504 /* Huodongjilu.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1704,6 +1715,7 @@
 				95D203541B57931700BCD63F /* 确定按钮.png in Resources */,
 				0A4A04301B5F6F35005C0E3B /* 获取验证码@2x.png in Resources */,
 				0ACAF1BF1B411E300029ACC9 /* LaunchScreen.xib in Resources */,
+				95D747971B8300470092F504 /* 选择@2x.png in Resources */,
 				959281E91B6A2BDE00F122B8 /* 综合评分@2x.png in Resources */,
 				95DD9FA41B75D37200B750B1 /* 试用流程@2x.png in Resources */,
 				0AE06C3C1B68CD7600EE6B22 /* 查看中奖名单@2x.png in Resources */,
@@ -1784,6 +1796,7 @@
 				0A295D581B7B2FBC00F41C92 /* shape-203@2x(1).png in Resources */,
 				0A6DB7031B74AFF80007C7C2 /* 引导2.jpg in Resources */,
 				959281E41B6A2BDE00F122B8 /* 未阅读@2x.png in Resources */,
+				95D747981B8300470092F504 /* 默认@2x.png in Resources */,
 				95BF4B101B6F12CE00F1CACF /* 谢谢@2x.png in Resources */,
 				0AE3C75D1B5CDDA6007153A3 /* qq@2x.png in Resources */,
 				0A0E46161B62276700A52286 /* 33.jpg in Resources */,
@@ -1857,6 +1870,7 @@
 				95A5324D1B53B744002D2D0F /* DataSexTableViewCell.m in Sources */,
 				0ADC1A981B72091900368248 /* UIImageView+AFNetworking.m in Sources */,
 				0ADC1A951B72091900368248 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				95D747CD1B833EC00092F504 /* Huodongjilu.m in Sources */,
 				0ADC1A941B72091900368248 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				0A7B82C81B7CC9C500D3EEDE /* AFHTTPRequestOperation.m in Sources */,
 				0A9714101B80DA1A00AB6C0D /* MJRefreshStateHeader.m in Sources */,
