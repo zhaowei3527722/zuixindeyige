@@ -11,7 +11,8 @@
 @protocol addressTableViewCellDelegate <NSObject>
 
 -(void)buttonAction1:(UIButton *)button;
--(void)buttonAction2:(UIButton *)button;
+-(void)buttonAction2:(UIButton *)buttonzz;
+-(void)changeButton:(UIButton *)button;
 
 @end
 
@@ -24,6 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *bianjiBT;
 @property (weak, nonatomic) IBOutlet UIButton *shanchuBT;
+@property (weak, nonatomic) IBOutlet UIButton *morenBT;
 
 @property (nonatomic,assign)id<addressTableViewCellDelegate>delegate;
 @end

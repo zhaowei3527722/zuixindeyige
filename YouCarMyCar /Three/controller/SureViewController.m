@@ -184,6 +184,7 @@
                     _addressField.placeholder = @"请输入您的详细地址";
                 }else if (self.j == 111) {
                     //这里是传过来的地址
+                    _addressField.text = self.addressMd.address;
                 }
                 self.addressFd = _addressField;
             }else if (indexPath.row == 3) {
@@ -198,6 +199,7 @@
                     _addressField.placeholder = @"请输入您的邮编";
                 }else if (self.j == 111) {
                     //这里放的是邮政编码
+                    _addressField.text = self.addressMd.zip_code;
                 }
                 
                 self.youzhengFd = _addressField;
@@ -249,7 +251,10 @@
 
 -(void)sureAddress:(UITextField *)tag
 {
-    NSLog(@"确定添加新地址");
+    
+    if (self.j == 11) {
+        
+    
     
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
@@ -285,12 +290,45 @@
     }];
     
 
-    if ([_delegate respondsToSelector:@selector(addObjectnameFd:addressFd:phoneFd:youzhengFd:)]) {
-        [_delegate addObjectnameFd:_nameFd addressFd:_addressFd phoneFd:_phoneFd youzhengFd:_youzhengFd];
-    }
     
 
-
+    }else if (self.j == 111) {
+        NSLog(@"编辑地址");
+        
+        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"member_id"];
+        NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+        
+        NSDictionary *dic = @{@"act":@"member_address",@"op":@"address_edit",@"member_id":userID,@"key":key,@"address_id":self.addressMd.address_id,@"true_name":_nameFd.text,@"address":_addressFd.text,@"mob_phone":_phoneFd.text,@"zip_code":_youzhengFd.text};
+        
+        AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
+        [manger POST:kMainHttp parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                aller.tag = 100;
+                
+                
+                [aller show];
+                
+                
+            }else {
+                
+                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"修改成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                aller.tag = 102;
+                
+                
+                [aller show];
+            }
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+        
+        
+    }
     
 
     
@@ -303,7 +341,10 @@
     if (buttonIndex == 0) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-  }
+    }if (alertView.tag == 102 ) {
+        [self.navigationController popViewControllerAnimated:YES];
+
+    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
