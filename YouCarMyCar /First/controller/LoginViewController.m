@@ -22,6 +22,13 @@
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // 加载圈圈 (登录成功后移除 登录失败也移除)
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.HUD];
+    
+    self.HUD.delegate = self;
+    self.HUD.labelText = @"正在登录";
+
     self.indextX = self.view.frame.size.width / 320;
     self.indextY = self.view.frame.size.height / 480;
     self.indext = NO;
@@ -426,12 +433,6 @@
 {
     if (self.userNameMy.mytextField.text !=nil&&![self.userNameMy.mytextField.text isEqualToString:@""]&&self.userPassWordMy.mytextField.text !=nil&&![self.userPassWordMy.mytextField.text isEqualToString:@""]) {
         
-        // 加载圈圈 (登录成功后移除 登录失败也移除)
-        self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.HUD];
-        
-        self.HUD.delegate = self;
-        self.HUD.labelText = @"正在登录";
         
         [self.HUD show:YES];
         
@@ -632,6 +633,9 @@
 
 -(void)login:(UITapGestureRecognizer *)sent
 {
+    [self.HUD show:YES];
+
+    
     UIImageView *image = (UIImageView *)sent.view;
     if (image.tag == 101) {
         NSLog(@"QQ登录");
@@ -641,18 +645,14 @@
         [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
             if (result) {
                 NSLog(@"授权登陆成功，已获取用户信息");
-                NSString *uid = [userInfo uid];
-                NSString *nickname = [userInfo nickname];
-                NSString *profileImage = [userInfo profileImage];
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:[NSString stringWithFormat:@"授权登陆成功,用户ID:%@,昵称:%@,头像:%@",uid,nickname,profileImage] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-                NSLog(@"source:%@",[userInfo sourceData]);
-                NSLog(@"uid:%@",[userInfo uid]);
-                
+                self.uid= [userInfo uid];
+                self.nickname = [userInfo nickname];
+                self.imageurl = [userInfo profileImage];
+               
+                [self login];//掉 登录的方法
                 
             }else{
-                NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"授权失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
             }
         }];
@@ -663,19 +663,19 @@
         NSLog(@"微信登录");
         [ShareSDK getUserInfoWithType:ShareTypeWeixiSession authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
             if (result) {
-                NSLog(@"授权登陆成功，已获取用户信息");
-                NSString *uid = [userInfo uid];
-                NSString *nickname = [userInfo nickname];
-                NSString *profileImage = [userInfo profileImage];
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:[NSString stringWithFormat:@"授权登陆成功,用户ID:%@,昵称:%@,头像:%@",uid,nickname,profileImage] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-                NSLog(@"source:%@",[userInfo sourceData]);
-                NSLog(@"uid:%@",[userInfo uid]);
+               NSLog(@"授权登陆成功，已获取用户信息 %@",userInfo);
+                 self.uid = [userInfo uid];
+                self.nickname = [userInfo nickname];
+                self.imageurl = [userInfo profileImage];
+                
+                
+                [self login];
+                
                 
                 
             }else{
-                NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"授权失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
             }
         }];
@@ -689,18 +689,14 @@
         
         [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
             if (result) {
-                NSLog(@"授权登陆成功，已获取用户信息");
-                NSString *uid = [userInfo uid];
-                NSString *nickname = [userInfo nickname];
-                NSString *profileImage = [userInfo profileImage];
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:[NSString stringWithFormat:@"授权登陆成功,用户ID:%@,昵称:%@,头像:%@",uid,nickname,profileImage] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-                NSLog(@"source:%@",[userInfo sourceData]);
-                NSLog(@"uid:%@",[userInfo uid]);
+                self.uid = [userInfo uid];
+                self.nickname = [userInfo nickname];
+                self.imageurl = [userInfo profileImage];
+                [self login];
+                
             }else{
                 
-                NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"授权失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
             }
         }];
@@ -710,6 +706,114 @@
     
     
 }
+
+
+
+-(void)login
+{
+    /*	请求参数：
+     •	act = login
+     •	op = other_login
+     •	opened = 第三方唯一识别号
+     •	truename = 昵称
+     •	sex = 性别
+     •	avatar 头像
+     */
+    
+
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url = [NSString stringWithFormat:@"%@?act=login&op=other_login&openid=%@&truename=%@&sex=&avatar=%@",kMainHttp,self.uid,self.nickname,self.imageurl];
+    NSLog(@" name = %@ uid = %@ ima = %@",self.nickname,self.uid,self.imageurl);
+    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSLog(@" = = = = %@",url);
+    
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"    dic == === %@",responseObject);
+        NSLog(@"error = %@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+        
+        if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 100;
+            
+            
+            [aller show];
+            
+            
+        }
+        
+        if ([[responseObject valueForKey:@"datas"] valueForKey:@"key"]) {
+            //存入用户的信息
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"key"] forKey:@"key"];
+            
+            //                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"sex"] forKey:@"sex"];
+            
+            
+            
+            
+            NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
+            
+            if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
+            }else {
+                [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"address"];
+            }
+            NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"address"]);
+            
+            
+            [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"address"];
+            NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"address"]);
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
+            
+            [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+            
+            [[NSUserDefaults standardUserDefaults]setValue:@"" forKey:@"code"];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_id"] forKey:@"member_id"];
+            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"mobile"]  forKey : @"mobile"];
+
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] != [NSNull null])
+                
+                
+            {
+                
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"]  forKey : @"member_truename"];
+            }
+            
+            
+            //存入 用户的密码 以备不时之需
+            [[NSUserDefaults standardUserDefaults] setObject:self.userPassWordMy.mytextField.text forKey:@"userPassWord"];
+            
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您已成功登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 101;
+            
+            [aller show];
+            
+            
+            
+            
+        }
+        
+        
+
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    [self.HUD removeFromSuperview];
+
+    
+}
+
 //返回走的方法
 -(void)pop
 {

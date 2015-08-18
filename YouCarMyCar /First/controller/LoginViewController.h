@@ -27,6 +27,9 @@
 @property (nonatomic ,strong)UIButton *myZibutton;
 @property (nonatomic )BOOL indext;
 @property (nonatomic ,strong)MBProgressHUD *HUD;//加载
+@property (nonatomic,strong)NSString *nickname;
+@property (nonatomic,strong)NSString *uid;
+@property (nonatomic,strong)NSString *imageurl;
 
 
 

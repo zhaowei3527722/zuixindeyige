@@ -10,4 +10,7 @@
 
 @interface ClickTViewController : UIViewController
 @property (nonatomic)int k;
+@property (nonatomic,strong)NSString *coder;
+@property (nonatomic,strong)NSString *phonge;
+
 @end
