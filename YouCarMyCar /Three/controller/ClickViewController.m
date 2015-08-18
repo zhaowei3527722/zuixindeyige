@@ -17,6 +17,8 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "AFNetworking.h"
 #import "CommUtils.h"
+#import "Huodongjilu.h"
+#import "UIImageView+WebCache.h"
 @interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)ZWTextView *textView;
@@ -29,6 +31,8 @@
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)NSMutableArray *addressArray;
 @property (nonatomic,strong)AddressModel *addressModel;
+@property (nonatomic,strong)NSMutableArray *huodongArray;
+//@property (nonatomic,strong)Huodongjilu *huodongModel;
 @end
 
 @implementation ClickViewController
@@ -105,7 +109,8 @@
     self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 
@@ -118,7 +123,7 @@
                                  bundle:nil]
                                  forCellReuseIdentifier:@"dijiqiCell"];
     
-    
+    self.huodongArray = [NSMutableArray array];
     
     //加载
     
@@ -130,8 +135,27 @@
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        
+        if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"])) {
+            NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+            for (NSDictionary *dic in array) {
+                Huodongjilu *a = [[Huodongjilu alloc]init];
+                [a setValuesForKeysWithDictionary:dic];
 
+                [_huodongArray addObject:a];
+                NSLog(@"%@",_huodongArray);
+                
+                
+            }
+            NSLog(@"%ld",_huodongArray.count);
+            
+            [self.tableView reloadData];//刷新;
+            
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@",error);
         
     }];
     
@@ -166,7 +190,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    if (self.i == 11 || self.i == 13) {
+    if (self.i == 11 || self.i == 13 || self.i == 0) {
         return 1;
     }else {
         return 3;
@@ -180,7 +204,9 @@
         return _addressArray.count;
     }else if (self.i == 13){
         return 4;
-    }else{
+    }else if (self.i == 0){
+        return _huodongArray.count;
+    }else {
         return 3;
     }
     
@@ -284,13 +310,36 @@
         
         ActivityTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"huodongCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
-        [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
-        cell.baoGao.tag = indexPath.row ;
+        Huodongjilu *huodongModel = self.huodongArray[self.huodongArray.count - 1 - indexPath.row];
+        cell.backgroundColor = MainBackGround;
+        
         cell.thingImage.image = [UIImage imageNamed:@"2.png"];
         cell.selectionStyle = UITableViewCellAccessoryNone;
-            NSLog(@"%ld",(long)indexPath);
-        cell.superview.superview.backgroundColor = COLOR(251, 246, 240, 1);
+        cell.superview.superview.backgroundColor = MainBackGround;
+        
+        cell.numberLable.text = huodongModel.number;
+        cell.nameLable.text = huodongModel.title;
+        cell.timeLable.text = huodongModel.open_prize;
+        
+        if ([huodongModel.status isEqualToString:@"0"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+        }else if ([huodongModel.status isEqualToString:@"1"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+        }else if ([huodongModel.status isEqualToString:@"1"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+        }else if ([huodongModel.status isEqualToString:@"1"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+        }
+        
+        NSURL *url = [NSURL URLWithString:huodongModel.img];
+        
+        [cell.thingImage sd_setImageWithURL:url];
+        
+        
         
 
         return cell;
