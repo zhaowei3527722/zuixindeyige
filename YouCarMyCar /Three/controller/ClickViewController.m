@@ -28,6 +28,7 @@
 @property (nonatomic,strong)UIImageView *choiceImage;
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)NSMutableArray *addressArray;
+@property (nonatomic,strong)AddressModel *addressModel;
 @end
 
 @implementation ClickViewController
@@ -58,7 +59,7 @@
         
     }else if (self.i == 11) {    //布局地址编辑
         
-        [self layoutAddress];
+       // [self layoutAddress];
         
     }else if (self.i == 12) {    //布局修改密码
         
@@ -212,8 +213,7 @@
     
     if (self.i == 11) {
 
-        AddressModel *addressMd = [[AddressModel alloc]init];
-        addressMd = _addressArray[_addressArray.count - 1 - indexPath.row];
+        AddressModel *addressMd = _addressArray[_addressArray.count - 1 - indexPath.row];
         addressTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"addressCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.nameLable.text = addressMd.true_name;
@@ -297,6 +297,16 @@
     self.myIndexPath = [self.tableView indexPathForCell:cell];
     
     }
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+    if (self.i == 11) {
+        [self layoutAddress];
+
+    }
+    
+    
+}
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -309,32 +319,49 @@
             
         }else if (buttonIndex == 1) {
             
-            [self.addressArray removeObjectAtIndex:self.myIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[self.myIndexPath] withRowAnimation:(UITableViewRowAnimationFade)];
             
             
             //删除地址
             NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
             NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-            AddressModel *addressModel = _addressArray[_myIndexPath.row];
-            NSString *addressID = addressModel.address_id;
+            
+        
+            
+            NSLog(@"%ld",_addressArray.count);
+            
+//            if (self.addressArray.count == 1) {
+//                 self.addressModel = _addressArray[_addressArray.count  - _myIndexPath.row];
+//            }else {
+//                self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
+//            }
+            self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
+            
+            NSLog(@"%lu  %ld",(unsigned long)self.addressArray.count,(long)self.myIndexPath.row);
+
+            NSLog(@"%lu",self.addressArray.count - 1 - self.myIndexPath.row);
+            
+            
+            NSString *addressID = _addressModel.address_id;
+            
+        
+            
+            NSLog(@"%@",addressID);
             
             NSDictionary *params = @{@"act":@"member_address",@"op":@"address_del",@"member_id":member_id,@"key":key,@"address_id":addressID};
             
             AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
             
-            [manager POST:kMainHttp parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"成功");
-                
-                NSLog(@"%@",[responseObject valueForKey:@"datas"]);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
-            }];
-            
-            
-            
-            
-            
+           [manager POST:kMainHttp parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+               
+           } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               
+               [self layoutAddress];
+               
+               
+               
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               
+           }];
             
             
             
@@ -356,8 +383,9 @@
 -(void)layoutAddress
 {
     self.title = @"地址管理";
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.myArray = [NSMutableArray array];
-    self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kMainWidth, kMainHeight - 124)];
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     
@@ -394,6 +422,7 @@
                 [self.addressArray addObject:addressModel];
 
             }
+            NSLog(@"%ld",_addressArray.count);
             
             [self.tableView reloadData];//刷新;
             
@@ -416,18 +445,18 @@
     
     [self.navigationController pushViewController:sure animated:YES];
 }
-
--(void)addObjectnameFd:(UITextField *)nameFd addressFd:(UITextField *)addressFd phoneFd:(UITextField *)phoneFd youzhengFd:(UITextField *)youzhengFd
-{
-    AddressModel *address = [[AddressModel alloc]init];
+//
+//-(void)addObjectnameFd:(UITextField *)nameFd addressFd:(UITextField *)addressFd phoneFd:(UITextField *)phoneFd youzhengFd:(UITextField *)youzhengFd
+//{
+//    AddressModel *address = [[AddressModel alloc]init];
 //    address.true_name = nameFd.text;
-//    address.telephone = phoneFd.text;
-    [self.myArray addObject:address];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.myArray.count - 1 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:(UITableViewRowAnimationMiddle)];
-
-}
+//    address.mob_phone = phoneFd.text;
+//    [self.addressArray addObject:address];
+//    
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_addressArray.count - 1 inSection:0];
+//    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:(UITableViewRowAnimationMiddle)];
+//
+//}
 -(void)viewDidAppear:(BOOL)animated
 {
     if (self.i == 11) {
