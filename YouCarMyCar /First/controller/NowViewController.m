@@ -174,7 +174,7 @@
         
     }];
     
-    [self.mytable.header endRefreshing];
+    [self.mytable.footer endRefreshing];
     
     
     
