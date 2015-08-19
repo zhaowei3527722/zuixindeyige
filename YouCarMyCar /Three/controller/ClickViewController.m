@@ -327,11 +327,11 @@
         }else if ([huodongModel.status isEqualToString:@"1"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
             [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
-        }else if ([huodongModel.status isEqualToString:@"1"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+        }else if ([huodongModel.status isEqualToString:@"2"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"再接再厉.png"] forState:(UIControlStateNormal)];
             [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
-        }else if ([huodongModel.status isEqualToString:@"1"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+        }else if ([huodongModel.status isEqualToString:@"3"]) {
+            [cell.baoGao setImage:[UIImage imageNamed:@"恭喜中奖.png"] forState:(UIControlStateNormal)];
             [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
         }
         
