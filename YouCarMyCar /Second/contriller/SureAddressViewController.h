@@ -17,5 +17,6 @@
 @property (nonatomic ,strong)MyTextFiedNoimage *myPhoneNumberMy;
 @property (nonatomic ,strong)MyTextFiedNoimage *myEmailMY;
 @property (nonatomic ,strong)UIButton *mySureButton;
+@property (nonatomic ,strong)NSString *myID;
 
 @end

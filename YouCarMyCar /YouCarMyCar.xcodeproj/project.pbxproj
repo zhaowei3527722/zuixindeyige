@@ -224,6 +224,8 @@
 		956CE17C1B6864A200545644 /* 背景框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE1791B6864A200545644 /* 背景框@2x.png */; };
 		956CE17D1B6864A200545644 /* +86框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17A1B6864A200545644 /* +86框@2x.png */; };
 		956CE17E1B6864A200545644 /* 获取验证码框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17B1B6864A200545644 /* 获取验证码框@2x.png */; };
+		958144921B84505D00702823 /* 试用协议@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 958144911B84505D00702823 /* 试用协议@2x.png */; };
+		958144961B848E6D00702823 /* 默认头像.png in Resources */ = {isa = PBXBuildFile; fileRef = 958144951B848E6D00702823 /* 默认头像.png */; };
 		958178311B4BB1BD001AA514 /* ClickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 958178301B4BB1BD001AA514 /* ClickViewController.m */; };
 		959281AC1B6A035200F122B8 /* 用户反馈@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 959281AB1B6A035200F122B8 /* 用户反馈@2x.png */; };
 		959281B01B6A1FD400F122B8 /* ShiYongTitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959281AE1B6A1FD400F122B8 /* ShiYongTitleTableViewCell.m */; };
@@ -294,7 +296,6 @@
 		95DD9FA31B75D37200B750B1 /* 试用报告小@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DD9F9D1B75D37200B750B1 /* 试用报告小@2x.png */; };
 		95DD9FA41B75D37200B750B1 /* 试用流程@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DD9F9E1B75D37200B750B1 /* 试用流程@2x.png */; };
 		95DD9FA51B75D37200B750B1 /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DD9F9F1B75D37200B750B1 /* home@2x.png */; };
-		95DD9FA71B75FA4800B750B1 /* 用户协议@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DD9FA61B75FA4800B750B1 /* 用户协议@2x.png */; };
 		95DF43741B65CF8D00A25CFD /* 地址详情@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DF43731B65CF8D00A25CFD /* 地址详情@2x.png */; };
 		95DF43761B65D5A100A25CFD /* 编辑@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DF43751B65D5A100A25CFD /* 编辑@2x.png */; };
 		95DF437A1B65DA2400A25CFD /* 删除@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DF43791B65DA2400A25CFD /* 删除@2x.png */; };
@@ -646,6 +647,8 @@
 		956CE1791B6864A200545644 /* 背景框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "背景框@2x.png"; sourceTree = "<group>"; };
 		956CE17A1B6864A200545644 /* +86框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+86框@2x.png"; sourceTree = "<group>"; };
 		956CE17B1B6864A200545644 /* 获取验证码框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "获取验证码框@2x.png"; sourceTree = "<group>"; };
+		958144911B84505D00702823 /* 试用协议@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "试用协议@2x.png"; sourceTree = "<group>"; };
+		958144951B848E6D00702823 /* 默认头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "默认头像.png"; sourceTree = "<group>"; };
 		9581782F1B4BB1BD001AA514 /* ClickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickViewController.h; sourceTree = "<group>"; };
 		958178301B4BB1BD001AA514 /* ClickViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickViewController.m; sourceTree = "<group>"; };
 		959281AB1B6A035200F122B8 /* 用户反馈@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "用户反馈@2x.png"; sourceTree = "<group>"; };
@@ -740,7 +743,6 @@
 		95DD9F9D1B75D37200B750B1 /* 试用报告小@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "试用报告小@2x.png"; sourceTree = "<group>"; };
 		95DD9F9E1B75D37200B750B1 /* 试用流程@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "试用流程@2x.png"; sourceTree = "<group>"; };
 		95DD9F9F1B75D37200B750B1 /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
-		95DD9FA61B75FA4800B750B1 /* 用户协议@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "用户协议@2x.png"; sourceTree = "<group>"; };
 		95DF43731B65CF8D00A25CFD /* 地址详情@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "地址详情@2x.png"; path = "../Three/view/地址详情@2x.png"; sourceTree = "<group>"; };
 		95DF43751B65D5A100A25CFD /* 编辑@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "编辑@2x.png"; sourceTree = "<group>"; };
 		95DF43791B65DA2400A25CFD /* 删除@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "删除@2x.png"; sourceTree = "<group>"; };
@@ -963,6 +965,8 @@
 		0A9E68501B43BDDC00A71D88 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				958144951B848E6D00702823 /* 默认头像.png */,
+				958144911B84505D00702823 /* 试用协议@2x.png */,
 				0AB1FF1E1B831D7400288858 /* 免费试用dianji@2x.png */,
 				0AB1FF1C1B831CFE00288858 /* 免费试用dianji@3x.png */,
 				0AB1FF1A1B82D74B00288858 /* jingqgz@2x.png */,
@@ -983,7 +987,6 @@
 				0A6DB6FF1B74AFF80007C7C2 /* 引导1.jpg */,
 				0A6DB7001B74AFF80007C7C2 /* 引导2.jpg */,
 				0A6DB7051B74B4D40007C7C2 /* 引导3.jpg */,
-				95DD9FA61B75FA4800B750B1 /* 用户协议@2x.png */,
 				95DD9F9A1B75D37200B750B1 /* 测试结果.png */,
 				95DD9F9B1B75D37200B750B1 /* 查看试用结果@2x.png */,
 				95DD9F9C1B75D37200B750B1 /* 例子@2x.png */,
@@ -1749,7 +1752,9 @@
 				95DF43741B65CF8D00A25CFD /* 地址详情@2x.png in Resources */,
 				95DFE7401B6B0FA1000B03EE /* 长@2x.png in Resources */,
 				0AD9C2891B60C73900188AE8 /* 手机找回选中@2x.png in Resources */,
+				958144961B848E6D00702823 /* 默认头像.png in Resources */,
 				95C7BA941B5E4771009604D7 /* 再接再厉@2x.png in Resources */,
+				958144921B84505D00702823 /* 试用协议@2x.png in Resources */,
 				0AE06C301B68C1DC00EE6B22 /* 矩形-16@2x.png in Resources */,
 				0A0E46171B62276700A52286 /* 45.jpg in Resources */,
 				95DD9FA01B75D37200B750B1 /* 测试结果.png in Resources */,
@@ -1766,7 +1771,6 @@
 				0AE102361B4B6DDD00BB23BB /* sns_icon_24@2x.png in Resources */,
 				0AE3C7561B5CDDA6007153A3 /* 粉色背景@2x.png in Resources */,
 				0A2603E61B6770780013262A /* 参与评论未选中@2x(1).png in Resources */,
-				95DD9FA71B75FA4800B750B1 /* 用户协议@2x.png in Resources */,
 				0AB1FF1D1B831CFE00288858 /* 免费试用dianji@3x.png in Resources */,
 				95C7BA831B5E2E09009604D7 /* 版本更新@2x.png in Resources */,
 				0AE3C75F1B5CEA42007153A3 /* 小人头像@2x.png in Resources */,

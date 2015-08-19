@@ -19,11 +19,10 @@
 #import "CommUtils.h"
 #import "Huodongjilu.h"
 #import "UIImageView+WebCache.h"
-
 #import "LiftButtonViewController.h"
-
 #import "SxiangViewController.h"
 
+#import "SxiangViewController.h"
 @interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)ZWTextView *textView;
@@ -100,6 +99,32 @@
 
 -(void)pop
 {
+    
+    
+    
+    
+//    if (indexPath.row == 1) {
+//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
+//        self.sexString = @"男";
+//        [self.tableView addSubview:self.choiceImage];
+//    }else if (indexPath.row == 2) {
+//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 75, 20, 20)];
+//        self.sexString = @"女";
+//        [self.tableView addSubview:self.choiceImage];
+//    }else if (indexPath.row == 3) {
+//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 125, 20, 20)];
+//        self.sexString = @"保密";
+//        [self.tableView addSubview:self.choiceImage];
+
+    
+    if (self.choiceImage.frame.origin.y==25) {
+        _sexString = @"男";
+    }else if (self.choiceImage.frame.origin.y==75) {
+        _sexString = @"女";
+    }else if (self.choiceImage.frame.origin.y==125) {
+        _sexString = @"保密";
+    }
+        
     if ([_delegate respondsToSelector:@selector(sender:)]) {
         [_delegate sender:_sexString];
     }
@@ -184,11 +209,21 @@
     [self.tableView setBackgroundColor:MainBackGround];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-
+    
     self.choiceImage = [[UIImageView alloc]
-                        initWithFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
+                        initWithFrame:CGRectMake(kMainWidth - 40, -125, 20, 20)];
     [self.choiceImage setImage:[UIImage imageNamed:@"性别选择.png"]];
     [self.tableView addSubview:self.choiceImage];
+
+    
+    NSString *sexStr = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
+    if ([sexStr isEqualToString:@"男"]) {
+        self.choiceImage.frame = CGRectMake(kMainWidth - 40, 25, 20, 20);
+    }else if ([sexStr isEqualToString:@"女"]) {
+        self.choiceImage.frame = CGRectMake(kMainWidth - 40, 75, 20, 20);
+    }else if ([sexStr isEqualToString:@"保密"]){
+        self.choiceImage.frame = CGRectMake(kMainWidth - 40, 125, 20, 20);
+    }
     
 }
 
@@ -244,7 +279,7 @@
     ///从活动记录跳转到详情页面
         Huodongjilu *huodongMd = _huodongArray[indexPath.row];
         SxiangViewController *sXiangVC = [[SxiangViewController alloc]init];
-        sXiangVC.myIDStr = huodongMd.try_id;
+//        sXiangVC.myIDStr = huodongMd.try_id;
         
         [self.navigationController pushViewController:sXiangVC animated:YES];
     
@@ -252,17 +287,17 @@
     
     }else if (self.i == 13){
         
+ 
+     }else if (self.i == 13){
+        
         if (indexPath.row == 1) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
-            self.sexString = @"男";
             [self.tableView addSubview:self.choiceImage];
         }else if (indexPath.row == 2) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 75, 20, 20)];
-            self.sexString = @"女";
             [self.tableView addSubview:self.choiceImage];
         }else if (indexPath.row == 3) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 125, 20, 20)];
-            self.sexString = @"保密";
             [self.tableView addSubview:self.choiceImage];
         }
     }
@@ -360,6 +395,7 @@
 -(void)baogao:(UIButton *)button
 {
     NSLog(@"跳转到填写试用报告的页面");
+    
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
     Huodongjilu *huodongMd = _huodongArray[_myIndexPath.row];
@@ -901,41 +937,24 @@
     [scrollView addSubview: tijiaoLabel];
     scrollView.contentSize = CGSizeMake(0, size.height + chakanSize.height + tijiaoSize.height + 190 + kMainHeight / 2 );
     
+    
+    
+    
+    
+    
 }
 //********************************关于我们*********************************
 -(void)layoutOurs
 {
     self.title = @"关于我们";
     self.tabBarController.tabBar.hidden = YES;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+
     
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, kMainWidth, kMainHeight)];
-    scrollView.backgroundColor = MainBackGround;
-    scrollView.contentSize = CGSizeMake(0, kMainHeight*2);
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.delegate = self;
-    [self.view addSubview:scrollView];
-    
-    
-    UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, kMainWidth - 20, 60)];
-    lable.text = @"关于你车我车";
-    lable.font = [UIFont systemFontOfSize:19];
-    lable.textAlignment = NSTextAlignmentCenter;
-    [scrollView addSubview:lable];
-    
-    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(10, 60, kMainWidth-20, kMainHeight )];
-    label1.font = [UIFont systemFontOfSize:12];
-    label1.numberOfLines = 0;
-    label1.lineBreakMode = NSLineBreakByWordWrapping;
-    label1.backgroundColor = MainBackGround;
-    label1.text = @"      北京你车我车电子商务股份有限公司所创建的你车我车是中国最大的汽车用品网购平台，也是中国最专业的汽车用品信息发布平台。这里汇聚了上千家世界一流的汽车用品厂商和5万余家汽车用品线下服务商，并通过便捷的平台操作使B2B、B2C、O2O等多种商业模式的融合成为可能。——你车我车顺势而生！\n      \n      数据显示：2013年，中国汽车保有量达到1.4亿量，由此产生的汽车用品消费高达5025亿人民币。专家预测，2015年中国的汽车用品带来的产值将达到6300亿。然而，这一庞大的数字的背后，却是中国汽车用品行业电商化发展的严重不足。其根本原因在于中国至今没有一家专业的汽车用品垂直电商平台。在社会消费品电商化的大趋势下,你车我车，专业车品领导者！\n     \n      电子商务的迅猛发展为人们的生活带来了极大的便利，很多时候足不出户便可购遍全球。然而，任何事物都有两面，电商同样也是一把双刃剑：在便利、实惠的背后，是商品质量的不确定性。在非专业领域，如服饰、书籍等商品，由于假货并不影响其适用性，为了方便消费者大可以睁一只眼闭一只眼。然而，在汽车用品这种专业商品领域，消费者几乎对假货“零容忍”——无论多小的纰漏，都会对行车安全造成巨大威胁。汽车用品的专业性决定了其不能和一般社会消费品混     为一谈，只能走垂直电商模式。而中国这么大的汽车用品市场，却没有诞生一家具有全国影响力的垂直电商。\n   \n      专业的车品，需要具有专业素质的电商平台来运作。你车我车来了！我们汇聚了1000多家世界一流的汽车用品厂商，同时建立了庞大的线下加盟服务体系，将中国汽车用品流通渠道彻底电商化升级，实现汽车用品销售、安装一体化。你车我车平台上所有汽车用品均来自厂家直销，在保障专业货源的同时，真正做到了正品低价。你车我车，专业车品领导者！你车我车，开启电商3.0时代！\n    \n      电商1.0时代，企业与企业之间通过B2B电商平台（如阿里巴巴）进行交易，开拓了中国的电商蓝海。\n    \n      电商2.0时代，消费者（C）作为独立的电商角色被加入进来，产生了B2C、C2C，甚至C2B的商业模式，让中国电商真正繁荣起来。而在你车我车，无论B2B、B2C，还是新兴的O2O，都只是商业模式的环节之一。\n        \n      你车我车，开启中国电商3.0时代。你车我车，将线下流通渠道彻底电商化升级，开启中国电商3.0时代！";
-    label1.textColor = COLOR(80, 80, 80, 1);
-     CGSize size = [label1 sizeThatFits:CGSizeMake(label1.frame.size.width, MAXFLOAT)];
-     label1.frame =CGRectMake(10, 60, kMainWidth-20, size.height);
-     scrollView.contentSize = CGSizeMake(0, size.height + 150);
-     [scrollView addSubview:label1];
-    
-    
+    UIWebView *webView = [[UIWebView alloc]initWithFrame:self.view.bounds];
+    webView.backgroundColor = MainBackGround;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://m.nichewoche.com/mobile/protocol/about.html"]];
+    [self.view addSubview:webView];
+    [webView loadRequest:request];
  
     
 }

@@ -40,17 +40,13 @@
     
     self.tabBarController.tabBar.hidden = YES;
     
+    
+
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (!self.myIDStr) {
-        self.myIDStr = self.wangqiModel.myID;
-
-    }
-    
-    
     
     
     [self coustom];
@@ -132,7 +128,7 @@
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.myIDStr];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.wangqiModel.myID];
     
     NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -367,6 +363,10 @@
 /// ============================== button ==== 点击事件 ==============
 -(void)sureAddress:(UIButton *)button
 {
+    SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
+    suraddress.myID = self.wangqiModel.myID;
+    
+    [self.navigationController pushViewController:suraddress animated:YES];
     
   NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     

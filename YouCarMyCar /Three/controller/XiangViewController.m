@@ -124,7 +124,8 @@
     self.myimage = [UIImage imageNamed:@"2.png"];
     [self.view addSubview:self.tableView];
 
-    
+    self.sex = @"";
+    self.codeString = @"";
     self.isYes = YES;
     //右item
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -231,12 +232,15 @@
 -(void)wancheng
 {
     
+    
     NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     
     
-    NSData  *imageData = UIImageJPEGRepresentation(self.myXiangImage.image, 1.0);
-    self.base64string = [imageData base64Encoding];
+    if (self.myBackImage.image) {
+        NSData *imageData = UIImageJPEGRepresentation(self.myBackImage.image, 1.0);
+        self.base64string = [imageData base64Encoding];
+    }
     
     self.codeString = @"";
     
@@ -246,6 +250,9 @@
     
     if ([self.sexLabel.text isEqualToString:@"请选择性别"]) {
         self.sexLabel.text = @"";
+    
+    if ([self.photoLable.text isEqualToString:@"请绑定手机号" ]) {
+        self.photoLable.text = @"";
     }
     
     if ((!self.sexLabel.text)||[self.sexLabel.text isEqualToString:@"保密"]) {
@@ -273,9 +280,14 @@
         
     }if (!self.photoLable.text) {
         self.photoLable.text = @"";
-        
     }
     
+    
+    NSLog(@"%@",memeber_id);
+    NSLog(@"%@",key);
+    NSLog(@"%@",self.sex);
+    
+
     NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     NSLog(@"%@",parameters);
     NSLog(@"%@",self.emailLabel.text);
@@ -288,7 +300,7 @@
     //如果报接受类型不一致请替换一致text/html或别的
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
-[manager POST:kMainHttp parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [manager POST:kMainHttp parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     
     
     
@@ -317,6 +329,8 @@
         }else if ([sex isEqualToString:@"2"]){
             [[NSUserDefaults standardUserDefaults]setObject:@"女" forKey:@"sex"];
             
+        }else if([sex isEqualToString:@"0"]) {
+            [[NSUserDefaults standardUserDefaults]setValue:@"保密" forKey:@"sex"];
         }
 
         
@@ -355,6 +369,8 @@
 }];
     
 //    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
     
 }
 -(void)sender:(NSString *)sexString

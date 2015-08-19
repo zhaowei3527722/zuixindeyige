@@ -455,9 +455,8 @@
                 //存入用户的信息
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"key"] forKey:@"key"];
                 
-//                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
-                
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
+                NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]);
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
                 
@@ -466,18 +465,47 @@
                 
                 
 
-               NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
+                //姓名
+                
+                if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"true_name"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"true_name"] forKey:@"true_name"];
+                }
+                
+                
+                
+                //地址
+
                 
                 if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
                     [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
                 }else {
                     [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"address"];
                 }
-                NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"address"]);
+                
+                //电话
+                
+                if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"zip_code"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"zip_code"] forKey:@"zip_code"];
+                }
+                
+                //邮编
+                
+                if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"mob_phone"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"mob_phone"] forKey:@"mob_phone"];
+                }
+                
+                [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"zip_code"] forKey:@"zip_code"];
+                
+                [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"true_name"] forKey:@"true_name"];
                 
                 
-                [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"address"];
-                NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"address"]);
+                
+                
+                
+                
+                
+                
+
 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
         
