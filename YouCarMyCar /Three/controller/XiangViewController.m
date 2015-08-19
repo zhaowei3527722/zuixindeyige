@@ -278,6 +278,7 @@
     NSLog(@"%@",self.sexLabel.text);
     NSLog(@"%@",self.photoLable.text);
     NSLog(@"%@",self.emailLabel.text);
+    
     NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     NSLog(@"%@",parameters);
     NSLog(@"%@",self.emailLabel.text);
