@@ -214,7 +214,7 @@
         
         self.mybutton = [[UIButton alloc]initWithFrame:CGRectMake((kMainWidth - imagewith ) / 2 +imagewith - 75, self.cellheight / 4 * 3 + 10, 150 , self.cellheight / 4 - 10)];
         [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
-        
+        [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji@2x.png"] forState:(UIControlStateSelected)];
         
         [self.mybutton addTarget:self action:@selector(mybutton:) forControlEvents:(UIControlEventTouchUpInside)];
         [self addSubview:self.mybutton];
