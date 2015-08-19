@@ -342,7 +342,7 @@
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
     
-    if (key) {
+    if (!([key isEqualToString:@""])) {
         AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
