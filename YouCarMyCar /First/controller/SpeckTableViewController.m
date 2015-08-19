@@ -138,12 +138,14 @@
     
     NSLog(@" = == myid = %@",self.myModelnow.myid);
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=100",kMainHttp,self.myModelnow.myid];
+    
+    NSLog(@"%@",url);
+    
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
-        NSLog(@"   %@",responseObject);
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
@@ -530,10 +532,31 @@
         
         NSLog(@"%@ == =youzhi a @",model.member_avatar);
         
-        speckCell.myNameLable.text = model.member_name;//昵称
+        speckCell.myNameLable.text = model.member_truename;//昵称
         speckCell.myNameLable.textColor = [UIColor brownColor];
         speckCell.mySpeckLable .text  = model.content;//评论的内容赋值
         speckCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        
+        NSDateFormatter* formatter = [[NSDateFormatter alloc] init] ;
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"shanghai"];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
+        [formatter setDateFormat:@"yy年MM月dd日 HH:mm"];
+        
+        
+        NSDate* date = [NSDate dateWithTimeIntervalSince1970:[model.add_time integerValue]];
+        
+        
+        NSString* dateString = [formatter stringFromDate:date];
+        
+        
+        NSLog(@"format dateString:%@",dateString);
+        
+        speckCell.mytimeLable.text = dateString;
+        
+        
+        
         return speckCell;
         
         

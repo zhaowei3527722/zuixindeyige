@@ -98,19 +98,25 @@
             [self.myArray addObject:self.myAllDetallModel];
             
             [self.tableView reloadData];
-            NSLog(@"%@",self.myAllDetallModel.big_img);
             
+            NSLog(@"%@",self.myAllDetallModel.big_img);
+            NSString *string = self.myAllDetallModel.info;
+            
+            string = [string substringWithRange:NSMakeRange(0, string.length - 2)];
+            
+            string = [NSString stringWithFormat:@"%@style=\" width:%.fpx\";/>",string,kMainWidth - 10];
+            
+
             
             UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(0, 210, kMainWidth, kMainHeight - 104 - 170)];
             [web setUserInteractionEnabled:YES];//是否支持交互
             //            NSString *str2 = [NSString stringWithFormat:@"<p><img src=\"%@\" style=\" width:%.fpx; \"/></p>", self.myAllDetallModel.info,[UIScreen mainScreen].bounds.size.width-20];
             //    web.backgroundColor = [UIColor whiteColor];
             [web setOpaque:NO];//opaque是不透明的意思
-            [web setScalesPageToFit:YES];//自动缩放以适应屏幕
             NSLog(@"html == %@",self.myAllDetallModel.info);
             web.backgroundColor  = [UIColor whiteColor];
             
-            [web loadHTMLString:self.myAllDetallModel.info baseURL:nil];
+            [web loadHTMLString:string baseURL:nil];
             
             [self.view addSubview:web];
             
