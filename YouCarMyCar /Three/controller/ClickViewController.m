@@ -19,6 +19,9 @@
 #import "CommUtils.h"
 #import "Huodongjilu.h"
 #import "UIImageView+WebCache.h"
+#import "LiftButtonViewController.h"
+#import "SxiangViewController.h"
+
 #import "SxiangViewController.h"
 @interface ClickViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,addressTableViewCellDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
@@ -174,7 +177,6 @@
                 
                 
             }
-            NSLog(@"%ld",_huodongArray.count);
             
             [self.tableView reloadData];//刷新;
             
@@ -274,12 +276,17 @@
 {
     
     if (self.i == 0) {
-        
+    ///从活动记录跳转到详情页面
         Huodongjilu *huodongMd = _huodongArray[indexPath.row];
+        SxiangViewController *sXiangVC = [[SxiangViewController alloc]init];
+//        sXiangVC.myIDStr = huodongMd.try_id;
         
-        SxiangViewController *xiangVC = [[SxiangViewController alloc]init];
-        xiangVC.stringID = huodongMd.myID;
-        [self.navigationController pushViewController:xiangVC animated:YES];
+        [self.navigationController pushViewController:sXiangVC animated:YES];
+    
+    
+    
+    }else if (self.i == 13){
+        
  
      }else if (self.i == 13){
         
@@ -361,14 +368,14 @@
         cell.nameLable.text = huodongModel.title;
         cell.timeLable.text = huodongModel.open_prize;
         
-        if ([huodongModel.status isEqualToString:@"0"]) {
+        if ([huodongModel.status isEqualToString:@"3"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
         }else if ([huodongModel.status isEqualToString:@"1"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
             
         }else if ([huodongModel.status isEqualToString:@"2"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"再接再厉.png"] forState:(UIControlStateNormal)];
-        }else if ([huodongModel.status isEqualToString:@"3"]) {
+        }else if ([huodongModel.status isEqualToString:@"0"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"恭喜中奖.png"] forState:(UIControlStateNormal)];
             [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
         }
@@ -388,13 +395,14 @@
 -(void)baogao:(UIButton *)button
 {
     NSLog(@"跳转到填写试用报告的页面");
+    
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
     Huodongjilu *huodongMd = _huodongArray[_myIndexPath.row];
     
-    SxiangViewController *xiangVC = [[SxiangViewController alloc]init];
-    xiangVC.stringID = huodongMd.myID;
-    [self.navigationController pushViewController:xiangVC animated:YES];
+    LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
+    lift.wangqiModel.myID = huodongMd.myID;
+    [self.navigationController pushViewController:lift animated:YES];
     
 }
 

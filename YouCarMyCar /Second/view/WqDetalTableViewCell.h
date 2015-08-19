@@ -30,6 +30,7 @@
 @property (nonatomic,strong)UILabel *myGoodNumberLable;//商品的数量;
 @property (nonatomic ,strong)UILabel *myPeopleNumberLable;//参与人数
 @property (nonatomic,strong)NSString *lunboUrl;
+@property (nonatomic,strong)UIImageView *mybigImageView;
 
 
 @end

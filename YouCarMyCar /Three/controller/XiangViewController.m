@@ -232,9 +232,10 @@
 -(void)wancheng
 {
     
+    
     NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-
+    
     
     if (self.myBackImage.image) {
         NSData *imageData = UIImageJPEGRepresentation(self.myBackImage.image, 1.0);
@@ -242,11 +243,13 @@
     }
     
     self.codeString = @"";
-
+    
     if ([_emailLabel.text isEqualToString:@"请绑定邮箱"]) {
         _emailLabel.text = @"";
     }
     
+    if ([self.sexLabel.text isEqualToString:@"请选择性别"]) {
+        self.sexLabel.text = @"";
     
     if ([self.photoLable.text isEqualToString:@"请绑定手机号" ]) {
         self.photoLable.text = @"";
@@ -366,6 +369,8 @@
 }];
     
 //    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
     
 }
 -(void)sender:(NSString *)sexString

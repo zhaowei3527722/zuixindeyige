@@ -18,15 +18,22 @@
 #import "UIImageView+WebCache.h"
 #import "GoodDetalWQViewController.h"
 #import "MJRefresh.h"
+#import "AllDeteModel.h"
+
+#import "LoginViewController.h"
 
 @interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate>
 @property (nonatomic)NSInteger indextnumber;//记录获取试用报告列表的 第几页
 @property (nonatomic,strong)NSMutableArray *myArray;
+@property (nonatomic,strong)AllDeteModel *myAllmodel;
+
+@property (nonatomic)NSInteger miao;
 
 
 @end
 
 @implementation SxiangViewController
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -37,8 +44,13 @@
 
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    [self coustom];
+    
     self.indextnumber = 1;
     self.myArray = [[NSMutableArray alloc]init];
 
@@ -107,7 +119,56 @@
 
     
     
-}//获取数据 ==== 刷新
+}
+
+
+-(void)coustom
+{
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.wangqiModel.myID];
+    
+    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.myArray removeAllObjects];
+        
+        if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
+            NSDictionary *dic = [responseObject valueForKey:@"datas"];
+            self.myAllmodel  = [[AllDeteModel alloc]init];
+            [self.myAllmodel setValuesForKeysWithDictionary:dic];
+            [self.myTableView reloadData];
+            NSLog(@"%@",self.myAllmodel.big_img);
+            NSDate* dat1 = [NSDate dateWithTimeIntervalSinceNow:0];
+            self.miao = [dat1 timeIntervalSince1970];
+            
+            
+            [self.myTableView reloadData];
+            
+            
+            NSLog(@"deat a= a= = =%@",self.myAllmodel.date);
+            
+        }
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"请求出问题了");
+        
+    }];
+    
+    
+    [self.myTableView.header endRefreshing];
+    
+
+    
+}
+//获取数据 ==== 刷新
 -(void)headerRefreshing
 {
     
@@ -223,12 +284,13 @@
             
         }
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        wqCell.myGoodsNameLable.text = self.wangqiModel.title;
+        wqCell.myGoodsNameLable.text = self.myAllmodel.title;
         wqCell.myreportNumberLable .text = @"一共是100万份";
-        wqCell.myGoodDescritionLable.text = self.wangqiModel.small_info;
-        wqCell.myGoodNumberLable.text = self.wangqiModel.number;
-        wqCell.myPeopleNumberLable.text = self.wangqiModel.try_people;
-        wqCell.lunboUrl = self.wangqiModel.big_img;
+        wqCell.myGoodDescritionLable.text = self.myAllmodel.small_info;
+        wqCell.myGoodNumberLable.text = self.myAllmodel.number;
+        wqCell.myPeopleNumberLable.text = self.myAllmodel.try_people;
+        [wqCell.mybigImageView  sd_setImageWithURL:[NSURL URLWithString:self.myAllmodel.big_img]];
+        
         
         wqCell.delegate = self;
         
@@ -306,13 +368,64 @@
     
     [self.navigationController pushViewController:suraddress animated:YES];
     
+  NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+    
+    if (!([key isEqualToString:@""])) {
+        
+        SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
+        [self.navigationController pushViewController:suraddress animated:YES];
+
+    }else {
+        
+        
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"马上登录" otherButtonTitles:@"取消", nil];
+        ale.tag = 1005;
+        
+        [ale show];
+
+        
+    }
+    
 }
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    
+    if (alertView.tag == 1005) {
+        if (buttonIndex == 0) {
+            LoginViewController *login = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }else {
+            
+            
+        }
+    }
+}
+
 -(void)liftButton:(UIButton *)button
 {
-    LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
-    lift.wangqiModel = self.wangqiModel;
-    [self.navigationController pushViewController:lift animated:YES];
     
+    NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+    
+    if (!([key isEqualToString:@""])) {
+        
+        
+        LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
+        lift.wangqiModel = self.wangqiModel;
+        [self.navigationController pushViewController:lift animated:YES];
+        
+        
+    }else {
+        
+        
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"马上登录" otherButtonTitles:@"取消", nil];
+        ale.tag = 1005;
+        
+        [ale show];
+        
+        
+    }
+
 }
 -(void)rigthButton:(UIButton *)button
 {

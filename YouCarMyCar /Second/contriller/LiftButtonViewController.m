@@ -184,9 +184,6 @@
         
         NSDictionary *parameters = @{@"act":@"try",@"op":@"subReport",@"member_id":mymember_id,@"key":mykey,@"try_id":self.wangqiModel.myID,@"appearance_info":self.wai.text,@"score":[NSString stringWithFormat:@"%ld",(long)self.numberXing],@"quality_info":self.zhi.text,@"price_info":self.jia.text,@"img":self.base64string};
         
-        
-        
-        
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         //申明请求的数据是json类型
@@ -198,9 +195,6 @@
         
         
         [manager POST:kMainHttp parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            
-            
-            
             
         } success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
@@ -223,8 +217,14 @@
             }
             
             
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          
+            NSLog(@"%@",error);
+            
+            UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"提交失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [ale show];
+
+            
             
         }];
         

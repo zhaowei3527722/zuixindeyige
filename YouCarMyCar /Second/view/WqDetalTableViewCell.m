@@ -28,25 +28,12 @@
     
 }
 
--(void)setLunboUrl:(NSString *)lunboUrl
-{
-    if (_lunboUrl !=lunboUrl) {
-        _lunboUrl = lunboUrl;
-        NSArray *images = @[[NSURL URLWithString:self.lunboUrl]];
-        HEInfiniteScrollView *infiniteScrollView = [[HEInfiniteScrollView alloc] initWithFrame:CGRectMake(0, 0, kMainWidth, 150 * kMainWidth / 320)];
-        [self addSubview:infiniteScrollView];
-        [infiniteScrollView setContentObjs:images Placeholder:nil];
-        infiniteScrollView.pageControlContentMode = kHEPageControlContentModeBottomCenter;
-        infiniteScrollView.switchType = kHESwitchTypeFadeOut;
-        
-
-        
-    }
-    
-}
 -(void)coustom
 {
     
+    self.mybigImageView  = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kMainWidth, 150 * kMainWidth / 320)];
+    
+    [self addSubview:self.mybigImageView];
     
     
     self.myGoodsNameLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 150 * kMainWidth / 320, kMainWidth, 20)];

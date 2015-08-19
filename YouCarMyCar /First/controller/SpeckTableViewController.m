@@ -273,9 +273,9 @@
             self.myView.backgroundColor = COLOR(253, 246, 240, 1);
             
             self.myliftButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myliftButton.frame = CGRectMake(0, 0, 80, 30);
+            self.myliftButton.frame = CGRectMake(0, 0, kMainWidth / 2, 30);
             
-            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@2x.png"] forState:(UIControlStateNormal)];
+            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@3x.png"] forState:(UIControlStateNormal)];
             [self.myliftButton addTarget:self action:@selector(myliftButton:) forControlEvents:(UIControlEventTouchUpInside)];
             
             
@@ -283,9 +283,9 @@
             [self.myView addSubview:self.myliftButton];
             
             self.myRignth = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myRignth.frame = CGRectMake(80, 0, 80, 30);
+            self.myRignth.frame = CGRectMake(kMainWidth / 2, 0, kMainWidth / 2, 30);
             
-            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"参与评论@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"形状-7@2x.png"] forState:(UIControlStateNormal)];
             [self.myView addSubview:self.myRignth];
             
             
@@ -330,9 +330,9 @@
             self.myView.backgroundColor = COLOR(253, 246, 240, 1);
             
             self.myliftButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myliftButton.frame = CGRectMake(0, 0, 100, 40);
+            self.myliftButton.frame = CGRectMake(0, 0, kMainWidth / 2, 40);
             
-            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@2x.png"] forState:(UIControlStateNormal)];
+            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@3x.png"] forState:(UIControlStateNormal)];
             [self.myliftButton addTarget:self action:@selector(myliftButton:) forControlEvents:(UIControlEventTouchUpInside)];
             
             
@@ -340,9 +340,9 @@
             [self.myView addSubview:self.myliftButton];
             
             self.myRignth = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myRignth.frame = CGRectMake(100, 0, 100, 40);
+            self.myRignth.frame = CGRectMake(kMainWidth / 2, 0, kMainWidth / 2, 40);
             
-            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"参与评论@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"形状-7@2x.png"] forState:(UIControlStateNormal)];
             [self.myView addSubview:self.myRignth];
             
             
@@ -395,32 +395,45 @@
     
     
     if (![key isEqualToString:@""]) {
-        NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,self.myTextView.text,member_id,key,self.myModelnow.myid];
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
-        NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!([self.myTextView.text isEqualToString:@""])) {
+            NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,self.myTextView.text,member_id,key,self.myModelnow.myid];
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
             
-            NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+            NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
-                UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
-                [al show];
+                NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
                 
-            }
-            
-            [self.tableView.header beginRefreshing];
-            
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-            NSLog(@"%@",error);
-            
-            
-        }];
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                    UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    
+                    [al show];
+                    
+                }
+                
+                [self.tableView.header beginRefreshing];
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+                NSLog(@"%@",error);
+                
+                
+            }];
+
+        }
         
+        
+        
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论内容不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [ale show];
+
+        
+
 
     }else {
         

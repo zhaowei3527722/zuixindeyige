@@ -16,6 +16,8 @@
 #import "SpeckTableViewCell.h"
 
 #import "MJRefresh.h"
+
+#import "LoginViewController.h"
 @interface SpectGoodRigthViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)UITableView *mytableView;
@@ -249,46 +251,86 @@
 }
 -(void)myspeckButton:(UIButton *)button;
 {
+   
+    
     
     
     NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-    NSLog(@" =%@ ,=  %@ =%@ =key = %@",member_id,self.mymodel.myID,self.mytextvie.text,key);
+    //    NSLog(@" =%@ ,=  %@ =%@ =key = %@",member_id,self.mymodel.myID,self.myTextView.text,key);
     
     
-
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,self.mytextvie.text,member_id,key,self.mymodel.myID];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
-    
-    NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if (![key isEqualToString:@""]) {
         
-        NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
         
-        if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
-            UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        if (!([self.mytextvie.text isEqualToString:@""])) {
+            NSString *url = [NSString stringWithFormat:@"%@?act=try&op=subComment&content=%@&member_id=%@&key=%@&try_id=%@",kMainHttp,self.mytextvie.text,member_id,key,self.mymodel.myID];
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
             
-            [al show];
-    
+            NSString *utf8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+                
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                    UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    
+                    [al show];
+                    
+                }
+                
+                [self.mytableView.header beginRefreshing];
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+                NSLog(@"%@",error);
+                
+                
+            }];
+            
+            
+            
         }
         
-        [self.mytableView.header beginRefreshing];
         
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论内容不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         
-        NSLog(@"%@",error);
+        [ale show];
         
         
-    }];
-    
-    
-    
+        
+        
+    }else {
+        
+        
+        
+        UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未登录" delegate:self cancelButtonTitle:@"马上登录" otherButtonTitles:@"取消", nil];
+        ale.tag = 1005;
+        
+        [ale show];
+    }
     
 
-    
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    
+    if (alertView.tag == 1005) {
+        if (buttonIndex == 0) {
+            LoginViewController *login = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }else {
+            
+            
+        }
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     
