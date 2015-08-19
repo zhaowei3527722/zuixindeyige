@@ -15,6 +15,7 @@
 #import "PrefixHeader.pch"
 #import "XiangViewController.h"
 #import "UIImageView+WebCache.h"
+#import "LoginViewController.h"
 #define kModaD self.view.frame.origin.x
 
 @interface ThreeViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -141,6 +142,15 @@
             clichVC.i = a;
         }
     }
+        if (![[NSUserDefaults standardUserDefaults]valueForKey:@"key"]) {
+            
+        }else{
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
+            aller.tag = 102;
+            
+            
+            [aller show];
+        }
         [self.navigationController pushViewController:clichVC animated:YES];
         
     } else if (indexPath.section ==2 && indexPath.row == 0 ) {
@@ -176,12 +186,27 @@
         
         cell.photoImage.layer.cornerRadius = cell.photoImage.frame.size.height/2;
         cell.photoImage.layer.masksToBounds = YES;
-        NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
+//        NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
+//        [cell.photoImage sd_setImageWithURL:url];
+//        [cell.backimage sd_setImageWithURL:url];
+        if (![[NSUserDefaults standardUserDefaults]valueForKey:@"key"]) {
+            
+        }else{
+            cell.photoImage.image = [UIImage imageNamed:@"默认头像.png"];
+            cell.backimage.image = [UIImage imageNamed:@"默认头像.png"];
+            cell.nameLable.text = @"登陆/注册";
+            
+            UIButton *button = [UIButton buttonWithType:(UIButtonTypeSystem)];
+            [button addTarget: self action:@selector(denglu) forControlEvents:(UIControlEventTouchUpInside)];
+            button.frame = CGRectMake(0, 0, cell.nameLable.frame.size.width, cell.nameLable.frame.size.height);
+            cell.nameLable.userInteractionEnabled = YES;
+            [cell.nameLable addSubview:button];
+        }
         
-        [cell.photoImage sd_setImageWithURL:url];
-        [cell.backimage sd_setImageWithURL:url];
-        cell.nameLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
+        
+
         cell.photoImage.userInteractionEnabled = YES;
+        cell.backimage.userInteractionEnabled = YES;
         cell.superview.superview.backgroundColor = MainBackGround;
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -218,6 +243,12 @@
         }
         return cell;
     }
+}
+
+-(void)denglu
+{
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

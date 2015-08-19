@@ -85,17 +85,40 @@
 {
     
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 //布局协议页面
 -(void)layoutXieYi
 {
-    
-    
-   
+    self.automaticallyAdjustsScrollViewInsets = NO;
 
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 79, kMainWidth - 20, kMainHeight - 94)];
+    imageView.image = [UIImage imageNamed: @"试用协议.png"];
+    [self.view addSubview:imageView];
+    imageView.userInteractionEnabled = YES;
+    UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(5, 1, imageView.frame.size.width-10, imageView.frame.size.height-48)];
+    webView.backgroundColor = [UIColor whiteColor];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://m.nichewoche.com/mobile/protocol/trial.html"]];
+    [imageView addSubview:webView];
+    [webView loadRequest:request];
+    
+    
+    UIButton *button = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    [button setTitle:@"确定" forState:(UIControlStateNormal)];
+    [button addTarget:self action:@selector(sure) forControlEvents:(UIControlEventTouchUpInside)];
+    [button setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
+    button.titleLabel.font = MyButtonFont;
+    [button setFrame:CGRectMake(0, imageView.frame.size.height - 48, imageView.frame.size.width, 48)];
+    [imageView addSubview:button];
+
+
+}
+
+-(void)sure
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)pop2

@@ -33,6 +33,9 @@
     
     self.tabBarController.tabBar.hidden = YES;
     
+    
+
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -293,12 +296,14 @@
 }
 -(void)pop
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /// ============================== button ==== 点击事件 ==============
 -(void)sureAddress:(UIButton *)button
 {
     SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
+    suraddress.myID = self.wangqiModel.myID;
+    
     [self.navigationController pushViewController:suraddress animated:YES];
     
 }

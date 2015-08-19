@@ -56,9 +56,6 @@
 {
     self.title = @"修改密码";
     
-
-    
-    
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(kMainWidth/2 - 45, kMainHeight/5 , 90, 90)];
     imageView.image = [UIImage imageNamed:@"密码设置成功.png"];
     [self.view addSubview:imageView];
@@ -67,9 +64,6 @@
     lable.textAlignment = NSTextAlignmentCenter;
     lable.text = @"密码设置成功!";
     [self.view addSubview:lable];
-    
-    
-    
     
     UIButton *surebutton = [UIButton buttonWithType:(UIButtonTypeSystem)];
     surebutton.frame = CGRectMake(20, kMainHeight/5 +200, kMainWidth - 40, 50);
@@ -101,7 +95,7 @@
         self.title = @"编辑地址";
     }
     
-       self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height )];
+    self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height )];
     self.myTableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.myTableView];
     self.myTableView.backgroundColor = MainBackGround;
@@ -109,7 +103,7 @@
     self.myTableView.dataSource = self;
     self.myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-   self.myTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    self.myTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -121,7 +115,7 @@
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     CGRect keyboardBounds = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    self.myTableView.contentInset = UIEdgeInsetsMake(self.myTableView.contentInset.top, 0, keyboardBounds.size.height, 0);
+    self.myTableView.contentInset = UIEdgeInsetsMake(self.myTableView.contentInset.top, 0, keyboardBounds.size.height,0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -261,6 +255,8 @@
     
     
     NSDictionary *dic = @{@"act":@"member_address",@"op":@"address_add",@"member_id":userID,@"key":key,@"true_name":_nameFd.text,@"address":_addressFd.text,@"mob_phone":_phoneFd.text,@"zip_code":_youzhengFd.text};
+        
+        NSLog(@"%@",dic);
     
     AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];
     [manger POST:kMainHttp parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -271,11 +267,21 @@
             UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             aller.tag = 100;
             
-            
             [aller show];
             
-            
-        }else {
+        }else if ([_nameFd.text isEqualToString:@""]) {
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"姓名不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 121;
+            [aller show];
+        }else if ([_addressFd.text isEqualToString:@""]) {
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"地址不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 122;
+            [aller show];
+        }else if ([_youzhengFd.text isEqualToString:@""]) {
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"邮政编码不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aller.tag = 123;
+            [aller show];
+        }else{
             
             UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"添加成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             aller.tag = 101;
