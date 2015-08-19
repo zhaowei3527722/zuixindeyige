@@ -310,7 +310,7 @@
         
         ActivityTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"huodongCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        Huodongjilu *huodongModel = self.huodongArray[self.huodongArray.count - 1 - indexPath.row];
+        Huodongjilu *huodongModel = self.huodongArray[ indexPath.row];
         cell.backgroundColor = MainBackGround;
         
         cell.thingImage.image = [UIImage imageNamed:@"2.png"];
@@ -323,13 +323,11 @@
         
         if ([huodongModel.status isEqualToString:@"0"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
-            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
         }else if ([huodongModel.status isEqualToString:@"1"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
-            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+            
         }else if ([huodongModel.status isEqualToString:@"2"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"再接再厉.png"] forState:(UIControlStateNormal)];
-            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
         }else if ([huodongModel.status isEqualToString:@"3"]) {
             [cell.baoGao setImage:[UIImage imageNamed:@"恭喜中奖.png"] forState:(UIControlStateNormal)];
             [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
@@ -346,6 +344,15 @@
        }
     }
 
+
+-(void)baogao:(UIButton *)button
+{
+    NSLog(@"跳转到填写试用报告的页面");
+    UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
+    self.myIndexPath = [self.tableView indexPathForCell:cell];
+    Huodongjilu *huodongMd = _huodongArray[_myIndexPath.row];
+    
+}
 
 
 -(void)buttonAction1:(UIButton *)button
@@ -519,11 +526,6 @@
     }
     
 
-}
-
--(void)baogao:(UIButton *)sender
-{
-    NSLog(@"这个是提交报告 %ld",(long)sender.tag);
 }
 
 
