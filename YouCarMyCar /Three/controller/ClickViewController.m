@@ -575,6 +575,12 @@
         
         
         
+    }else if (alertView.tag == 133) {
+        
+        if (buttonIndex == 0) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+        
     }
     
 
@@ -1007,31 +1013,27 @@
     
     NSString *key = [[NSUserDefaults  standardUserDefaults] valueForKey:@"key"];
     
-    NSLog(@"%@",key);
     
-    
-    if (key == nil) {
-        NSLog(@"去登陆");
-    }else if (key != nil) {
+
     //上传数据
     
     NSDictionary *params = @{@"act":@"member_feedback",@"op":@"feedback_add",@"key":key,@"feedbook":self.textView.text};
 
     AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     [mgr POST:kMainHttp parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"成功");
-        
+
+
         NSLog(@"%@",[responseObject valueForKey:@"datas"]);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"失败");
-    }];
         
-         [self.navigationController popToRootViewControllerAnimated:YES];
+           }];
+        
+         
     }
 
    
-}
+
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {

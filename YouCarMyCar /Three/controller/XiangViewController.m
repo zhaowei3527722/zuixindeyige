@@ -20,7 +20,7 @@
 #import "CommUtils.h"
 
 
-@interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ClickViewControllerDelegate>
+@interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ClickViewControllerDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)NSMutableDictionary *dic;
 @property (nonatomic,strong)UIView *myView;
@@ -137,8 +137,12 @@
     self.navigationItem.rightBarButtonItem = right;
     
     self.myBackImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, 155)];
-     NSURL *url = [[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"];
-    [self.myBackImage sd_setImageWithURL:url];
+    
+    
+    NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
+    UIImage *cachedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    self.myBackImage.image = cachedImage;
+    
     [self.tableView addSubview:self.myBackImage];
     
     UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
@@ -147,7 +151,7 @@
     [self.myBackImage addSubview:visualEfView];
     
     self.myXiangImage = [[UIImageView alloc]initWithFrame:CGRectMake(kMainWidth/2 - 40, 20, 80, 80)];
-    [self.myXiangImage sd_setImageWithURL:url];
+    self.myXiangImage.image = cachedImage;
    self.myXiangImage.layer.cornerRadius = self.myXiangImage.frame.size.height/2;
     self.myXiangImage.layer.masksToBounds = YES;
     self.myXiangImage.userInteractionEnabled = YES;
@@ -238,22 +242,13 @@
     
     
     if (self.myBackImage.image) {
-        NSData *imageData = UIImageJPEGRepresentation(self.myBackImage.image, 1.0);
+        NSData *imageData = UIImageJPEGRepresentation(self.myBackImage.image, 0.001);
         self.base64string = [imageData base64Encoding];
     }
     
     self.codeString = @"";
     
-    if ([_emailLabel.text isEqualToString:@"请绑定邮箱"]) {
-        _emailLabel.text = @"";
-    }
-    
-    if ([self.sexLabel.text isEqualToString:@"请选择性别"]) {
-        self.sexLabel.text = @"";
-    
-    if ([self.photoLable.text isEqualToString:@"请绑定手机号" ]) {
-        self.photoLable.text = @"";
-    }
+
     
     if ((!self.sexLabel.text)||[self.sexLabel.text isEqualToString:@"保密"]) {
         self.sex = @"0";
@@ -304,7 +299,7 @@
     
     
     
-} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                } success:^(AFHTTPRequestOperation *operation, id responseObject) {
     
     NSLog(@"%@",responseObject);
     
@@ -314,8 +309,13 @@
     }else {
         
         
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+        
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
         
+        NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]);
+    
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
         
         NSString *sex = [[responseObject valueForKey:@"datas"] valueForKey:@"sex"];
@@ -356,7 +356,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"mobile"]  forKey : @"mobile"];
         
         
-        UIAlertView *ale = [[UIAlertView  alloc]initWithTitle:@"提示" message:@"信息保存成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *ale = [[UIAlertView  alloc]initWithTitle:@"提示" message:@"信息保存成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [ale show];
         
         
@@ -368,11 +368,16 @@
     
 }];
     
-//    [self.navigationController popToRootViewControllerAnimated:YES];
+
     
 }
-    
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
+
 -(void)sender:(NSString *)sexString
 {
     self.sexLabel.textColor = [UIColor blackColor];
@@ -504,13 +509,12 @@
 
         }
         
-             NSLog(@"退出登录");
     }
     
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     
     NSArray *array = [self.dic valueForKey:[NSString stringWithFormat:@"%ld",

@@ -94,7 +94,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 
 {
-    NSLog(@"界面消失");
     
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];

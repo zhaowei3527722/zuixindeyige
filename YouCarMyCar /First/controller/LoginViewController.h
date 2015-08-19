@@ -30,7 +30,7 @@
 @property (nonatomic,strong)NSString *nickname;
 @property (nonatomic,strong)NSString *uid;
 @property (nonatomic,strong)NSString *imageurl;
-
+@property (nonatomic)int k;
 
 
 @end
