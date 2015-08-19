@@ -233,15 +233,19 @@
     
     NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-
+    
     
     NSData  *imageData = UIImageJPEGRepresentation(self.myXiangImage.image, 1.0);
     self.base64string = [imageData base64Encoding];
     
     self.codeString = @"";
-
+    
     if ([_emailLabel.text isEqualToString:@"请绑定邮箱"]) {
         _emailLabel.text = @"";
+    }
+    
+    if ([self.sexLabel.text isEqualToString:@"请选择性别"]) {
+        self.sexLabel.text = @"";
     }
     
     if ((!self.sexLabel.text)||[self.sexLabel.text isEqualToString:@"保密"]) {
@@ -255,7 +259,6 @@
         self.sex = @"2";
         
     }
-    
     
     
     if (!self.base64string) {
@@ -272,12 +275,6 @@
         self.photoLable.text = @"";
         
     }
-    
-    NSLog(@"%@",self.nameTextField.text);
-    NSLog(@"%@",self.codeString);
-    NSLog(@"%@",self.sexLabel.text);
-    NSLog(@"%@",self.photoLable.text);
-    NSLog(@"%@",self.emailLabel.text);
     
     NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
     NSLog(@"%@",parameters);

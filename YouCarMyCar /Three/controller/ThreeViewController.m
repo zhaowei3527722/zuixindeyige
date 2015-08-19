@@ -35,6 +35,12 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.tabBarController.tabBar .hidden = NO;
+    
+}
+
 //布局view
 -(void)layoutView
 {

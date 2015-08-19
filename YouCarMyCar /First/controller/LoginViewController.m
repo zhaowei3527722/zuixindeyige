@@ -719,6 +719,8 @@
      •	sex = 性别
      •	avatar 头像
      */
+    [self.userNameMy.mytextField resignFirstResponder];
+    [self .userPassWordMy.mytextField resignFirstResponder];
     
 
     
@@ -818,7 +820,7 @@
 -(void)pop
 {
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 - (void)didReceiveMemoryWarning {

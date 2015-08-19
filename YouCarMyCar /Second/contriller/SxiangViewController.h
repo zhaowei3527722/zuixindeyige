@@ -11,4 +11,6 @@
 @interface SxiangViewController : UIViewController
 @property (nonatomic,strong)UITableView *myTableView;
 @property (nonatomic,strong)WangQiModel *wangqiModel;
+@property (nonatomic,strong)NSString *myIDStr;
+
 @end

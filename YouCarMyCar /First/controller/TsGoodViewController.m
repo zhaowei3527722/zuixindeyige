@@ -77,7 +77,7 @@
 
 -(void)pop
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popoverPresentationController];
     
 }
 - (void)didReceiveMemoryWarning {

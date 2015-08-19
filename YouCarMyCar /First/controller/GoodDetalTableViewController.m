@@ -47,6 +47,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.myArray = [NSMutableArray array];
+    self.tableView.bounces = NO;
+    
+    
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
@@ -73,6 +76,7 @@
 //    
     
     
+    
 
 }
 -(void)headerRefreshing
@@ -95,6 +99,22 @@
             
             [self.tableView reloadData];
             NSLog(@"%@",self.myAllDetallModel.big_img);
+            
+            
+            UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(0, 210, kMainWidth, kMainHeight - 104 - 170)];
+            [web setUserInteractionEnabled:YES];//是否支持交互
+            //            NSString *str2 = [NSString stringWithFormat:@"<p><img src=\"%@\" style=\" width:%.fpx; \"/></p>", self.myAllDetallModel.info,[UIScreen mainScreen].bounds.size.width-20];
+            //    web.backgroundColor = [UIColor whiteColor];
+            [web setOpaque:NO];//opaque是不透明的意思
+            [web setScalesPageToFit:YES];//自动缩放以适应屏幕
+            NSLog(@"html == %@",self.myAllDetallModel.info);
+            web.backgroundColor  = [UIColor whiteColor];
+            
+            [web loadHTMLString:self.myAllDetallModel.info baseURL:nil];
+            
+            [self.view addSubview:web];
+            
+
             
         }
        
@@ -155,17 +175,17 @@
             self.myView.backgroundColor = COLOR(253, 246, 240, 1);
             
             self.myliftButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myliftButton.frame = CGRectMake(0, 0, 80, 30);
+            self.myliftButton.frame = CGRectMake(0, 0, kMainWidth / 2, 30);
             
-            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x.png"] forState:(UIControlStateNormal)];
             
             [self.myView addSubview:self.myliftButton];
             
             self.myRignth = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myRignth.frame = CGRectMake(80, 0, 80, 30);
+            self.myRignth.frame = CGRectMake(kMainWidth / 2, 0, kMainWidth / 2, 30);
             [self.myRignth addTarget:self action:@selector(myRignth:) forControlEvents:(UIControlEventTouchUpInside)];
             
-            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"参与评论未选中@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"形状-6@2x.png"] forState:(UIControlStateNormal)];
             [self.myView addSubview:self.myRignth];
             
             
@@ -187,17 +207,17 @@
             self.myView.backgroundColor = COLOR(253, 246, 240, 1);
             
             self.myliftButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myliftButton.frame = CGRectMake(0, 0, 100, 40);
+            self.myliftButton.frame = CGRectMake(0, 0, kMainWidth / 2, 40);
             
-            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情@2x.png"] forState:(UIControlStateNormal)];
             
             [self.myView addSubview:self.myliftButton];
             
             self.myRignth = [UIButton buttonWithType:(UIButtonTypeCustom)];
-            self.myRignth.frame = CGRectMake(100, 0, 100, 40);
+            self.myRignth.frame = CGRectMake(kMainWidth / 2, 0, kMainWidth / 2, 40);
             [self.myRignth addTarget:self action:@selector(myRignth:) forControlEvents:(UIControlEventTouchUpInside)];
             
-            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"参与评论未选中@2x(1).png"] forState:(UIControlStateNormal)];
+            [self.myRignth setBackgroundImage:[UIImage imageNamed:@"形状-6@2x.png"] forState:(UIControlStateNormal)];
             [self.myView addSubview:self.myRignth];
             
             
@@ -244,7 +264,7 @@
         
     }else {
     
-    return 1;
+    return 0;
     }
 }
 
@@ -254,17 +274,10 @@
     
     if (indexPath.section == 0) {
         static NSString *cell = @"index";
-        MyListFirstTableViewCell *mycell = [self.tableView dequeueReusableCellWithIdentifier:cell];
-        
-        
-        if (!mycell) {
-            
-            mycell = [[MyListFirstTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:cell];
+        MyListFirstTableViewCell *mycell = [[MyListFirstTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:cell];
             mycell.selectionStyle = UITableViewCellSelectionStyleNone;
             
 
-
-        }
         mycell.delegagate = self;
        // NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         //NSTimeInterval a = [dat timeIntervalSince1970];
@@ -288,28 +301,34 @@
         return mycell;
 
     
-    }else {
-        
-        static NSString *goodindext = @"goods";
-        GoodTableTableViewCell *goodcell = [self.tableView dequeueReusableCellWithIdentifier:goodindext];
-        if (!goodcell) {
-            goodcell = [[GoodTableTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:goodindext];
-            
-            
-            
-            
-            
-        }
-        [goodcell.myImageView sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.big_img]];
-
-        goodcell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        return goodcell;
-
-
-        
- 
     }
+    
+//    else {
+//        
+//        static NSString *goodindext = @"goods";
+//        GoodTableTableViewCell *goodcell = [self.tableView dequeueReusableCellWithIdentifier:goodindext];
+//        if (!goodcell) {
+//            goodcell = [[GoodTableTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:goodindext];
+//            
+//            
+//            
+//            
+//            
+//        }
+//        [goodcell.myImageView sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.big_img]];
+//
+//        goodcell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//        return goodcell;
+//
+//
+//        
+// 
+//    }
+//
+    
+    
+    return nil;
     
     
 }
