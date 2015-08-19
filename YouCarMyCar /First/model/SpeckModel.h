@@ -27,6 +27,7 @@
 @property (nonatomic ,strong)NSString *member_name;
 @property (nonatomic ,strong)NSString *try_id;
 @property (nonatomic ,strong)NSString *myid;
+@property (nonatomic ,strong)NSString *member_truename;
 
 
 @end

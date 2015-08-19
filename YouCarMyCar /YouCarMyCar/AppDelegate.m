@@ -30,6 +30,9 @@
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"message"]==nil){
         
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"key"];
+        
+        
         ViewController *root = [[ViewController alloc]init];
         self.window.rootViewController = root;
         
@@ -43,13 +46,7 @@
     }
     
     
-    
-    //title 字体白色
-//    NSDictionary * dict=[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
-//    [[UINavigationBar appearance] setTitleTextAttributes:dict];
-    
-    [self openTouchOutsideDismissKeyboard];
-    
+    [self openTouchOutsideDismissKeyboard];//点击 空白的地方回收键盘
     [[UINavigationBar appearance] setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:
                                                           [UIFont  fontWithName:@"DBLCDTempBlack" size:24], NSFontAttributeName,
                                                           [UIColor whiteColor], NSForegroundColorAttributeName,
@@ -78,24 +75,24 @@
     
     
     //初始化微信，微信开放平台上注册应用
-    [ShareSDK connectWeChatWithAppId:@"wx4868b35061f87885"
-                           appSecret:@"64020361b8ec4c99936c0e3999a9f249"
+    [ShareSDK connectWeChatWithAppId:@"wx8fa2fc1e94944e4f"
+                           appSecret:@"8fb5f09bef01ba1140f322bc42bc85ef"
                            wechatCls:[WXApi class]];
 
 
         //连接QQ应用
-    [ShareSDK connectQQWithQZoneAppKey:@"100371282"
+    [ShareSDK connectQQWithQZoneAppKey:@"j5TfJT6LjjHDjkEU"
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
     //连接QQ空间应用
-    [ShareSDK connectQZoneWithAppKey:@"100371282"
-                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"
+    [ShareSDK connectQZoneWithAppKey:@"j5TfJT6LjjHDjkEU"
+                           appSecret:@"1104741533"
                    qqApiInterfaceCls:[QQApiInterface class]
                     tencentOAuthCls:[TencentOAuth class]];
     
     
     //初始化新浪，在新浪微博开放平台上申请应用z
-    [ShareSDK connectSinaWeiboWithAppKey:@"568898243" appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3" redirectUri:@"http://www.sharesdk.cn" weiboSDKCls:[WeiboSDK class]];
+    [ShareSDK connectSinaWeiboWithAppKey:@"3461543832" appSecret:@"8e84173050311f230cd034780eb12dd1" redirectUri:@"http://www.sharesdk.cn" weiboSDKCls:[WeiboSDK class]];
 
     
     

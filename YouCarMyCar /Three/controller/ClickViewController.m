@@ -279,7 +279,7 @@
     ///从活动记录跳转到详情页面
         Huodongjilu *huodongMd = _huodongArray[indexPath.row];
         SxiangViewController *sXiangVC = [[SxiangViewController alloc]init];
-//        sXiangVC.myIDStr = huodongMd.try_id;
+        sXiangVC.stringID = huodongMd.try_id;
         
         [self.navigationController pushViewController:sXiangVC animated:YES];
     

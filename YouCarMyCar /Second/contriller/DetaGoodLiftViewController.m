@@ -76,20 +76,18 @@
             [self.myAllDetallModel setValuesForKeysWithDictionary:dic];
             [self.myArray addObject:self.myAllDetallModel];
             
+            NSString *string = self.myAllDetallModel.info;
             
+            string = [string substringWithRange:NSMakeRange(0, string.length - 2)];
             
+            string = [NSString stringWithFormat:@"%@style=\" width:%.fpx\";/>",string,kMainWidth - 10];
             
-            
-            
-            
-            
+            NSLog(@"%@",string);
             UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, kMainHeight - 104)];
-//            [web setUserInteractionEnabled:YES];//是否支持交互
-//            NSString *str2 = [NSString stringWithFormat:@"<p><img src=\"%@\" style=\" width:%.fpx; \"/></p>", self.myAllDetallModel.info,[UIScreen mainScreen].bounds.size.width-20];
+
             web.backgroundColor = [UIColor whiteColor];
             [web setOpaque:NO];//opaque是不透明的意思
-            [web setScalesPageToFit:YES];//自动缩放以适应屏幕
-            NSLog(@"html == %@",self.myAllDetallModel.info);
+            NSLog(@"html ==  %@",self.myAllDetallModel.info);
             
             
             
@@ -97,7 +95,7 @@
             
             
             
-            [web loadHTMLString:self.myAllDetallModel.info baseURL:nil];
+            [web loadHTMLString:string baseURL:nil];
 
             
             

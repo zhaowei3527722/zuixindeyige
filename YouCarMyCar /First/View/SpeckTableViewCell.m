@@ -45,6 +45,12 @@
     [self addSubview:self.mySpeckLable];
     
     
+    self.mytimeLable = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 170, 10, 150, 25)];
+    [self addSubview:self.mytimeLable];
+    self.mytimeLable.font = [UIFont systemFontOfSize:12];
+    
+    
+    
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

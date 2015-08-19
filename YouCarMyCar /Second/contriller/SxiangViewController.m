@@ -49,6 +49,17 @@
     [super viewDidLoad];
     
     
+    
+    if (([self.stringID isEqualToString:@""]||!(self.stringID))) {
+        self.stringID = self.wangqiModel.myID;
+        
+    }
+    
+    
+    
+    
+    
+    
     [self coustom];
     
     self.indextnumber = 1;
@@ -128,7 +139,7 @@
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.wangqiModel.myID];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.stringID];
     
     NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -363,10 +374,7 @@
 /// ============================== button ==== 点击事件 ==============
 -(void)sureAddress:(UIButton *)button
 {
-    SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
-    suraddress.myID = self.wangqiModel.myID;
     
-    [self.navigationController pushViewController:suraddress animated:YES];
     
   NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     

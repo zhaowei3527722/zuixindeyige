@@ -12,5 +12,7 @@
 @property (nonatomic ,strong)UIImageView *myPersonTimageView;
 @property (nonatomic ,strong)UILabel *myNameLable;
 @property (nonatomic ,strong)UILabel *mySpeckLable;
+@property (nonatomic ,strong)UILabel *mytimeLable;
+
 
 @end
