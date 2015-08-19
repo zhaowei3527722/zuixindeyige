@@ -230,12 +230,6 @@
     if ([model.presence integerValue]== 1) {
         [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
 
-    }else{
-        
-        [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
-        
-
-        
     }
     
     
@@ -259,9 +253,7 @@
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
 
-    if (!([key isEqualToString:@""])) {
-        
-        NSLog(@" -- - --- %@",key);
+    if (key) {
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         
