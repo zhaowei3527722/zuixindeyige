@@ -18,7 +18,7 @@
 #import "LoginViewController.h"
 #define kModaD self.view.frame.origin.x
 
-@interface ThreeViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface ThreeViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)NSMutableDictionary *dic;
 @property (nonatomic,strong)NSMutableDictionary *imagedic;
@@ -150,6 +150,8 @@
     }
         if (![[NSUserDefaults standardUserDefaults]valueForKey:@"key"]) {
             
+            [self.navigationController pushViewController:clichVC animated:YES];
+            
         }else{
             UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
             aller.tag = 102;
@@ -157,7 +159,7 @@
             
             [aller show];
         }
-        [self.navigationController pushViewController:clichVC animated:YES];
+        
         
     } else if (indexPath.section ==2 && indexPath.row == 0 ) {
         
@@ -178,6 +180,7 @@
     }
     
 }
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -248,6 +251,16 @@
             
         }
         return cell;
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }else {
+        
     }
 }
 
