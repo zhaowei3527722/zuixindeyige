@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>A67ECE95-BDE2-41A9-AB4B-593C3FC20CFC</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>YouCarMyCar</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
 		<string>https://github.com/zhaowei3527722/zuixindeyige.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>YouCarMyCar /YouCarMyCar.xcodeproj/project.xcworkspace</string>
+	<string>YouCarMyCar /YouCarMyCar.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>AA30C5A956EBBAC56FA7DE83830DA0F02C5DF585</string>
 			<key>IDESourceControlWCCName</key>
-			<string>ZUI</string>
+			<string>zuxinde</string>
 		</dict>
 	</array>
 </dict>

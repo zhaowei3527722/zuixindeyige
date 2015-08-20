@@ -203,7 +203,7 @@
         
     }
     
-    cell.myNameLable.text = model.member_name;
+    cell.myNameLable.text = model.member_truename;
     cell.mySpeckLable.text = model.content;
     [cell.myPersonTimageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
     cell.myNameLable.textColor = [UIColor brownColor];

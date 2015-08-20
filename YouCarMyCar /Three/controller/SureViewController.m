@@ -9,6 +9,7 @@
 #import "SureViewController.h"
 #import "PrefixHeader.pch"
 #import "AFNetworking.h"
+#import "LoginViewController.h"
 @interface SureViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 @property (nonatomic,strong)UITextField *addressField;
 @property (nonatomic,strong)UITableView *addressTableView;
@@ -82,7 +83,59 @@
 }
 -(void)sure
 {
-    NSLog(@"应该是模态出登陆页面");
+    
+    if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        //申明请求的数据是json类型
+        manager.requestSerializer=[AFJSONRequestSerializer serializer];
+        //如果报接受类型不一致请替换一致text/html或别的
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        
+        NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+        NSString  *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+        NSLog(@" - - - - - - - -%@%@",key,member_id);
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=login&op=outlogin&member_id=%@&key=%@",kMainHttp,member_id,key];
+        
+        NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                
+                NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+                
+                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"注销成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [aller show];
+                
+                [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
+                [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
+                
+            }
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (error) {
+                NSLog(@"错误 = = %@",error);
+                
+                
+            }
+        }];
+        
+        
+    }else {
+        
+//        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [aller show];
+        
+    }
+    
+    
+    
+    LoginViewController *laog = [[LoginViewController alloc]init];
+    [self.navigationController pushViewController:laog animated:YES];
+
 }
 
 

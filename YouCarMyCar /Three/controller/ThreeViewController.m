@@ -40,6 +40,7 @@
 {
     self.tabBarController.tabBar .hidden = NO;
     
+    [self.tableView reloadData];
 }
 
 //布局view
@@ -47,10 +48,10 @@
 {
     
     self.navigationItem.title = @"个人信息";
-  
+   self.automaticallyAdjustsScrollViewInsets = NO;
     self.dic = [[NSMutableDictionary alloc]init];
     self.imagedic = [[NSMutableDictionary alloc]init];
-    self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kMainWidth, kMainHeight - 108)];
     
     NSArray *array1 = [[NSArray alloc]initWithObjects:@"活动记录",@"活动介绍", nil];
     NSArray *array2 = [[NSArray alloc]initWithObjects:@"关于我们",@"用户反馈",@"版本更新", nil];
@@ -90,8 +91,19 @@
 //设置的点击事件
 -(void)bianji
 {
-    XiangViewController *xiangVC = [[XiangViewController alloc]init];
-    [self.navigationController pushViewController:xiangVC animated:YES];
+    
+    if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+        XiangViewController *xiangVC = [[XiangViewController alloc]init];
+        [self.navigationController pushViewController:xiangVC animated:YES];
+    }else {
+        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
+        aller.tag = 130;
+        
+        
+        [aller show];
+    }
+    
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -148,16 +160,22 @@
             clichVC.i = a;
         }
     }
-        if (![[NSUserDefaults standardUserDefaults]valueForKey:@"key"]) {
+        if (indexPath.row ==0) {
+            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+                
+                [self.navigationController pushViewController:clichVC animated:YES];
+                
+            }else{
+                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
+                aller.tag = 130;
+                
+                
+                [aller show];
+            }
+                
+            }else{
+                [self.navigationController pushViewController:clichVC animated:YES];
             
-            [self.navigationController pushViewController:clichVC animated:YES];
-            
-        }else{
-            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
-            aller.tag = 102;
-            
-            
-            [aller show];
         }
         
         
@@ -170,7 +188,18 @@
     } else if(indexPath.section ==2 && indexPath.row  == 1 ){
         
         clichVC.i = 6;
-        [self.navigationController pushViewController:clichVC animated:YES];
+        
+        if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+            
+            [self.navigationController pushViewController:clichVC animated:YES];
+            
+        }else{
+            UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"未登录" delegate:self cancelButtonTitle:@"马上登陆" otherButtonTitles:@"取消", nil];
+            aller.tag = 130;
+            
+            
+            [aller show];
+        }
         
     } else if (indexPath.section == 2 && indexPath.row == 2 ){
         
@@ -195,10 +224,23 @@
         
         cell.photoImage.layer.cornerRadius = cell.photoImage.frame.size.height/2;
         cell.photoImage.layer.masksToBounds = YES;
-//        NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
-//        [cell.photoImage sd_setImageWithURL:url];
-//        [cell.backimage sd_setImageWithURL:url];
-        if (![[NSUserDefaults standardUserDefaults]valueForKey:@"key"]) {
+        
+        
+        
+        if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+            
+            NSURL *url = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]];
+            NSLog(@"%@",url);
+            
+            
+//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            
+            UIImage *cachedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+           
+            cell.photoImage.image = cachedImage;
+            cell.backimage.image = cachedImage;
+            
+            cell.nameLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_truename"];
             
         }else{
             cell.photoImage.image = [UIImage imageNamed:@"默认头像.png"];
@@ -210,9 +252,8 @@
             button.frame = CGRectMake(0, 0, cell.nameLable.frame.size.width, cell.nameLable.frame.size.height);
             cell.nameLable.userInteractionEnabled = YES;
             [cell.nameLable addSubview:button];
+
         }
-        
-        
 
         cell.photoImage.userInteractionEnabled = YES;
         cell.backimage.userInteractionEnabled = YES;
@@ -254,13 +295,19 @@
     }
 }
 
+
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
+    if (alertView.tag == 130) {
+        
     if (buttonIndex == 0) {
         LoginViewController *loginVC = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginVC animated:YES];
     }else {
         
+    }
     }
 }
 
