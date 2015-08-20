@@ -102,16 +102,21 @@
             NSLog(@"%@",self.myAllDetallModel.big_img);
             NSString *string = self.myAllDetallModel.info;
             
-            string = [string substringWithRange:NSMakeRange(0, string.length - 2)];
+//            string = [string substringWithRange:NSMakeRange(0, string.length - 2)];
+//            
+//            string = [NSString stringWithFormat:@"%@style=\" width:%.fpx\";/>",string,kMainWidth - 10];
             
-            string = [NSString stringWithFormat:@"%@style=\" width:%.fpx\";/>",string,kMainWidth - 10];
+            NSString *str = [NSString stringWithFormat:@"alt=\"\" style=\" width:%.fpx\";",kMainWidth - 10];
+            
+            
+            string =[string stringByReplacingOccurrencesOfString:@"alt=\"\"" withString:str];
             
 
+
+            NSLog(@"----%@",string);
             
             UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(0, 210, kMainWidth, kMainHeight - 104 - 170)];
             [web setUserInteractionEnabled:YES];//是否支持交互
-            //            NSString *str2 = [NSString stringWithFormat:@"<p><img src=\"%@\" style=\" width:%.fpx; \"/></p>", self.myAllDetallModel.info,[UIScreen mainScreen].bounds.size.width-20];
-            //    web.backgroundColor = [UIColor whiteColor];
             [web setOpaque:NO];//opaque是不透明的意思
             NSLog(@"html == %@",self.myAllDetallModel.info);
             web.backgroundColor  = [UIColor whiteColor];

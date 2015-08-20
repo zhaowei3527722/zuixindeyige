@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="741027_1272707694.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="q4F-oC-83x">
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="冷启动页面2.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="q4F-oC-83x">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
                 </imageView>
             </subviews>
@@ -25,10 +25,10 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="99" y="62"/>
+            <point key="canvasLocation" x="210" y="96"/>
         </view>
     </objects>
     <resources>
-        <image name="741027_1272707694.jpg" width="2564" height="3884"/>
+        <image name="冷启动页面2.jpg" width="750" height="1334"/>
     </resources>
 </document>

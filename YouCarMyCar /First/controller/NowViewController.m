@@ -95,7 +95,7 @@
     
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=1&member_id=%@&key=%@",kMainHttp,member_id,key];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5&type=1&member_id=%@&key=%@",kMainHttp,member_id,key];
     
     NSLog(@"- - --- --- --- -- - -%@",url);
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
@@ -145,16 +145,16 @@
     
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=%ld&member_id=%@&key%@",kMainHttp,(long)self.indextnumber, member_id,key];
     
-    NSLog(@"- - --- --- --- -- - -%@",url);
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=5&type=1&member_id=%@&key=%@",kMainHttp,(long)self.indextnumber,member_id,key];    NSLog(@"- - --- --- --- -- - -%@",url);
+    
+    
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         self.miao = [dat timeIntervalSince1970];
         NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
-        [self.myArray removeAllObjects];
         
         for (NSDictionary *dic in array) {
             NowViewModel *model = [[NowViewModel alloc]init];

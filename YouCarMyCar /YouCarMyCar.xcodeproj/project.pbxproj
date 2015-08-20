@@ -201,6 +201,7 @@
 		0AE40EA11B5E219100676E49 /* 为选择@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AE40EA01B5E219100676E49 /* 为选择@2x.png */; };
 		0AE40EA41B5E2C6800676E49 /* PhoneRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40EA31B5E2C6800676E49 /* PhoneRegisterViewController.m */; };
 		0AE40EA71B5E2C7E00676E49 /* EmailRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40EA61B5E2C7E00676E49 /* EmailRegisterViewController.m */; };
+		0AEC9E071B85A69800CDEAC7 /* 冷启动页面2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AEC9E061B85A69800CDEAC7 /* 冷启动页面2.jpg */; };
 		0AED02731B7D8C9A00F13B9A /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 0AED026F1B7D8C9A00F13B9A /* CHANGELOG.md */; };
 		0AED02741B7D8C9A00F13B9A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02711B7D8C9A00F13B9A /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0AED02751B7D8C9A00F13B9A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0AED02721B7D8C9A00F13B9A /* README.md */; };
@@ -613,6 +614,7 @@
 		0AE40EA31B5E2C6800676E49 /* PhoneRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhoneRegisterViewController.m; path = ../../First/controller/PhoneRegisterViewController.m; sourceTree = "<group>"; };
 		0AE40EA51B5E2C7E00676E49 /* EmailRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmailRegisterViewController.h; path = ../../First/controller/EmailRegisterViewController.h; sourceTree = "<group>"; };
 		0AE40EA61B5E2C7E00676E49 /* EmailRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmailRegisterViewController.m; path = ../../First/controller/EmailRegisterViewController.m; sourceTree = "<group>"; };
+		0AEC9E061B85A69800CDEAC7 /* 冷启动页面2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "冷启动页面2.jpg"; sourceTree = "<group>"; };
 		0AED026F1B7D8C9A00F13B9A /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		0AED02701B7D8C9A00F13B9A /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		0AED02711B7D8C9A00F13B9A /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
@@ -965,6 +967,7 @@
 		0A9E68501B43BDDC00A71D88 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				0AEC9E061B85A69800CDEAC7 /* 冷启动页面2.jpg */,
 				958144951B848E6D00702823 /* 默认头像.png */,
 				958144911B84505D00702823 /* 试用协议@2x.png */,
 				0AB1FF1E1B831D7400288858 /* 免费试用dianji@2x.png */,
@@ -1735,6 +1738,7 @@
 				0ADEC49D1B660673001C26F1 /* 闹铃@2x.png in Resources */,
 				0AE102341B4B6DDD00BB23BB /* sns_icon_24.png in Resources */,
 				95DAF6DE1B4F60ED00B891DC /* 形状 1.png in Resources */,
+				0AEC9E071B85A69800CDEAC7 /* 冷启动页面2.jpg in Resources */,
 				95DFE73E1B6B0F9B000B03EE /* 短@2x.png in Resources */,
 				0AE40EA11B5E219100676E49 /* 为选择@2x.png in Resources */,
 				0A9CF5881B747E2500B9C7D2 /* 图层-1@2x.png in Resources */,

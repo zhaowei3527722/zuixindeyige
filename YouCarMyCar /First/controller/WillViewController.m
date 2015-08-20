@@ -73,7 +73,7 @@
 {
     self.indextNumber = 1;
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5type=3",kMainHttp];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5&type=3",kMainHttp];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -115,7 +115,7 @@
     self.indextNumber ++;
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=5type=3",kMainHttp,(long)self.indextNumber];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=5&type=3",kMainHttp,(long)self.indextNumber];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {

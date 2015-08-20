@@ -31,13 +31,6 @@
 }
 -(void)costom
 {
-//    //俩个底背景
-//    UIImageView *image1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.cellWeight, self.cellHeight)];
-//    image1.image = [UIImage imageNamed:@"首页cell背景.png"];
-//    [self addSubview:image1];
-//    UIImageView *image2 = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, self.cellWeight - 10, self.cellHeight - 4)];
-//    image2.image = [UIImage imageNamed:@"白背景.png"];
-//    [self addSubview:image2];
     
     self.myImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, self.cellWeight - 10 ,(self.cellHeight - 10 )* kMainWidth / 320)];
     [self addSubview:self.myImageView];

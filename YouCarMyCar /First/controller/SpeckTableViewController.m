@@ -187,7 +187,7 @@
 -(void)footerRefreshing
 {
     self.indextnumber ++;
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=%ldeachNum=5",kMainHttp,self.myModelnow.myid,(long)self.indextnumber];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@&curpage=%ld&eachNum=5",kMainHttp,self.myModelnow.myid,(long)self.indextnumber];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {

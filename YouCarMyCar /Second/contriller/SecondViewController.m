@@ -62,7 +62,7 @@
     self.indextNumber = 1;
     
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10type=2",kMainHttp];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=10&type=2",kMainHttp];
 
     NSLog(@"%@",url);
     AFHTTPRequestOperationManager *manger = [[AFHTTPRequestOperationManager alloc]init];

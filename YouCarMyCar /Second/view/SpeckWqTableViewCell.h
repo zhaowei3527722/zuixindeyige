@@ -22,6 +22,7 @@
 @property (nonatomic ,strong)UIImageView *my3IMageViw;
 @property (nonatomic ,strong)UIImageView *my4ImageView;
 @property (nonatomic ,strong)UIImageView *my5imageView;
+@property (nonatomic ,strong)UILabel *myTimeLable;
 
 
 @end

@@ -35,6 +35,16 @@
     self.myNameLable.textAlignment = NSTextAlignmentCenter;
     self.myNameLable.textColor = [UIColor brownColor];
     
+    self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 150, 10, 120, 20)];
+    self.myTimeLable.font  = [UIFont systemFontOfSize:12];
+    [self addSubview:self.myTimeLable];
+    
+    
+    
+    
+    
+    
+    
     [self addSubview:self.myNameLable];
     [self addSubview:self.myToImageView];
     

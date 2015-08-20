@@ -328,6 +328,25 @@
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
         wqCell.mySpeckXingNumberInteger = 2;
         
+        NSDateFormatter* formatter = [[NSDateFormatter alloc] init] ;
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"shanghai"];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
+        [formatter setDateFormat:@"yy年MM月dd日 HH:mm"];
+        
+        
+        NSDate* date = [NSDate dateWithTimeIntervalSince1970:[model.add_time integerValue]];
+        
+        
+        NSString* dateString = [formatter stringFromDate:date];
+        
+        
+        NSLog(@"format dateString:%@",dateString);
+        
+        wqCell.myTimeLable.text = dateString;
+        
+
+        
         
         
         return wqCell;

@@ -94,7 +94,7 @@
     self.indextnumber = 1;
     
     NSLog(@" = == myid = %@",self.mymodel.myID);
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=1eachNum=100",kMainHttp,self.mymodel.myID];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@&curpage=1&eachNum=100",kMainHttp,self.mymodel.myID];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
