@@ -437,9 +437,19 @@
     if (!([key isEqualToString:@""])) {
         
         
-        LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
-        lift.wangqiModel = self.wangqiModel;
-        [self.navigationController pushViewController:lift animated:YES];
+        if (self.myAllmodel.prize) {
+            
+            LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
+            lift.wangqiModel = self.wangqiModel;
+            [self.navigationController pushViewController:lift animated:YES];
+
+        }else {
+            UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未获奖" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [ale show];
+
+            
+        }
         
         
     }else {
