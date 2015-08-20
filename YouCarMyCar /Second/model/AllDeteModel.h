@@ -9,27 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface AllDeteModel : NSObject
-/*
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-	•
-*/
 
 @property (nonatomic ,strong)NSString *myid;
 @property (nonatomic ,strong)NSString *title;
@@ -50,6 +29,8 @@
 @property (nonatomic ,strong)NSString *hours;
 @property (nonatomic ,strong)NSString *minutes;
 @property (nonatomic ,strong)NSString *seconds;
+@property (nonatomic,strong)NSString *prize;
+@property (nonatomic ,strong)NSString *presence;
 
 
 
