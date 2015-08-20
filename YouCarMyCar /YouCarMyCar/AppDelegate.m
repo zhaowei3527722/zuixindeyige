@@ -81,18 +81,20 @@
 
 
         //连接QQ应用
-    [ShareSDK connectQQWithQZoneAppKey:@"j5TfJT6LjjHDjkEU"
+    [ShareSDK connectQQWithQZoneAppKey:@"1104741533"
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
     //连接QQ空间应用
-    [ShareSDK connectQZoneWithAppKey:@"j5TfJT6LjjHDjkEU"
-                           appSecret:@"1104741533"
+    [ShareSDK connectQZoneWithAppKey:@"1104741533"
+                           appSecret:@"j5TfJT6LjjHDjkEU"
                    qqApiInterfaceCls:[QQApiInterface class]
                     tencentOAuthCls:[TencentOAuth class]];
     
     
+    
+    
     //初始化新浪，在新浪微博开放平台上申请应用z
-    [ShareSDK connectSinaWeiboWithAppKey:@"3461543832" appSecret:@"8e84173050311f230cd034780eb12dd1" redirectUri:@"http://www.sharesdk.cn" weiboSDKCls:[WeiboSDK class]];
+    [ShareSDK connectSinaWeiboWithAppKey:@"3461543832" appSecret:@"8e84173050311f230cd034780eb12dd1" redirectUri:@"" weiboSDKCls:[WeiboSDK class]];
 
     
     

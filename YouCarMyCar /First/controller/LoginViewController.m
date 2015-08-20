@@ -430,11 +430,6 @@
 //点击登录按钮走的方法
 -(void)loginButton:(UIButton *)button
 {
-    [self.userPassWordMy.mytextField  resignFirstResponder];
-    [self.userNameMy.mytextField resignFirstResponder];
-
-    
-    
     if (self.userNameMy.mytextField.text !=nil&&![self.userNameMy.mytextField.text isEqualToString:@""]&&self.userPassWordMy.mytextField.text !=nil&&![self.userPassWordMy.mytextField.text isEqualToString:@""]) {
         
         
@@ -447,6 +442,7 @@
             
             if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
                 UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                aller.tag = 100;
                 
                 
                 [aller show];
@@ -500,6 +496,16 @@
                 [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"zip_code"] forKey:@"zip_code"];
                 
                 [[NSUserDefaults standardUserDefaults]setValue:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"true_name"] forKey:@"true_name"];
+                
+                
+                
+                
+                
+                
+                
+                
+
+
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
         
                 [[NSUserDefaults standardUserDefaults]setValue:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
@@ -565,8 +571,19 @@
          
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (alertView.tag == 101) {
+        if (buttonIndex == 0) {
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+
+    }
     
-        
+}
+- (void)hudWasHidden:(MBProgressHUD *)hud;
+{
+    NSLog(@"就是这个");
+    
 }
 
 //点击注册走的方法
@@ -664,6 +681,8 @@
             }else{
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
+                [self.HUD removeFromSuperview];
+
             }
         }];
         
@@ -687,6 +706,8 @@
                 
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
+                [self.HUD removeFromSuperview];
+
             }
         }];
         
@@ -708,11 +729,17 @@
                 
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"授权失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
+                
+                [self.HUD removeFromSuperview];
+                
             }
         }];
         
         
     }
+    
+    
+    
     
     
 }

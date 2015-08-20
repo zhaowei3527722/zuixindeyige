@@ -18,6 +18,11 @@
 #import "JSONKit.h"
 #import "Urljson.h"
 #import "CommUtils.h"
+#import <ShareSDK/ShareSDK.h>
+#import "WeiboSDK.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
 
 
 @interface XiangViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ClickViewControllerDelegate,UIAlertViewDelegate>
@@ -489,6 +494,14 @@
                     
                     [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
                     [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
+                    
+                    
+                    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+                    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
+                    [ShareSDK cancelAuthWithType:ShareTypeQQ];
+                    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+                    [ShareSDK cancelAuthWithType:ShareTypeWhatsApp];
+                    
                     
                 }
                 
