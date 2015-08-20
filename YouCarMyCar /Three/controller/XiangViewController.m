@@ -317,6 +317,8 @@
         
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
         
+        [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
+        
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
         
         NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]);
