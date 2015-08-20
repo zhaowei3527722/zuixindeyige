@@ -37,15 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx://4868b35061f87885</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>QQ41D9049D</string>
+				<string>tencent1104741533</string>
 			</array>
 		</dict>
 		<dict>
@@ -55,6 +47,12 @@
 			<array>
 				<string>wb3461543832</string>
 			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

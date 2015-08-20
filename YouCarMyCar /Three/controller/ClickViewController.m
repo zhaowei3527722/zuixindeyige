@@ -287,9 +287,6 @@
     
     }else if (self.i == 13){
         
- 
-     }else if (self.i == 13){
-        
         if (indexPath.row == 1) {
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
             [self.tableView addSubview:self.choiceImage];

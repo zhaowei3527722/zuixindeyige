@@ -10,8 +10,10 @@
 #import "RootTaBarViewController.h"
 #import <ShareSDK/ShareSDK.h>
 #import "WeiboSDK.h"
+#import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import <QZoneConnection/QZoneConnection.h>
 #import "WXApi.h"
 #import "DismissKeyboard.h"
 #import "PrefixHeader.pch"
@@ -80,23 +82,46 @@
                            wechatCls:[WXApi class]];
 
 
-        //连接QQ应用
-    [ShareSDK connectQQWithQZoneAppKey:@"1104741533"
-                     qqApiInterfaceCls:[QQApiInterface class]
-                       tencentOAuthCls:[TencentOAuth class]];
-    //连接QQ空间应用
+//        //连接QQ应用
+//    [ShareSDK connectQQWithQZoneAppKey:@"1104741533"
+//                     qqApiInterfaceCls:[QQApiInterface class]
+//                       tencentOAuthCls:[TencentOAuth class]];
+//    
+//    
+//    //连接QQ空间应用
+//    [ShareSDK connectQZoneWithAppKey:@"1104741533"
+//                           appSecret:@"j5TfJT6LjjHDjkEU"
+//                   qqApiInterfaceCls:[QQApiInterface class]
+//                    tencentOAuthCls:[TencentOAuth class]];
+//
+    
+    /**
+     连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和QQApi.framework库
+     http://mobile.qq.com/api/上注册应用，并将相关信息填写到以下字段
+     **/
     [ShareSDK connectQZoneWithAppKey:@"1104741533"
                            appSecret:@"j5TfJT6LjjHDjkEU"
                    qqApiInterfaceCls:[QQApiInterface class]
-                    tencentOAuthCls:[TencentOAuth class]];
+                     tencentOAuthCls:[TencentOAuth class]];
     
+    //    //开启QQ空间网页授权开关(optional), 开启授权一定要在上面注册方法之后
+    id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];
+    [app setIsAllowWebAuthorize:YES];
     
-    
+//    [ShareSDK connectQZoneWithAppKey:@"100371282"
+//                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"
+//                   qqApiInterfaceCls:[QQApiInterface class]
+//                     tencentOAuthCls:[TencentOAuth class]];
+//    
+//    //    //开启QQ空间网页授权开关(optional), 开启授权一定要在上面注册方法之后
+//    id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];
+//    [app setIsAllowWebAuthorize:YES];
     
     //初始化新浪，在新浪微博开放平台上申请应用z
-    [ShareSDK connectSinaWeiboWithAppKey:@"3461543832" appSecret:@"8e84173050311f230cd034780eb12dd1" redirectUri:@"" weiboSDKCls:[WeiboSDK class]];
-
-    
+    [ShareSDK connectSinaWeiboWithAppKey:@"3461543832"
+                               appSecret:@"8e84173050311f230cd034780eb12dd1"
+                             redirectUri:@"http://www.sharesdk.cn"
+                             weiboSDKCls:[WeiboSDK class]];
     
     float sysVersion=[[UIDevice currentDevice]systemVersion].floatValue;
     if (sysVersion>=8.0) {
