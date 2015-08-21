@@ -20,6 +20,11 @@
 @interface NowViewController ()<UITableViewDataSource,UITableViewDelegate,MylistFirstbleDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong)UITableView *mytable;
 @property (nonatomic )NSInteger indextnumber;
+@property (nonatomic,strong)UIView *backView;
+@property (nonatomic,strong)UIView *whiteView;
+@property (nonatomic,strong)UIButton *button1;
+@property (nonatomic)BOOL isYes;
+
 
 
 @end
@@ -28,7 +33,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults ]valueForKey:@"tishi"]);
+
     // Do any additional setup after loading the view.
     self.mytable = [[UITableView alloc]initWithFrame:CGRectMake(kMainX, kMainY, kMainWidth, kMainHeight-150)];
     self.mytable.delegate = self;
@@ -71,8 +77,102 @@
     // 设置footer
     self.mytable.footer = footer;
     
+    
+}
+-(void)layoutTiShi
+{
+    self.isYes = YES;
+    
+    self.backView = [[UIView alloc]initWithFrame:self.view.bounds];
+    self.backView.backgroundColor = [UIColor blackColor];
+    self.backView.alpha = 0.2;
+    
+    
+    self.whiteView = [[UIView alloc]initWithFrame:CGRectMake(15, kMainHeight/2 - 90, kMainWidth - 30, 270)];
+    self.whiteView.backgroundColor = MainBackGround;
+    self.whiteView.layer.cornerRadius = 20;
+    [self.view addSubview:self.whiteView];
+    
+    
+    
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(30, 30, 30, 30)];
+    imageView.image = [UIImage imageNamed:@"cup.png"];
+    [self.whiteView addSubview:imageView];
+    
+    UILabel *lable1 = [[UILabel alloc]initWithFrame:CGRectMake(60, 25, self.whiteView.frame.size.width-90, 40)];
+    lable1.text = @"我们在审核免费试用用户的时候会考虑这些:";
+    lable1.font = [UIFont systemFontOfSize:13];
+    lable1.numberOfLines = 0;
+    [self.whiteView addSubview:lable1];
+    
+    UILabel *lable2 = [[UILabel alloc]initWithFrame:CGRectMake(50, 60, self.whiteView.frame.size.width - 100, 90)];
+    lable2.text = @"1· 活跃在微博微信以及连续参加活动的用户\n2· 有详细精美的试用报告者\n3· 提出有价值建议反馈合创意的用户";
+    lable2.font = [UIFont systemFontOfSize:12];
+    lable2.numberOfLines = 0;
+    lable2.textColor = [UIColor redColor];
+    [self.whiteView addSubview:lable2];
+    
+    self.button1 = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    self.button1.frame = CGRectMake(50, 150, 20, 20);
+    [self.button1 setImage:[UIImage imageNamed:@"未阅读.png"] forState:(UIControlStateNormal)];
+    [self.button1 addTarget:self action:@selector(dianji) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.whiteView addSubview:self.button1];
+    
+    UILabel *lable3 = [[UILabel alloc]initWithFrame:CGRectMake(80, 150, self.whiteView.frame.size.width - 120, 20)];
+    lable3.text = @"以后不再提示";
+    lable3.textColor = COLOR(100, 100, 100, 1);
+    lable3.font = [UIFont systemFontOfSize:13];
+    [self.whiteView addSubview:lable3];
+    
+    UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    
+    button.frame = CGRectMake(20, 190 , self.whiteView.frame.size.width - 40 , 40);
+    [button setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
+    [button addTarget:self action:@selector(remove) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    [button setTitle:@"确定" forState:(UIControlStateNormal)];
+    [self.whiteView addSubview:button];
+    
+}
 
 
+-(void)dianji
+{
+    
+    if (self.isYes == YES) {
+        [self.button1 setImage:[UIImage imageNamed:@"已阅读.png"] forState:(UIControlStateNormal)];
+        self.isYes = NO;
+        
+    }else if (self.isYes == NO) {
+        [self.button1 setImage:[UIImage imageNamed:@"未阅读.png"] forState:(UIControlStateNormal)];
+        self.isYes = YES;
+    }
+    
+}
+
+-(void)remove
+{
+    if (self.isYes == NO) {
+        
+        [[NSUserDefaults standardUserDefaults]setValue:@"1" forKey:@"tishi"];
+        NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"tishi"]);
+        [self.backView removeFromSuperview];
+        [self.whiteView removeFromSuperview];
+        
+        NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
+        detal.iSbutton  = YES;
+        
+        [[super navigationController] pushViewController:detal animated:NO];
+        detal.myModelnoW = self.myArray[self.myarrayindext];
+        [self loadNewData];
+
+    }else{
+        [self.backView removeFromSuperview];
+        [self.whiteView removeFromSuperview];
+    }
+    
+    
 }
 
 
@@ -230,8 +330,15 @@
     if ([model.presence integerValue]== 1) {
         [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
 
+    }else {
+        
+        [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
+        
+        
     }
     
+    mycell.myNumberImageView.image = [UIImage imageNamed:@"qibiao@2x.png"];
+    mycell.myNumberLable.text = model.period_no;
     
     
     
@@ -241,9 +348,12 @@
 
 -(void)actionButton:(UIButton *)button
 {
-    NSInteger aa = button.tag - 100;
     
-    NowViewModel *model = self.myArray[aa];
+
+    
+    self.myarrayindext = button.tag - 100;
+    
+    NowViewModel *model = self.myArray[self.myarrayindext];
     
     if ([model.presence integerValue] == 1) {
         
@@ -273,13 +383,25 @@
                 
             }else {
                 
+                
+                
+                
+                if ([([[NSUserDefaults standardUserDefaults] valueForKey:@"tishi"] )isEqualToString:@"0"]) {
+                    
+                    
+                    [self.view addSubview:self.backView];
+                    [self.view addSubview:self.whiteView];
+                    
+
+                }else {
+
                 NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
                 detal.iSbutton  = YES;
                 
                 [[super navigationController] pushViewController:detal animated:NO];
-                detal.myModelnoW = self.myArray[aa];
+                detal.myModelnoW = self.myArray[self.myarrayindext];
                 [self loadNewData];
-                
+                }
 
             }
             

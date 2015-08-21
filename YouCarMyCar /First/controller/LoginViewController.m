@@ -54,15 +54,6 @@
     //分享按钮
     
     
-    UIButton *share = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    [share setTitle:@"一键分享" forState:(UIControlStateNormal)];
-    share.frame = CGRectMake(0, 0, 80, 30);
-    [share addTarget:self action:@selector(share:) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.view addSubview:share ];
-    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:share];
-    self.navigationItem.rightBarButtonItem = right;
-    
-    
     
     
     //返回的箭头
@@ -285,7 +276,7 @@
     
     self.loginButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     self.loginButton.frame = CGRectMake(10, 290 *self.indextY, 300 *self.indextX, 40);
-    [self.loginButton setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x(1).png"] forState:(UIControlStateNormal)];
+    [self.loginButton setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
     self.loginButton.backgroundColor = [UIColor purpleColor];
     [self.loginButton setTitle:@"登录" forState:(UIControlStateNormal)];
     [self.loginButton  setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
@@ -451,6 +442,10 @@
             }
             
             if ([[responseObject valueForKey:@"datas"] valueForKey:@"key"]) {
+                
+                
+                
+
                 //存入用户的信息
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"key"] forKey:@"key"];
                 
@@ -573,16 +568,11 @@
 {
     if (alertView.tag == 101) {
         if (buttonIndex == 0) {
-            [self.navigationController popViewControllerAnimated:YES];
+//            [self.navigationController popViewControllerAnimated:YES];
             
         }
 
     }
-    
-}
-- (void)hudWasHidden:(MBProgressHUD *)hud;
-{
-    NSLog(@"就是这个");
     
 }
 
@@ -619,41 +609,6 @@
     [self.navigationController pushViewController:forget animated:YES];
     
     
-    
-}
-//点击分享走的方法
-
--(void)share:(UIButton *)share
-{
-    //1.定制分享的内容
-    NSString* path = [[NSBundle mainBundle]pathForResource:@"fdssfsf" ofType:@"jpg"];
-    id<ISSContent> publishContent = [ShareSDK content:@"Hello,nichewoche.com" defaultContent:nil image:[ShareSDK imageWithPath:path] title:@"This is title" url:@"http://nichewoche.com" description:@"This is description" mediaType:SSPublishContentMediaTypeNews];
-    
-    
-    //    NSArray *shareList = [ShareSDK customShareListWithType:
-    //                          SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),SHARE_TYPE_NUMBER(ShareTypeQQ),SHARE_TYPE_NUMBER(ShareTypeWeixiTimeline),nil];
-    
-    //2.调用分享菜单分享
-    [ShareSDK showShareActionSheet:nil shareList:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-        //如果分享成功
-        
-        if (state == SSResponseStateSuccess) {
-            NSLog(@"分享成功");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        //如果分享失败
-        if (state == SSResponseStateFail) {
-            NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"分享失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        if (state == SSResponseStateCancel){
-            NSLog(@"分享取消");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"进入了分享取消状态" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-    }];
     
 }
 //第三方登录走的方法
@@ -748,19 +703,8 @@
 
 -(void)login
 {
-    /*	请求参数：
-     •	act = login
-     •	op = other_login
-     •	opened = 第三方唯一识别号
-     •	truename = 昵称
-     •	sex = 性别
-     •	avatar 头像
-     */
     [self.userNameMy.mytextField resignFirstResponder];
     [self .userPassWordMy.mytextField resignFirstResponder];
-    
-
-    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url = [NSString stringWithFormat:@"%@?act=login&op=other_login&openid=%@&truename=%@&sex=&avatar=%@",kMainHttp,self.uid,self.nickname,self.imageurl];
     NSLog(@" name = %@ uid = %@ ima = %@",self.nickname,self.uid,self.imageurl);

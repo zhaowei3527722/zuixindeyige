@@ -170,7 +170,7 @@
         
         
         if (self.zhaoxiangImage.image) {
-            NSData *imageData = UIImageJPEGRepresentation(self.zhaoxiangImage.image, 1.0);
+            NSData *imageData = UIImageJPEGRepresentation(self.zhaoxiangImage.image, 0.001);
             self.base64string = [imageData base64Encoding];
         }
         

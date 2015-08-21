@@ -37,7 +37,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
     
     self.phoneScrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
-    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 720);
+    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 800);
     self.phoneScrollView.backgroundColor = COLOR(243, 233, 221, 1);
     self.phoneScrollView.delegate = self;
     [self.phoneScrollView addGestureRecognizer:tap];
@@ -83,6 +83,14 @@
     
     self.psaWordMY2.mytextField.placeholder = @"请确认您的密码";
     
+    
+    self.coderMY = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 360, kMainWidth - 20, 40)];
+    self.coderMY.mytextField.placeholder = @"推荐人(选填)";
+    [self.phoneScrollView addSubview:self.coderMY];
+    
+    
+
+    
     self.nickNameMY.delegate = self;
     self.userNameMY.delegate  = self;
     self.numberMY.delegate = self;
@@ -98,7 +106,7 @@
     
     //点击注册
     self.registerButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    self.registerButton.frame = CGRectMake(10,390, self.view.frame.size.width - 20, 40);
+    self.registerButton.frame = CGRectMake(10,440, self.view.frame.size.width - 20, 40);
     [self.registerButton setTitle:@"注册" forState:(UIControlStateNormal)];
     [self.registerButton  setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     [self.registerButton setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
@@ -174,6 +182,18 @@
             if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
                 [self.navigationController popViewControllerAnimated:YES];
                 
+            }else {
+                
+                
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                    
+                    UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    
+                    
+                    [aller show];
+                    
+                }
+
             }
             
             

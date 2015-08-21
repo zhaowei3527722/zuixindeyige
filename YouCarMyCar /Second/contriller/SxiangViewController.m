@@ -19,6 +19,9 @@
 #import "GoodDetalWQViewController.h"
 #import "MJRefresh.h"
 #import "AllDeteModel.h"
+#import <ShareSDK/ShareSDK.h>
+#import <QZoneConnection/ISSQZoneApp.h>
+#import "ForgetViewController.h"
 
 #import "LoginViewController.h"
 
@@ -84,6 +87,15 @@
     UIBarButtonItem *lift = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = lift;
     
+    UIButton *shareButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [shareButton setImage:[UIImage imageNamed:@"share@2x.png"] forState:(UIControlStateNormal)];
+    shareButton.frame =CGRectMake(0, 0, 25, 30);
+    [shareButton addTarget:self action:@selector(share) forControlEvents:(UIControlEventTouchUpInside)];
+    UIBarButtonItem *rigth = [[UIBarButtonItem alloc]initWithCustomView:shareButton];
+    self.navigationItem.rightBarButtonItem = rigth;
+    
+    
+    
     
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kMainWidth, kMainHeight  - 64)];
     self.myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -132,6 +144,35 @@
     
 }
 
+
+-(void)share
+{
+    
+    //1.定制分享的内容
+    
+    
+    id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];
+    [app setIsAllowWebAuthorize:YES];
+    
+
+    NSString* path = [[NSBundle mainBundle]pathForResource:@"11" ofType:@"jpg"];
+    id<ISSContent> publishContent = [ShareSDK content:@"寻找中国可信赖的汽车用品”你车我车“，所有产品免费试用!" defaultContent:nil image:[ShareSDK imageWithPath:path] title:@" " url:@"http://www.nichewoche.com/downapk/" description:@"寻找中国可信赖的汽车用品”你车我车“，所有产品免费试用!" mediaType:SSPublishContentMediaTypeNews];
+    
+
+    
+    //2.调用分享菜单分享
+    [ShareSDK showShareActionSheet:nil shareList:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+        //如果分享成功
+        
+        if (state == SSResponseStateSuccess) {
+            NSLog(@"分享成功");
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Code4App" message:@"分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
+
+    
+}
 
 -(void)coustom
 {
@@ -399,8 +440,21 @@
     
     if (!([key isEqualToString:@""])) {
         
-        SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
-        [self.navigationController pushViewController:suraddress animated:YES];
+        if ((NSInteger)(self.myAllmodel.presence) == 1 ) {
+            
+            SureAddressViewController *suraddress = [[SureAddressViewController alloc]init];
+            [self.navigationController pushViewController:suraddress animated:YES];
+
+            
+        }else {
+            UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您未申请此产品" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [ale show];
+
+            
+            
+        }
+        
 
     }else {
         
@@ -437,7 +491,7 @@
     if (!([key isEqualToString:@""])) {
         
         
-        if (self.myAllmodel.prize) {
+        if ((NSInteger)self.myAllmodel.prize  == 1) {
             
             LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
             lift.wangqiModel = self.wangqiModel;
@@ -471,11 +525,6 @@
     
     
     [self.navigationController pushViewController:right animated:YES];
-    
-}
--(void)goodDescription
-{
-    
     
 }
 - (void)didReceiveMemoryWarning {

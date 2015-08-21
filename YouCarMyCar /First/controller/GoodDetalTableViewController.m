@@ -305,6 +305,11 @@
         if ([self.myModelnoW.presence integerValue]==1) {
             [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
             
+        }else {
+            
+            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
+            
+
         }
         
         

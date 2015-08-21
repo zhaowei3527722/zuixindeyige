@@ -31,9 +31,12 @@
 @property (nonatomic ,strong)UILabel *myallGoodsCount;//商品的  总数量
 @property (nonatomic ,strong)UILabel *mynowPerson;//参与的人数
 @property (nonatomic ,strong)UILabel *myGoodName;//商品名称
-
-
 @property (nonatomic  ,strong)MZTimerLabel *timLable;
+@property (nonatomic,strong)UIImageView *myNumberImageView;//期数
+@property (nonatomic,strong)UILabel *myNumberLable;//期数
+
+
+
 
 
 @end

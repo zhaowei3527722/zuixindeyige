@@ -45,9 +45,11 @@
             _mytimeInteger = mytimeInteger;
 
             
-            self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(72+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30, self.cellweight - (self.cellweight / 2 - 20)- 70 , 20)];
+            self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(25+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30, self.cellweight - (self.cellweight / 2 - 20)- 40 , 20)];
             
             [self addSubview:self.myTimeLable];
+            self.myTimeLable.font = [UIFont systemFontOfSize:13];
+
             self.timLable = [[MZTimerLabel alloc] initWithLabel:self.myTimeLable andTimerType:MZTimerLabelTypeTimer];
             [self.timLable setCountDownTime:_mytimeInteger];
             self.timLable.timeLabel.textColor = [UIColor brownColor];
@@ -77,8 +79,11 @@
             }
 
             _mytimeInteger = mytimeInteger;
-            self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(72+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30, self.cellweight - (self.cellweight / 2 - 20)- 70 , 20)];
+            self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(40+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30, self.cellweight - (self.cellweight / 2 - 20)- 50 , 20)];
             [self addSubview:self.myTimeLable];
+            
+            self.myTimeLable.font = [UIFont systemFontOfSize:13];
+            
             self.timLable= [[MZTimerLabel alloc] initWithLabel:self.myTimeLable andTimerType:MZTimerLabelTypeTimer];
             [self.timLable setCountDownTime:self.mytimeInteger];
             self.timLable.timeLabel.textColor = [UIColor brownColor];
@@ -173,12 +178,6 @@
         
         
         
-        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(35+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60, 20)];
-        lable.text = @"剩余时间:";
-        
-        [self addSubview:lable];
-        lable.font = [UIFont systemFontOfSize:12];
-        
         UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(10+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,20 , 20)];
         image.image = [UIImage imageNamed:@"闹铃@2x.png"];
         [self addSubview:image];
@@ -263,20 +262,31 @@
         
         
         
-        UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(45+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,60 , 20)];
-        lable.text = @"剩余时间:";
-        
-        [self addSubview:lable];
-        lable.font = [UIFont systemFontOfSize:12];
-        
         UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(25+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30,20 , 20)];
         image.image = [UIImage imageNamed:@"闹铃@2x.png"];
         [self addSubview:image];
         
         
         
+        
+        
+        
+        
+        
+        
+        
     }
     
+    
+    
+    
+    self.myNumberImageView = [[UIImageView alloc]initWithFrame:CGRectMake(6, 6, 40, 50)];
+    [self addSubview:self.myNumberImageView];
+    self.myNumberLable = [[UILabel alloc]initWithFrame:CGRectMake(16,27 , 20, 15)];
+    self.myNumberLable.textColor = [UIColor whiteColor];
+    self.myNumberLable.textAlignment = NSTextAlignmentCenter;
+    self.myNumberLable.font = [UIFont systemFontOfSize:10];
+    [self addSubview:self.myNumberLable];
     
     
     

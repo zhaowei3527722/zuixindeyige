@@ -23,6 +23,7 @@
 @property (nonatomic ,strong)MyTextFiedNoimage *psaWordMY2;
 @property (nonatomic ,strong)UIButton *registerButton;
 @property (nonatomic ,strong)UIButton *numberButton;
+@property (nonatomic,strong)MyTextFiedNoimage *coderMY;
 
 
 @end
