@@ -454,9 +454,15 @@
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
                 
-                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"sex"] forKey:@"sex"];
+                NSString *sexStr = [[responseObject valueForKey:@"datas"] valueForKey:@"sex"];
                 
-                
+                if ([sexStr isEqualToString:@"1"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:@"男" forKey:@"sex"];
+                }else if ([sexStr isEqualToString:@"2"]) {
+                    [[NSUserDefaults standardUserDefaults]setValue:@"女" forKey:@"sex"];
+                }else {
+                    [[NSUserDefaults standardUserDefaults]setValue:@"保密" forKey:@"sex"];
+                }
                 
 
                 //姓名
@@ -731,15 +737,22 @@
             //存入用户的信息
             [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"key"] forKey:@"key"];
             
-            //                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
+           
             
             [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
             
             [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"email"] forKey:@"email"];
             
-            [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"sex"] forKey:@"sex"];
             
+            NSString *sexStr = [[responseObject valueForKey:@"datas"] valueForKey:@"sex"];
             
+            if ([sexStr isEqualToString:@"1"]) {
+                [[NSUserDefaults standardUserDefaults]setValue:@"男" forKey:@"sex"];
+            }else if ([sexStr isEqualToString:@"2"]) {
+                [[NSUserDefaults standardUserDefaults]setValue:@"女" forKey:@"sex"];
+            }else {
+                [[NSUserDefaults standardUserDefaults]setValue:@"保密" forKey:@"sex"];
+            }
             
             NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
             

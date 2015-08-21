@@ -36,6 +36,10 @@
 @property (nonatomic,strong)NSMutableArray *addressArray;
 @property (nonatomic,strong)AddressModel *addressModel;
 @property (nonatomic,strong)NSMutableArray *huodongArray;
+@property (nonatomic,strong)UIButton *verifyButton;
+@property (nonatomic,strong)NSTimer *timer;
+@property (nonatomic,strong)UILabel *timeLaber;
+@property (nonatomic)int a;
 //@property (nonatomic,strong)Huodongjilu *huodongModel;
 @end
 
@@ -643,7 +647,7 @@
 //***********************************修改密码********************************
 -(void)layoutPassword
 {
-    
+    self.title = @"修改密码";
     
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 80, kMainWidth - 20, 50)];
     [imageView setImage:[UIImage imageNamed: @"+86框.png"]];
@@ -651,18 +655,25 @@
     [self.view addSubview:imageView];
     
     self.phoneField = [[UITextField alloc]initWithFrame:CGRectMake(imageView.frame.size.width/7 , 0, imageView.frame.size.width - imageView.frame.size.width/7 , 50)];
-    [self.phoneField setAttributedPlaceholder:KMainPlaceholder(@"请输入您的手机号")];;
+    self.phoneField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
+    self.phoneField.userInteractionEnabled = NO;
     [self.phoneField setKeyboardType:UIKeyboardTypeNumberPad];;
     [self.phoneField setDelegate:self];;
     [imageView addSubview:self.phoneField];
     
     
-     UIButton *verifyButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
-    [verifyButton setTitle:@"获取验证码" forState:(UIControlStateNormal)];
-    [verifyButton.titleLabel setFont:[UIFont systemFontOfSize:13]];;
-    [verifyButton addTarget:self action:@selector(verify:) forControlEvents:(UIControlEventTouchUpInside)];
-    [verifyButton setFrame:CGRectMake(kMainWidth - 20 -90, 80, 90, 50)];;
-    [self.view addSubview:verifyButton];
+    
+    
+     self.verifyButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    [self.verifyButton setTitle:@"获取验证码" forState:(UIControlStateNormal)];
+    [self.verifyButton.titleLabel setFont:[UIFont systemFontOfSize:13]];;
+    [self.verifyButton addTarget:self action:@selector(verify:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.verifyButton setFrame:CGRectMake(kMainWidth - 20 -90, 80, 90, 50)];;
+    [self.view addSubview:self.verifyButton];
+    
+    self.timeLaber = [[UILabel alloc]initWithFrame:self.verifyButton.bounds];
+    self.timeLaber.text = @"120秒";
+    self.timeLaber.textAlignment = NSTextAlignmentCenter;
     
     
      UIImageView *codeimageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, imageView.frame.origin.y +70, kMainWidth - 20, 50)];
@@ -695,22 +706,27 @@
 {
     
     if (self.i == 14) {
+        
+        
+        
+        
     
     if ([CommUtils validatePhoneNumber:self.phoneField.text]) {
         
         NSString *url = [NSString stringWithFormat:@"%@?act=member_security&op=send_modify_mobile&mobile=%@",kMainHttp,self.phoneField.text];
-        NSLog(@"  wode url = = %@",url);
+        
+        
+        
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            NSLog(@"%@",[responseObject valueForKey:@"code"]);
+             
             
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
-            NSLog(@"%@",error);
+
             
             
         }];
@@ -813,22 +829,54 @@
 {
     ClickTViewController *clicktView = [[ClickTViewController alloc]init];
     
+    
     if (self.i == 12) {
+        
+        NSString *mobileStr = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=login&op=code_verify&mobile=%@&code=%@",kMainHttp,mobileStr,self.codeField.text];
+         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
+        [manager GET:url parameters:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                
+                
+                NSString *error = [[responseObject valueForKey:@"datas"] valueForKey:@"error"];
+                
+                
+                
+                UIAlertView *ale2 = [[UIAlertView alloc]initWithTitle:@"提示" message:error delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale2 show];
+                
+            }else {
+               
+                clicktView.coder = self.codeField.text;
+                clicktView.phonge = self.phoneField.text;
+                [self.navigationController pushViewController:clicktView animated:YES];
+                
+            }
+            
+
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+        
         
         clicktView.coder = self.codeField.text;
         clicktView.phonge = self.phoneField.text;
-        
+
         
         clicktView.k = 100;
-        [self.navigationController pushViewController:clicktView animated:YES];
         
-    }else if (self.i == 14 ) {
-
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        
     }
-    
-    
-    
+
+
+
+
+
 }
 
 
@@ -1053,14 +1101,15 @@
 
     
     UIImageView *codeimageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, imageView.frame.origin.y +70, kMainWidth - 20, 50)];
-    codeimageView.image = [UIImage imageNamed: @"获取验证码框.png"];
+    codeimageView.image = [UIImage imageNamed: @"获取验证码啊.png"];
     codeimageView.userInteractionEnabled = YES;
     [self.view addSubview:codeimageView];
     
     
     
     UIButton *verifyButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
-    verifyButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [verifyButton setTitle:@"获取验证码" forState:(UIControlStateNormal)];
+    verifyButton.titleLabel.font = [UIFont systemFontOfSize:11];
     [verifyButton addTarget:self action:@selector(verify:) forControlEvents:(UIControlEventTouchUpInside)];
     verifyButton.frame = CGRectMake(0, 0, kMainWidth/5, 50);
     [codeimageView addSubview:verifyButton];
@@ -1096,49 +1145,58 @@
             [self.delegate coderNstring:self.codeField.text moblePhone:self.phoneField.text];
             
         }
-        
+    
         
         NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
         NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-
-        NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"code":self.codeField,@"mobile":self.phoneField.text,};
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=login&op=edituser&member_id=%@&key=%@&code=%@&mobile=%@",kMainHttp,memeber_id,key,self.codeField.text,self.phoneField.text];
+        
         
         
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
-        
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        //申明请求的数据是json类型
-        manager.requestSerializer=[AFJSONRequestSerializer serializer];
-        //如果报接受类型不一致请替换一致text/html或别的
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-        
-        [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
-                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [ale show];
-            }else {
-                
-                [self.navigationController popViewControllerAnimated:YES];
-                
-            }
+    [manager GET:url parameters:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          
+                      if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"]==[NSNull null])) {
+          
+          
+                          NSString *error = [[responseObject valueForKey:@"datas"] valueForKey:@"error"];
+          
+          
+          
+                          NSLog(@"%@",error);
+          
+          
+                          UIAlertView *ale2 = [[UIAlertView alloc]initWithTitle:@"提示" message:error delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                          [ale2 show];
+          
+                      }else {
+                          
+                          [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"mobile"]  forKey : @"mobile"];
+          
+                          [self.navigationController popViewControllerAnimated:YES];
+                          
+                      }
 
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-        
-        
-        
-    }else {
-        
-        UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"格式有误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [ale show];
-        
-    }
-
+          
+          
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          
+      }];
     
+    
+    
+    }else {
+    
+            UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的手机号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [ale show];
+    
+        }
+    
+    
+
+
     
   
     
@@ -1163,14 +1221,15 @@
     
     
     UIImageView *codeimageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, imageView.frame.origin.y +70, kMainWidth - 20, 50)];
-    codeimageView.image = [UIImage imageNamed: @"获取验证码框.png"];
+    codeimageView.image = [UIImage imageNamed: @"获取验证码啊.png"];
     codeimageView.userInteractionEnabled = YES;
     [self.view addSubview:codeimageView];
     
     
     
     UIButton *verifyButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
-    verifyButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [verifyButton setTitle:@"获取验证码" forState:(UIControlStateNormal)];
+    verifyButton.titleLabel.font = [UIFont systemFontOfSize:11];
     [verifyButton addTarget:self action:@selector(verify:) forControlEvents:(UIControlEventTouchUpInside)];
     verifyButton.frame = CGRectMake(0, 0, kMainWidth/5, 50);
     [codeimageView addSubview:verifyButton];
@@ -1197,19 +1256,62 @@
 -(void)changeEmail
 {
 
-    if ( [CommUtils validateEmail:self.phoneField.text]&&[CommUtils validateNumber:self.codeField.text]) {
+    if ( [CommUtils validateEmail:self.phoneField.text]) {
 
         if ([self.delegate respondsToSelector:@selector(codernstring:email:)]) {
             [self.delegate codernstring:self.codeField.text email:self.phoneField.text];
+            }
+        
+        NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+        NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+        
+        NSString *url = [NSString stringWithFormat:@"%@?act=login&op=edituser&member_id=%@&key=%@&code=%@&email=%@",kMainHttp,memeber_id,key,self.codeField.text,self.phoneField.text];
+        
+        
+        
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        [manager GET:url parameters:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            [self.navigationController popViewControllerAnimated:YES];
             
             
-        }
+            if ([_codeField.text isEqualToString:@""]) {
+                
+                UIAlertView *ale2 = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入验证码" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale2 show];
+
+            }else {
+            
+            
+            if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"]==[NSNull null])) {
+                
+                
+                NSString *error = [[responseObject valueForKey:@"datas"] valueForKey:@"error"];
+                
+                
+                
+                NSLog(@"%@",error);
+                
+                
+                UIAlertView *ale2 = [[UIAlertView alloc]initWithTitle:@"提示" message:error delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale2 show];
+                
+            }else {
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }
+            
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+
         
     }else {
         
-        UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"格式有误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *ale= [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的邮箱" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [ale show];
         
     }
