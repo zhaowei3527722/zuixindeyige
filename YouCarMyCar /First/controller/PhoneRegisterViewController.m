@@ -37,7 +37,7 @@
     
     
     self.phoneScrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
-    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 720);
+    self.phoneScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 900);
     self.phoneScrollView.backgroundColor = COLOR(243, 233, 221, 1);
     self.phoneScrollView.delegate = self;
     [self.phoneScrollView addGestureRecognizer:tap];
@@ -96,6 +96,13 @@
     self.psaWordMY2.delegate = self;
     
     
+    self.coderMY = [[MyTextFiedNoimage alloc]initWithFrame:CGRectMake(10, 360, kMainWidth - 20, 40)];
+    self.coderMY.mytextField.placeholder = @"推荐人(选填)";
+    [self.phoneScrollView addSubview:self.coderMY];
+    
+    
+    
+    
     [self.phoneScrollView addSubview:self.nickNameMY];
     [self.phoneScrollView addSubview:self.userNameMY];
     [self.phoneScrollView addSubview:self.numberMY];
@@ -105,7 +112,7 @@
     
     //点击注册
     self.registerButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    self.registerButton.frame = CGRectMake(10,390, self.view.frame.size.width - 20, 40);
+    self.registerButton.frame = CGRectMake(10,440, self.view.frame.size.width - 20, 40);
     [self.registerButton setTitle:@"注册" forState:(UIControlStateNormal)];
     [self.registerButton  setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     [self.registerButton setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
@@ -125,7 +132,6 @@
     [self.pasWordMY1.mytextField resignFirstResponder];
     [self.psaWordMY2.mytextField resignFirstResponder];
     
-    NSLog(@"%hhd",[CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]);
     
     if ([CommUtils validatePhoneNumber:self.userNameMY.mytextField.text]) {
         
@@ -176,7 +182,7 @@
 {
     
     if ([CommUtils validatePwd:self.pasWordMY1.mytextField.text]&&[CommUtils validatePwd:self.psaWordMY2.mytextField.text]) {
-        NSDictionary *dic = @{@"act":@"login",@"op":@"register",@"username":self.nickNameMY.mytextField.text,@"mobile":self.userNameMY.mytextField.text,@"code":self.numberMY.mytextField.text,@"type":@"2",@"password":self.pasWordMY1.mytextField.text,@"password_confirm":self.psaWordMY2.mytextField.text,@"email":@"q1",@"client":@"wechat"};
+        NSDictionary *dic = @{@"act":@"login",@"op":@"register",@"username":self.nickNameMY.mytextField.text,@"mobile":self.userNameMY.mytextField.text,@"code":self.numberMY.mytextField.text,@"type":@"2",@"password":self.pasWordMY1.mytextField.text,@"password_confirm":self.psaWordMY2.mytextField.text,@"email":@"q1",@"client":@"wechat",@"referred_code":self.coderMY.mytextField.text};
         
         
         
@@ -186,6 +192,16 @@
             
             
             NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"error"]);
+            
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                
+                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                
+                
+                [aller show];
+
+            }
             
             
             if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {

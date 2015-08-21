@@ -160,17 +160,9 @@
 //点击确定 的点击事件
 -(void)registerButton:(UIButton *)button
 {//act=member_security
-//    •	op=reset_pwd
-//    •	code 验证码
-//    •	password 密码
-//    •	password_confirm 确认密码
-//    •	parameter 依照参数【手机号/邮箱】
-//    •	type 类型，2手机号，3邮箱
-//    
-
     
     
-    NSString *strin = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd&code=%@&password=%@&password_confirm=%@&parameter=%@&type=2",kMainHttp,self.numberMY.mytextField.text,self.pasWordMY1.mytextField.text,self.psaWordMY2.mytextField.text,self.userNameMY.mytextField.text];
+    NSString *strin = [NSString stringWithFormat:@"%@?act=member_security&op=reset_pwd&code=%@&password=%@&password_confirm=%@&parameter=%@&type=2&referred_code=%@",kMainHttp,self.numberMY.mytextField.text,self.pasWordMY1.mytextField.text,self.psaWordMY2.mytextField.text,self.userNameMY.mytextField.text];
     NSLog(@"123 == == =%@",strin);
     
     

@@ -301,14 +301,12 @@
             [self.myView addSubview:lable];
             
             
-            
             self.myTextView = [[ZWTextView alloc]initWithFrame:CGRectMake(10, 50, kMainWidth - 80, 50)];
             
             
             [self.myView addSubview:self.myTextView];
             self.myTextView.backgroundColor = COLOR(233, 233, 233, 1);
             self.myTextView.placeholder = @"请在这里输入您想说的话...";
-            
             
             self.myspeckButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
             self.myspeckButton.frame = CGRectMake(kMainWidth - 60, 50, 50, 50);
@@ -336,9 +334,6 @@
             
             [self.myliftButton setBackgroundImage:[UIImage imageNamed:@"产品详情未选中@3x.png"] forState:(UIControlStateNormal)];
             [self.myliftButton addTarget:self action:@selector(myliftButton:) forControlEvents:(UIControlEventTouchUpInside)];
-            
-            
-            
             [self.myView addSubview:self.myliftButton];
             
             self.myRignth = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -393,7 +388,6 @@
     
     NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-//    NSLog(@" =%@ ,=  %@ =%@ =key = %@",member_id,self.mymodel.myID,self.myTextView.text,key);
     
     
     if (![key isEqualToString:@""]) {
@@ -407,17 +401,13 @@
             
             [manager GET:utf8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
-                NSLog(@"----%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
-                
                 if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
                     UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                    
                     [al show];
                     
                 }
                 
                 [self.tableView.header beginRefreshing];
-                
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -426,15 +416,14 @@
                 
             }];
 
-        }
-        
+        }else {
         
         
         UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:@"评论内容不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         
         [ale show];
 
-        
+        }
 
 
     }else {
@@ -498,9 +487,6 @@
         NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         NSTimeInterval a = [dat timeIntervalSince1970];
         NSInteger tim =  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
-        
-        
-        NSLog(@" -- --- - %ld",(long)tim);
         mycell.mytimeInteger = tim -(a - self.miao) ;
         mycell.mydescritionLable.text = self.myModelnow.small_info;
         mycell.myallGoodsCount.text = self.myModelnow.number;
@@ -511,6 +497,11 @@
         if ([self.myModelnow.presence integerValue]==1) {
             [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
             
+        }else {
+            
+            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
+            
+
         }
         
 
@@ -518,7 +509,6 @@
         
     }else {
         SpeckModel *model = self.myArray[indexPath.row];
-        NSLog(@"=====================================================%@",model.member_avatar);
 
        static NSString *speckindext = @"indext";
         SpeckTableViewCell *speckCell = [self.tableView dequeueReusableCellWithIdentifier:speckindext];
@@ -530,7 +520,6 @@
         speckCell.myPersonTimageView.layer.masksToBounds = YES;
         [speckCell.myPersonTimageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
         
-        NSLog(@"%@ == =youzhi a @",model.member_avatar);
         
         speckCell.myNameLable.text = model.member_truename;//昵称
         speckCell.myNameLable.textColor = [UIColor brownColor];
@@ -543,19 +532,9 @@
         [formatter setDateStyle:NSDateFormatterMediumStyle];
         [formatter setTimeStyle:NSDateFormatterShortStyle];
         [formatter setDateFormat:@"yy年MM月dd日 HH:mm"];
-        
-        
         NSDate* date = [NSDate dateWithTimeIntervalSince1970:[model.add_time integerValue]];
-        
-        
         NSString* dateString = [formatter stringFromDate:date];
-        
-        
-        NSLog(@"format dateString:%@",dateString);
-        
         speckCell.mytimeLable.text = dateString;
-        
-        
         
         return speckCell;
         

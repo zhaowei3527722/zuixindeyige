@@ -34,7 +34,8 @@
         
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"key"];
         
-        
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"tishi"];
+
         ViewController *root = [[ViewController alloc]init];
         self.window.rootViewController = root;
         
@@ -86,6 +87,14 @@
     [ShareSDK connectQQWithQZoneAppKey:@"1104741533"
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
+    
+    [ShareSDK connectQZoneWithAppKey:@"1104741533"
+                           appSecret:@"j5TfJT6LjjHDjkEU"
+                   qqApiInterfaceCls:[QQApiInterface class]
+                     tencentOAuthCls:[TencentOAuth class]];
+    
+    id<ISSQZoneApp> app =(id<ISSQZoneApp>)[ShareSDK getClientWithType:ShareTypeQQSpace];
+    [app setIsAllowWebAuthorize:YES];
     
     
     //连接QQ空间应用

@@ -20,6 +20,8 @@
 @property (nonatomic ,strong)MyTextFied *numberMY;
 @property (nonatomic ,strong)MyTextFiedNoimage *pasWordMY1;
 @property (nonatomic ,strong)MyTextFiedNoimage *psaWordMY2;
+@property (nonatomic,strong)MyTextFiedNoimage *coderMY;
+
 @property (nonatomic ,strong)UIButton *registerButton;
 @property (nonatomic ,strong)UIImageView *imageView;
 

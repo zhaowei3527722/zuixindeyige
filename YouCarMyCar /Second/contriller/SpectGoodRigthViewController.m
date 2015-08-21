@@ -94,18 +94,18 @@
     self.indextnumber = 1;
     
     NSLog(@" = == myid = %@",self.mymodel.myID);
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@&curpage=1&eachNum=100",kMainHttp,self.mymodel.myID];
+
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *myurl = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@&curpage=1&eachNum=5",kMainHttp,self.mymodel.myID];
+    
+    
+    [manager GET:myurl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
             
-            
-//            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-//            self.miao = [dat timeIntervalSince1970];
-                    NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
+    NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
             [self.myArray removeAllObjects];
             
             for (NSDictionary *dic in array) {
@@ -139,11 +139,16 @@
 }
 -(void)footerRefreshing
 {
+    
+    self.indextnumber++;
     NSLog(@" = == myid = %@",self.mymodel.myID);
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@curpage=%ldeachNum=100",kMainHttp,self.mymodel.myID,(long)self.indextnumber];
+    
+    NSString *myurl = [NSString stringWithFormat:@"%@?act=try&op=getComment&tryId=%@&curpage=%ld&eachNum=5",kMainHttp,self.mymodel.myID,(long)self.indextnumber];
+    
+
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:myurl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
         if (![[responseObject valueForKey:@"datas"] valueForKey:@"error"] ) {
@@ -308,7 +313,7 @@
             
             
             
-        }
+        }else {
         
         
         
@@ -316,7 +321,7 @@
         
         [ale show];
         
-        
+        }
         
         
     }else {
