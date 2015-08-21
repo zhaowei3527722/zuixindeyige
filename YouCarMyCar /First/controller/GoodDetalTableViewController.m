@@ -301,9 +301,25 @@
         mycell.delegagate = self;
        // NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         //NSTimeInterval a = [dat timeIntervalSince1970];
-        NSInteger tim =  [self.myAllDetallModel.date integerValue]*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
+//        NSInteger tim =  [self.myAllDetallModel.date integerValue]*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
         
-        mycell.mytimeInteger = tim;
+        
+        if (self.myAllDetallModel.date > 0) {
+            self.tim=  ([self.myAllDetallModel.date integerValue] - 1)*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
+            
+            
+        }else {
+            self.tim=  [self.myAllDetallModel.date integerValue]*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
+            
+            
+            
+        }
+        
+        mycell.myDdd = self.myAllDetallModel.date;
+        
+        
+        mycell.mytimeInteger = self.tim;
+        
         mycell.mydescritionLable.text = self.myAllDetallModel.small_info;
         mycell.myallGoodsCount.text = self.myAllDetallModel.number;
         mycell.mynowPerson.text = self.myAllDetallModel.try_people;

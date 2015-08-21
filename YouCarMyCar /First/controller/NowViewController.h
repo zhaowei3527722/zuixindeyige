@@ -13,6 +13,7 @@
 @property (nonatomic ,strong)NSMutableArray *myArray;
 @property (nonatomic)NSTimeInterval miao;
 @property (nonatomic )NSInteger myarrayindext;
+@property (nonatomic)NSInteger tim;
 
 
 @end

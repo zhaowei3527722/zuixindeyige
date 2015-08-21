@@ -109,7 +109,7 @@
                     [self.myArray addObject:model];
                 }
                 [self.myTableview reloadData];//刷新数据
-            
+                NSLog( @"count = %lu",(unsigned long)self.myArray.count);
                 
             }
             
@@ -118,6 +118,8 @@
         
         
         NSArray *array = [responseObject valueForKey:@"list"];
+        
+        [self.myArray removeAllObjects];
         
         for (NSDictionary *dic in array) {
             RightModel *model = [[RightModel alloc]init];
@@ -145,7 +147,7 @@
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager  alloc]init];
     
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getWinning&try_id=%@&curpage=%ld&eachNum=100",kMainHttp,self.myModel.myID,(long)self.indextnumber];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=getWinning&try_id=48&curpage=%ld&eachNum=100",kMainHttp,(long)self.indextnumber];
     NSString *urlF8 = [url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -196,7 +198,18 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.myArray.count / 2;
+    
+    if (self.myArray.count == 1) {
+        return 1;
+        
+    }else {
+        
+        
+        return self.myArray.count / 2;
+        
+    }
+    
+    
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -209,10 +222,10 @@
     
     NSLog(@"%ld",indexPath.row * 2 );
     NSLog(@"%ld",indexPath.row *2 + 1);
+    NSLog(@"%lu",(unsigned long)self.myArray.count);
     
     
     RightModel *model1 = self.myArray[indexPath.row * 2];
-    RightModel *model2 = self.myArray[indexPath.row * 2 +1];
     static NSString *indext = @"indext";
     RightListTableViewCell *cell = [self.myTableview dequeueReusableCellWithIdentifier:indext];   
     if (!cell) {
@@ -223,11 +236,20 @@
     
     [cell.myliftImageView  sd_setImageWithURL:[NSURL URLWithString:model1.member_avatar]];
     cell.myliftNameLable.text = model1.member_name;
-    cell.myRightLable.text = model2.member_name;
-    [cell.myRightImageView sd_setImageWithURL:[NSURL URLWithString:model2.member_avatar]];
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    if (indexPath.row *2 +1 > self.myArray.count - 1) {
+        
+    }else {
+        
+        RightModel *model2 = self.myArray[indexPath.row * 2 +1];
+        
+        cell.myRightLable.text = model2.member_name;
+        [cell.myRightImageView sd_setImageWithURL:[NSURL URLWithString:model2.member_avatar]];
+        
+        
+        
+    }
+
     
     return cell;
     

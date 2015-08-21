@@ -524,7 +524,7 @@
                 [[NSUserDefaults standardUserDefaults]setValue:_addressModel.address forKey:@"address"
                  ];
                 
-                
+                [self custom];
                 
                     if ([self.delegate respondsToSelector:@selector(senderAddress:)]) {
                         [self.delegate senderAddress:_addressModel.address];
@@ -589,7 +589,6 @@
     self.navigationItem.rightBarButtonItem = right;
     
 
-    [self custom];
 
 }
 

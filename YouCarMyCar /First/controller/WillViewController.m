@@ -180,9 +180,27 @@
     NSTimeInterval a = [dat timeIntervalSince1970];
     [cell.mybutton setBackgroundImage:[UIImage imageNamed:@"jingqgz.png"] forState:(UIControlStateNormal)];
     
-    
-    cell.mytimeInteger = 1000 - (a - self.miao) ;
     NowViewModel *model = self.myArray[indexPath.row];
+
+    
+    
+    
+    
+    
+    
+    
+    if (model.date > 0) {
+        self.tim=  ([model.date integerValue] - 1)*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
+        
+        
+    }else {
+        self.tim=  [model.date integerValue]*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
+        
+        
+    }
+
+    cell.myDdd = model.date;
+    cell.mytimeInteger = self.tim;
     cell.mydescritionLable.text = model.small_info;
     cell.myallGoodsCount.text = model.number;
     cell.mynowPerson.text = model.try_people;
@@ -203,6 +221,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:@"商品还未开始试用,敬请期待!" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [al show];
 }
 
 /*

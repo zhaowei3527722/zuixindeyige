@@ -54,6 +54,9 @@
     self.mytableView.delegate = self;
     self.mytableView.dataSource = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
+    self.mytableView.tableFooterView = [[UIView alloc] init];
+    
+    
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
     header.automaticallyChangeAlpha = YES;

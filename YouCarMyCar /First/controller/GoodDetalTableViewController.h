@@ -30,6 +30,7 @@
 @property (nonatomic ,strong)UIButton *myRignth;
 @property (nonatomic ,strong)UIView *myView;
 @property (nonatomic ,assign)id<GoodDetalTableviewDelegate>delegate;
+@property (nonatomic )NSInteger tim;
 
 -(id)initWithModel:(NowViewModel *)model;//重写初始化方法;
 

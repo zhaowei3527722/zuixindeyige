@@ -540,6 +540,7 @@
                 
                 
                 
+                
             }
             
             [self.HUD removeFromSuperview];
@@ -574,7 +575,7 @@
 {
     if (alertView.tag == 101) {
         if (buttonIndex == 0) {
-//            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
             
         }
 

@@ -257,6 +257,13 @@
                 
                 
             }
+            
+            NSString * aa = [[responseObject valueForKey:@"datas"] valueForKey:@"allnum"];
+            
+            
+            self.myallnum = [NSString stringWithFormat:@"共有%@份报告",aa];
+            
+            
 
         }
         
@@ -342,7 +349,9 @@
         }
         wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
         wqCell.myGoodsNameLable.text = self.myAllmodel.title;
-        wqCell.myreportNumberLable .text = @"一共是100万份";
+        
+        
+        wqCell.myreportNumberLable .text = self.myallnum;
         wqCell.myGoodDescritionLable.text = self.myAllmodel.small_info;
         wqCell.myGoodNumberLable.text = self.myAllmodel.number;
         wqCell.myPeopleNumberLable.text = self.myAllmodel.try_people;
@@ -525,18 +534,14 @@
 
 -(void)liftButton:(UIButton *)button
 {
-    LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
-    lift.wangqiModel = self.wangqiModel;
-    [self.navigationController pushViewController:lift animated:YES];
-
-    NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+        NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     
     if (!([key isEqualToString:@""])) {
         
         
         NSLog(@" ------------%@",self.myAllmodel.prize);
         
-        if ((NSInteger)self.myAllmodel.prize  == 1) {
+        if ([self.myAllmodel.prize integerValue] == 1) {
             
             LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
             lift.wangqiModel = self.wangqiModel;

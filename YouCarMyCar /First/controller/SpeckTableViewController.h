@@ -28,6 +28,7 @@
 @property (nonatomic ,assign)id<SpeckTableviewDelegate>delegate;
 @property (nonatomic ,strong)UIButton *myspeckButton;
 -(id)initWithModel:(NowViewModel *)model;//重写初始化方法;
+@property (nonatomic )NSInteger tim;
 
 
 @end

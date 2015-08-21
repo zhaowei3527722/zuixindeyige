@@ -25,5 +25,7 @@
 @property (nonatomic ,strong)NSString *quality_info;
 @property (nonatomic ,strong)NSString *score;
 @property (nonatomic ,strong)NSString *try_id;
+@property (nonatomic,strong)NSString *allnum;
+
 
 @end

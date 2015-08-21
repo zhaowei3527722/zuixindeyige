@@ -320,9 +320,22 @@
     NSTimeInterval a = [dat timeIntervalSince1970];
     NowViewModel *model = self.myArray[indexPath.row];
 
-    NSInteger tim =  [model.date integerValue]*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
     
-    mycell.mytimeInteger = tim - (a - self.miao) ;
+    if (model.date > 0) {
+        self.tim=  ([model.date integerValue] - 1)*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
+
+        
+    }else {
+        self.tim=  [model.date integerValue]*24*3600 + [model.hours integerValue]*3600+[model.minutes integerValue]*60 + [model.seconds integerValue];
+        
+
+        
+    }
+    
+    mycell.myDdd = model.date;
+    
+    
+    mycell.mytimeInteger = self.tim - (a - self.miao) ;
     mycell.mydescritionLable.text = model.small_info;
     mycell.myallGoodsCount.text = model.number;
     mycell.mynowPerson.text = model.try_people;

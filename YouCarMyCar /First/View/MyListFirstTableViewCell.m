@@ -51,10 +51,22 @@
             self.myTimeLable.font = [UIFont systemFontOfSize:13];
 
             self.timLable = [[MZTimerLabel alloc] initWithLabel:self.myTimeLable andTimerType:MZTimerLabelTypeTimer];
-            [self.timLable setCountDownTime:_mytimeInteger];
+            [self.timLable setStopWatchTime:_mytimeInteger];
             self.timLable.timeLabel.textColor = [UIColor brownColor];
             [self.timLable start];
             self.timLable.timeLabel.textAlignment = NSTextAlignmentCenter;
+            
+            if (self.myDdd > 0) {
+                
+                self.timLable.timeFormat = @"0天H时 mm分ss秒";
+
+                
+            }else {
+                
+                self.timLable.timeFormat = @"0天H时 mm分ss秒";
+                
+            }
+            
             
             
             
@@ -89,7 +101,18 @@
             self.timLable.timeLabel.textColor = [UIColor brownColor];
             [self.timLable start];
             self.timLable.timeLabel.textAlignment = NSTextAlignmentCenter;
+            if (self.myDdd > 0) {
+                
+                self.timLable.timeFormat = @"d天H时 mm分ss秒";
+                
+                
+            }else {
+                
+                self.timLable.timeFormat = @"0天H时 mm分ss秒";
+                
+            }
             
+
             
             
             

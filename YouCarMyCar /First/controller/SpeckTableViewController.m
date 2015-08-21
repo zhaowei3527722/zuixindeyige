@@ -55,7 +55,8 @@
     self.modalPresentationCapturesStatusBarAppearance = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.extendedLayoutIncludesOpaqueBars = NO;
-    
+    self.tableView.tableFooterView = [[UIView alloc] init];
+
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
@@ -494,9 +495,22 @@
         mycell.delegagate = self;
         NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
         NSTimeInterval a = [dat timeIntervalSince1970];
-        NSInteger tim =  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
-        mycell.mytimeInteger = tim -(a - self.miao) ;
-        mycell.mydescritionLable.text = self.myAllmodel.small_info;
+//        NSInteger tim =  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
+        
+        if (self.myAllmodel.date > 0) {
+            self.tim=  ([self.myAllmodel.date integerValue] - 1)*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
+            
+            
+        }else {
+            self.tim=  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
+            
+            
+            
+        }
+        
+        mycell.myDdd = self.myAllmodel.date;
+        mycell.mytimeInteger = self.tim;
+      mycell.mydescritionLable.text = self.myAllmodel.small_info;
         mycell.myallGoodsCount.text = self.myAllmodel.number;
         mycell.mynowPerson.text = self.myAllmodel.try_people;
         mycell.myGoodName.text = self.myAllmodel.title;

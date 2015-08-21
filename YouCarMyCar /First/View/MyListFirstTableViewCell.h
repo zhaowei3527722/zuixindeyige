@@ -34,6 +34,7 @@
 @property (nonatomic  ,strong)MZTimerLabel *timLable;
 @property (nonatomic,strong)UIImageView *myNumberImageView;//期数
 @property (nonatomic,strong)UILabel *myNumberLable;//期数
+@property (nonatomic,strong)NSString *myDdd;
 
 
 

@@ -11,5 +11,6 @@
 @interface WillViewController : UIViewController
 @property (nonatomic ,strong)NSMutableArray *myArray;
 @property (nonatomic )NSInteger miao;
+@property (nonatomic)NSInteger tim;
 
 @end

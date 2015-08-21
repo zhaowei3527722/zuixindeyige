@@ -12,6 +12,7 @@
 @property (nonatomic,strong)UITableView *myTableView;
 @property (nonatomic,strong)WangQiModel *wangqiModel;
 @property (nonatomic,strong)UIImageView *myBigImageView;
+@property (nonatomic ,strong)NSString *myallnum;
 
 @property (nonatomic,strong)NSString *stringID;
 @end
