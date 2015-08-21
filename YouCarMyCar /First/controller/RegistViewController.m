@@ -147,6 +147,7 @@
 
 -(void)pop
 {
+    
     [self.navigationController popViewControllerAnimated:YES];
     
 }

@@ -74,12 +74,68 @@
     surebutton.backgroundColor = COLOR(53, 224, 229, 1);
     [surebutton addTarget:self action:@selector(sure) forControlEvents:(UIControlEventTouchUpInside)];
     [self.view addSubview:surebutton];
+    
+    self.navigationItem.leftBarButtonItem = nil;
 }
 
 
 -(void)pop
 {
+    
+    
+    if (self.j == 10) {
+        if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"key"] isEqualToString:@""]) {
+            AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+            manager.responseSerializer = [AFJSONResponseSerializer serializer];
+            //申明请求的数据是json类型
+            manager.requestSerializer=[AFJSONRequestSerializer serializer];
+            //如果报接受类型不一致请替换一致text/html或别的
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+            
+            NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+            NSString  *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+            
+            NSString *url = [NSString stringWithFormat:@"%@?act=login&op=outlogin&member_id=%@&key=%@",kMainHttp,member_id,key];
+            
+            NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                
+                if ([[responseObject valueForKey:@"datas"] valueForKey:@"status"]) {
+                    
+                    NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
+                    
+                    [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
+                    [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
+                    
+                }
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                if (error) {
+                    NSLog(@"错误 = = %@",error);
+                    
+                    
+                }
+            }];
+            
+            
+        }else {
+            
+            
+        }
+        
+        
+        
+        LoginViewController *laog = [[LoginViewController alloc]init];
+        laog.k = 110;
+        [self.navigationController pushViewController:laog animated:YES];
+        
+
+        
+    }else {
     [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 -(void)sure
 {
@@ -94,7 +150,6 @@
         
         NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
         NSString  *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
-        NSLog(@" - - - - - - - -%@%@",key,member_id);
         
         NSString *url = [NSString stringWithFormat:@"%@?act=login&op=outlogin&member_id=%@&key=%@",kMainHttp,member_id,key];
         

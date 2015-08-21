@@ -437,7 +437,15 @@
         [self.navigationController pushViewController:clichVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 5) {
         clichVC.i = 12;
-        [self.navigationController pushViewController:clichVC animated:YES];
+        
+        if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"]isEqualToString:@""]) {
+            [self.navigationController pushViewController:clichVC animated:YES];
+        }else {
+            UIAlertView *ale2 = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先绑定手机号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [ale2 show];
+        }
+        
+        
     }else if (indexPath.section == 1 && indexPath.row == 1){
         clichVC.i = 14;
         clichVC.delegate = self;
