@@ -97,7 +97,6 @@
     
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=1&eachNum=5&type=1&member_id=%@&key=%@",kMainHttp,member_id,key];
     
-    NSLog(@"- - --- --- --- -- - -%@",url);
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -114,12 +113,10 @@
         }
         
         [self.mytable reloadData];//刷新;
-//        [self.mytable headerEndRefreshing];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         NSLog(@"%@",error);
-//        [self.mytable headerEndRefreshing];
 
         
     }];
@@ -137,14 +134,8 @@
     
     
     
-    NSLog(@" = = = = == = ==%ld",(long)self.indextnumber);
-    
-    
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     NSString *member_id =  [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
-    
-    
-    
     
     NSString *url = [NSString stringWithFormat:@"%@?act=try&op=list&curpage=%ld&eachNum=5&type=1&member_id=%@&key=%@",kMainHttp,(long)self.indextnumber,member_id,key];    NSLog(@"- - --- --- --- -- - -%@",url);
     

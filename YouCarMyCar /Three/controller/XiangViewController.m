@@ -35,10 +35,10 @@
 @property (nonatomic,copy)NSString *str;
 @property (nonatomic,strong)UITextField *myTextF;
 @property (nonatomic,strong)UITextField *nameTextField;
-@property (nonatomic,strong)UILabel *photoLable;
-@property (nonatomic,strong)UILabel *emailLabel;
-@property (nonatomic,strong)UILabel *sexLabel;
-@property (nonatomic,strong)UILabel *addressLabel;
+@property (nonatomic,strong)UITextField *photoTextField;
+@property (nonatomic,strong)UITextField *emailTextField;
+@property (nonatomic,strong)UITextField *sexTextField;
+@property (nonatomic,strong)UITextField *addressTextField;
 @property (nonatomic,copy)NSString *codeString;
 @property (nonatomic)BOOL isYes;
 @property (nonatomic)BOOL isSex;
@@ -180,54 +180,54 @@
     [self.tableView addSubview:self.nameTextField];
     
     
-    self.photoLable = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 205, 200, 21)];
+    self.photoTextField = [[UITextField alloc]initWithFrame:CGRectMake(kMainWidth - 240, 205, 200, 21)];
     
     if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"] isEqualToString:@""]) {
-        self.photoLable.text = @"请绑定手机号";
-        self.photoLable.textColor = COLOR(200, 200, 200, 1);
+        self.photoTextField.placeholder = @"请绑定手机号";
     }else{
-        self.photoLable.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
+        self.photoTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
     }
-    self.photoLable.font = [UIFont systemFontOfSize:14];
-    self.photoLable.textAlignment = NSTextAlignmentRight;
-    [self.tableView addSubview:self.photoLable];
+    self.photoTextField.font = [UIFont systemFontOfSize:14];
+    self.photoTextField.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.photoTextField];
     
-    self.emailLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 245, 200, 21)];
+    self.emailTextField = [[UITextField alloc]initWithFrame:CGRectMake(kMainWidth - 240, 245, 200, 21)];
     
     if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"email"] isEqualToString:@""]) {
-        self.emailLabel.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
+        self.emailTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
     }else{
-        self.emailLabel.text = @"请绑定邮箱";
-        self.emailLabel.textColor = COLOR(200, 200, 200, 1);
+        self.emailTextField.placeholder = @"请绑定邮箱";
     }
-    self.emailLabel.font = [UIFont systemFontOfSize:14];
-    self.emailLabel.textAlignment = NSTextAlignmentRight;
-    [self.tableView addSubview:self.emailLabel];
+    self.emailTextField.font = [UIFont systemFontOfSize:14];
+    self.emailTextField.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.emailTextField];
     
-    self.sexLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 285, 200, 21)];
+    self.sexTextField = [[UITextField alloc]initWithFrame:CGRectMake(kMainWidth - 240, 285, 200, 21)];
     
     if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"sex"] isEqualToString:@""]) {
-        self.sexLabel.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
+        self.sexTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"sex"];
     }else{
-        self.sexLabel.text = @"请选择性别";
-        self.sexLabel.textColor = COLOR(200, 200, 200, 1);
+        self.sexTextField.placeholder = @"请选择性别";
     }
-    self.sexLabel.font = [UIFont systemFontOfSize:14];
-    self.sexLabel.textAlignment = NSTextAlignmentRight;
-    [self.tableView addSubview:self.sexLabel];
+    self.sexTextField.font = [UIFont systemFontOfSize:14];
+    self.sexTextField.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.sexTextField];
     
-    self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 240, 325, 200, 21)];
+    self.addressTextField = [[UITextField alloc]initWithFrame:CGRectMake(kMainWidth - 240, 325, 200, 21)];
     if ( ![[[NSUserDefaults standardUserDefaults]valueForKey:@"address"] isEqual: @"1"]) {
-        self.addressLabel.text =[[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
+        self.addressTextField.text =[[NSUserDefaults standardUserDefaults]valueForKey:@"address"];
+        NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"address"]);
     }else{
-        self.addressLabel.text = @"添加地址";
-        self.addressLabel.textColor = COLOR(200, 200, 200, 1);
+        self.addressTextField.placeholder = @"添加地址";
     }
-    self.addressLabel.font = [UIFont systemFontOfSize:14];
-    self.addressLabel.textAlignment = NSTextAlignmentRight;
-    [self.tableView addSubview:self.addressLabel];
+    self.addressTextField.font = [UIFont systemFontOfSize:14];
+    self.addressTextField.textAlignment = NSTextAlignmentRight;
+    [self.tableView addSubview:self.addressTextField];
 
-    
+    self.photoTextField.userInteractionEnabled = NO;
+    self.emailTextField.userInteractionEnabled = NO;
+    self.sexTextField.userInteractionEnabled = NO;
+    self.addressTextField.userInteractionEnabled = NO;
     
     
 }
@@ -255,13 +255,13 @@
     
 
     
-    if ((!self.sexLabel.text)||[self.sexLabel.text isEqualToString:@"保密"]) {
+    if ((!self.sexTextField.text)||[self.sexTextField.text isEqualToString:@"保密"]) {
         self.sex = @"0";
         
-    }else if ([self.sexLabel.text isEqualToString:@"男"]){
+    }else if ([self.sexTextField.text isEqualToString:@"男"]){
         self.sex = @"1";
         
-    }else if ([self.sexLabel.text isEqualToString:@"女"]){
+    }else if ([self.sexTextField.text isEqualToString:@"女"]){
         
         self.sex = @"2";
         
@@ -272,25 +272,20 @@
         self.base64string = @"";
         
     }
-    if (!self.emailLabel.text) {
-        self.emailLabel.text = @"";
+    if (!self.emailTextField.text) {
+        self.emailTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"email"];
         
     }if (!self.nameTextField.text) {
         self.nameTextField.text = @"";
         
-    }if (!self.photoLable.text) {
-        self.photoLable.text = @"";
+    }if (!self.photoTextField.text) {
+        self.photoTextField.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"mobile"];
     }
     
-    
-    NSLog(@"%@",memeber_id);
-    NSLog(@"%@",key);
-    NSLog(@"%@",self.sex);
-    
 
-    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoLable.text,@"email":self.emailLabel.text};
-    NSLog(@"%@",parameters);
-    NSLog(@"%@",self.emailLabel.text);
+    NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"sex":self.sex,@"truename":self.nameTextField.text,@"avatar":self.base64string,@"code":self.codeString,@"mobile":self.photoTextField.text,@"email":self.emailTextField.text};
+
+    
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     
@@ -317,8 +312,6 @@
         
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"member_truename"] forKey:@"member_truename"];
         
-        [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
-        
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"avatar"] forKey:@"avatar"];
         
         NSLog(@"%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"avatar"]);
@@ -340,19 +333,6 @@
             [[NSUserDefaults standardUserDefaults]setValue:@"保密" forKey:@"sex"];
         }
 
-        
-        
-        
-        NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
-        
-        if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
-            [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"] forKey:@"address"];
-        }else {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"address"];
-        }
-        
-        
-        [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"address"];
         
         [[NSUserDefaults standardUserDefaults] setObject:[[responseObject valueForKey:@"datas"] valueForKey:@"username"] forKey:@"username"];
         
@@ -387,24 +367,23 @@
 
 -(void)sender:(NSString *)sexString
 {
-    self.sexLabel.textColor = [UIColor blackColor];
-    self.sexLabel.text = sexString;
+    
+    self.sexTextField.text = sexString;
 }
 -(void)codernstring:(NSString *)coder email:(NSString *)email
 {
-    self.emailLabel.textColor = [UIColor blackColor];
-    self.emailLabel.text =email;
+    self.emailTextField.text =email;
     self.codeString = coder;
 }
 -(void)coderNstring:(NSString *)coder moblePhone:(NSString *)moblePhone
 {
-    self.photoLable.text = moblePhone;
+    self.photoTextField.text = moblePhone;
     self.codeString = coder;
 }
 -(void)senderAddress:(NSString *)addressStr
 {
-    self.addressLabel.text = addressStr;
-    NSLog(@"%@",addressStr);
+    self.addressTextField.text = addressStr;
+
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     

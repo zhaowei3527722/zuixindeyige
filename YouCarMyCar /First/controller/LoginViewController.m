@@ -797,7 +797,6 @@
             
             
             
-            
             NSString *address = [[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"];
             
             if ([[[responseObject valueForKey:@"datas"] valueForKey:@"address"]valueForKey:@"address"]) {
@@ -857,7 +856,13 @@
 -(void)pop
 {
     
-    [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"%d",self.k);
+    
+    if (self.k == 110) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
 }
 - (void)didReceiveMemoryWarning {

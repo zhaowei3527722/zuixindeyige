@@ -54,9 +54,9 @@
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kMainWidth, kMainHeight - 108)];
     
     NSArray *array1 = [[NSArray alloc]initWithObjects:@"活动记录",@"活动介绍", nil];
-    NSArray *array2 = [[NSArray alloc]initWithObjects:@"关于我们",@"用户反馈",@"版本更新", nil];
+    NSArray *array2 = [[NSArray alloc]initWithObjects:@"关于我们",@"用户反馈", nil];
     NSArray *imageArr1 = [[NSArray alloc]initWithObjects:@"活动记录.png",@"活动介绍.png", nil];
-    NSArray *imageArr2 = [[NSArray alloc]initWithObjects:@"关于我们.png",@"意见反馈.png",@"版本更新.png", nil];
+    NSArray *imageArr2 = [[NSArray alloc]initWithObjects:@"关于我们.png",@"意见反馈.png", nil];
     
     [self.dic      setValue:array1    forKey:@"1"];
     [self.dic      setValue:array2    forKey:@"2"];
@@ -119,7 +119,7 @@
     }else if (section == 1) {
         return 2;
     }else {
-        return 3;
+        return 2;
     }
     
 }
@@ -202,10 +202,7 @@
         }
         
     } else if (indexPath.section == 2 && indexPath.row == 2 ){
-        
-        UIAlertView *alterView = [[UIAlertView alloc] initWithTitle:nil message:@"已经是最新版本" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        alterView.backgroundColor = [UIColor redColor];
-        [alterView show];
+       
     }
     
 }
@@ -282,13 +279,6 @@
         }
         
         if (indexPath.section == 2  && indexPath.row == 2) {
-            
-            self.versionbLabel = [[UILabel alloc]initWithFrame:CGRectMake(kMainWidth - 150, 0, 120, 50)];
-            self.versionbLabel.text = @"已是最新版本";
-            self.versionbLabel.textColor = [UIColor grayColor];
-            self.versionbLabel.font = [UIFont systemFontOfSize:14];
-            self.versionbLabel.textAlignment = NSTextAlignmentRight;
-            [cell addSubview: self.versionbLabel];
             
         }
         return cell;

@@ -225,6 +225,7 @@
 		956CE17C1B6864A200545644 /* 背景框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE1791B6864A200545644 /* 背景框@2x.png */; };
 		956CE17D1B6864A200545644 /* +86框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17A1B6864A200545644 /* +86框@2x.png */; };
 		956CE17E1B6864A200545644 /* 获取验证码框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 956CE17B1B6864A200545644 /* 获取验证码框@2x.png */; };
+		957D64381B85D9490093CC80 /* img_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 957D64371B85D9490093CC80 /* img_add@2x.png */; };
 		958144921B84505D00702823 /* 试用协议@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 958144911B84505D00702823 /* 试用协议@2x.png */; };
 		958144961B848E6D00702823 /* 默认头像.png in Resources */ = {isa = PBXBuildFile; fileRef = 958144951B848E6D00702823 /* 默认头像.png */; };
 		958178311B4BB1BD001AA514 /* ClickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 958178301B4BB1BD001AA514 /* ClickViewController.m */; };
@@ -649,6 +650,7 @@
 		956CE1791B6864A200545644 /* 背景框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "背景框@2x.png"; sourceTree = "<group>"; };
 		956CE17A1B6864A200545644 /* +86框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+86框@2x.png"; sourceTree = "<group>"; };
 		956CE17B1B6864A200545644 /* 获取验证码框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "获取验证码框@2x.png"; sourceTree = "<group>"; };
+		957D64371B85D9490093CC80 /* img_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_add@2x.png"; sourceTree = "<group>"; };
 		958144911B84505D00702823 /* 试用协议@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "试用协议@2x.png"; sourceTree = "<group>"; };
 		958144951B848E6D00702823 /* 默认头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "默认头像.png"; sourceTree = "<group>"; };
 		9581782F1B4BB1BD001AA514 /* ClickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickViewController.h; sourceTree = "<group>"; };
@@ -967,6 +969,7 @@
 		0A9E68501B43BDDC00A71D88 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				957D64371B85D9490093CC80 /* img_add@2x.png */,
 				0AEC9E061B85A69800CDEAC7 /* 冷启动页面2.jpg */,
 				958144951B848E6D00702823 /* 默认头像.png */,
 				958144911B84505D00702823 /* 试用协议@2x.png */,
@@ -1811,6 +1814,7 @@
 				0A0E45991B61D22500A52286 /* 即将开启未选中@2x.png in Resources */,
 				95D08E181B5F7D7A00A2CA2F /* 第几几期@2x.png in Resources */,
 				959281C01B6A214C00F122B8 /* EvaluateTableViewCell.xib in Resources */,
+				957D64381B85D9490093CC80 /* img_add@2x.png in Resources */,
 				95D08E1F1B5F97FB00A2CA2F /* 密码设置成功@2x.png in Resources */,
 				95DFE73C1B6B0753000B03EE /* TiJiaoTableViewCell.xib in Resources */,
 				95C7BA871B5E2E09009604D7 /* 意见反馈@2x.png in Resources */,

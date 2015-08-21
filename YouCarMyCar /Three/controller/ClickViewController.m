@@ -67,7 +67,7 @@
         
     }else if (self.i == 11) {    //布局地址编辑
         
-       // [self layoutAddress];
+        [self layoutAddress];
         
     }else if (self.i == 12) {    //布局修改密码
         
@@ -99,35 +99,7 @@
 
 -(void)pop
 {
-    
-    
-    
-    
-//    if (indexPath.row == 1) {
-//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 25, 20, 20)];
-//        self.sexString = @"男";
-//        [self.tableView addSubview:self.choiceImage];
-//    }else if (indexPath.row == 2) {
-//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 75, 20, 20)];
-//        self.sexString = @"女";
-//        [self.tableView addSubview:self.choiceImage];
-//    }else if (indexPath.row == 3) {
-//        [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 125, 20, 20)];
-//        self.sexString = @"保密";
-//        [self.tableView addSubview:self.choiceImage];
 
-    
-    if (self.choiceImage.frame.origin.y==25) {
-        _sexString = @"男";
-    }else if (self.choiceImage.frame.origin.y==75) {
-        _sexString = @"女";
-    }else if (self.choiceImage.frame.origin.y==125) {
-        _sexString = @"保密";
-    }
-        
-    if ([_delegate respondsToSelector:@selector(sender:)]) {
-        [_delegate sender:_sexString];
-    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -297,6 +269,18 @@
             [self.choiceImage setFrame:CGRectMake(kMainWidth - 40, 125, 20, 20)];
             [self.tableView addSubview:self.choiceImage];
         }
+        
+        if (self.choiceImage.frame.origin.y==25) {
+            _sexString = @"男";
+        }else if (self.choiceImage.frame.origin.y==75) {
+            _sexString = @"女";
+        }else if (self.choiceImage.frame.origin.y==125) {
+            _sexString = @"保密";
+        }
+        
+        if ([_delegate respondsToSelector:@selector(sender:)]) {
+            [_delegate sender:_sexString];
+        }
     }
 }
 
@@ -327,7 +311,7 @@
     }else if (self.i == 13) {
         
         NSString *tag=@"tag";
-        NSArray *arr = [[NSArray alloc]initWithObjects:@" ",@"男",@"女",@"保密", nil];
+        NSArray *arr = [[NSArray alloc]initWithObjects:@"",@"男",@"女",@"保密", nil];
         NSString *cellString  =arr[indexPath.row];
         UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:tag];
         
@@ -391,7 +375,6 @@
 
 -(void)baogao:(UIButton *)button
 {
-    NSLog(@"跳转到填写试用报告的页面");
     
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
@@ -431,17 +414,11 @@
 -(void)changeButton:(UIButton *)button
 {
     
-   
-//    [self layoutAddress];
-//    
-//     [button setImage:[UIImage imageNamed:@"默认.png"] forState:(UIControlStateNormal)];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定将改地址设置成默认地址?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alert.tag = 111;
-    
     [alert show];
 
-    
     UITableViewCell *cell = (UITableViewCell *)[[button  superview] superview];
     self.myIndexPath = [self.tableView indexPathForCell:cell];
 
@@ -450,18 +427,14 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    
     if (self.i == 11) {
-        [self layoutAddress];
+        [self custom];
 
     }
-    
     
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    
     
         
     if (alertView.tag == 110) {
@@ -477,20 +450,8 @@
             //删除地址
             NSString *member_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
             NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
-            
             self.addressModel = _addressArray[_addressArray.count  - 1 - _myIndexPath.row];
-            
-            NSLog(@"%lu  %ld",(unsigned long)self.addressArray.count,(long)self.myIndexPath.row);
-
-            NSLog(@"%lu",self.addressArray.count - 1 - self.myIndexPath.row);
-            
-            
             NSString *addressID = _addressModel.address_id;
-            
-        
-            
-            NSLog(@"%@",addressID);
-            
             NSDictionary *params = @{@"act":@"member_address",@"op":@"address_del",@"member_id":member_id,@"key":key,@"address_id":addressID};
             
             AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
@@ -499,12 +460,8 @@
                
            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                
-//               [self layoutAddress];
-               
                [self.addressArray removeObjectAtIndex:_addressArray.count  - 1 - _myIndexPath.row];
                [self.tableView deleteRowsAtIndexPaths:@[_myIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-               
-               
                
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                
@@ -535,6 +492,7 @@
             NSLog(@"%lu",self.addressArray.count - 1 - self.myIndexPath.row);
             
             
+            
             NSString *addressID = _addressModel.address_id;
             
             NSDictionary *params = @{@"act":@"member_address",@"op":@"default_address",@"member_id":member_id,@"key":key,@"address_id":addressID};
@@ -547,14 +505,17 @@
                 
                               [self layoutAddress];
                 
-                    
+                [[NSUserDefaults standardUserDefaults]setValue:_addressModel.address forKey:@"address"
+                 ];
+                
+                
+                
                     if ([self.delegate respondsToSelector:@selector(senderAddress:)]) {
                         [self.delegate senderAddress:_addressModel.address];
                         
                     }
                 
                 [[NSUserDefaults standardUserDefaults] setValue:_addressModel.address forKey:@"address"];
-                
                 
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -603,13 +564,21 @@
     
     //添加
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    [button setImage:[UIImage imageNamed:@"添加按钮.png"] forState:(UIControlStateNormal)];
+    [button setImage:[UIImage imageNamed:@"img_add.png"] forState:(UIControlStateNormal)];
+    [button setTintColor:[UIColor whiteColor]];
     [button setFrame:CGRectMake(0, 0, 25, 25)];
     [button setTintColor:[UIColor whiteColor]];
     [button addTarget:self action:@selector(add) forControlEvents:(UIControlEventTouchUpInside)];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = right;
     
+
+    [self custom];
+
+}
+
+-(void)custom
+{
     //数据请求
     
     self.addressArray = [[NSMutableArray alloc]init];
@@ -619,13 +588,13 @@
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!([[responseObject valueForKey:@"datas"] valueForKey:@"error"])) {
-
+            
             NSMutableArray *array = [[responseObject valueForKey:@"datas"] valueForKey:@"list"];
             for (NSDictionary *dic in array) {
                 AddressModel *addressModel = [[AddressModel alloc]init];
                 [addressModel setValuesForKeysWithDictionary:dic];
                 [self.addressArray addObject:addressModel];
-
+                
             }
             NSLog(@"%ld",_addressArray.count);
             
@@ -634,9 +603,8 @@
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"%@",error);
+        NSLog(@"%@",error);
     }];
-
 }
 
 
@@ -1110,13 +1078,44 @@
 -(void)surePhone
 {
   
-    if ( [CommUtils validatePhoneNumber:self.phoneField.text]&&[CommUtils validateNumber:self.codeField.text]) {
+    if ( [CommUtils validatePhoneNumber:self.phoneField.text]) {
         
         if ([self.delegate respondsToSelector:@selector(coderNstring:moblePhone:)]) {
             [self.delegate coderNstring:self.codeField.text moblePhone:self.phoneField.text];
             
         }
-        [self.navigationController popViewControllerAnimated:YES];
+        
+        
+        NSString *memeber_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+        NSString *key = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
+
+        NSDictionary *parameters = @{@"act":@"login",@"op":@"edituser",@"member_id":memeber_id,@"key":key,@"code":self.codeField,@"mobile":self.phoneField.text,};
+        
+        
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
+        
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        //申明请求的数据是json类型
+        manager.requestSerializer=[AFJSONRequestSerializer serializer];
+        //如果报接受类型不一致请替换一致text/html或别的
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        
+        [manager POST:kMainHttp parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            if ([[responseObject valueForKey:@"datas"] valueForKey:@"error"]) {
+                UIAlertView *ale = [[UIAlertView alloc]initWithTitle:@"提示" message:[[responseObject valueForKey:@"datas"] valueForKey:@"error"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [ale show];
+            }else {
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }
+
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
         
         
         
