@@ -37,35 +37,33 @@
 -(void)coustom
 
 {
-    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(kMainWidth / 2 - 45, 100, 90, 90)];
+    
+    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(kMainWidth / 2 - 45, 50, 90, 90)];
     imageview.image = [UIImage imageNamed:@"check@2x(1).png"];
     [self.view addSubview:imageview];
-    
-    
-    UIImageView *smallImaage = [[UIImageView alloc]initWithFrame:CGRectMake(15, 210, 35, 35)];
-    smallImaage.image = [UIImage imageNamed:@"bulbs@2x(1).png"];
-    [self.view addSubview:smallImaage];
-    
-    
-    
-    UILabel *lible = [[UILabel alloc]initWithFrame:CGRectMake(55, 210, 220, 50)];
+
+    UILabel *lible = [[UILabel alloc]initWithFrame:CGRectMake(0, 150, kMainWidth ,30)];
+    lible.textAlignment = NSTextAlignmentCenter;
     lible.text = @"成功参与“你车我车”免费试用活动";
     lible.numberOfLines = 2;
-    
     
     [self.view addSubview:lible];
     
     
-    UILabel *lible1 = [[UILabel alloc]initWithFrame:CGRectMake(55, 270, 220, 50)];
-    lible1.text = @"关注微信公众账号“你车我车”并积极参与活动不仅可以提高中奖率，还能第一时间查看中奖名单 ！";
-    lible1.numberOfLines = 0;
+    UIImageView *smallImaage = [[UIImageView alloc]initWithFrame:CGRectMake(20, 210, 35, 40)];
+    smallImaage.image = [UIImage imageNamed:@"bulbs@2x(1).png"];
+    [self.view addSubview:smallImaage];
     
+    UILabel *lible1 = [[UILabel alloc]initWithFrame:CGRectMake(55, 200, kMainWidth - 75, 70)];
+    lible1.text = @"关注微信公众账号“你车我车”并积极参与活动不仅可以提高中奖率，还能第一时间查看中奖名单 ！";
+    lible1.font = [UIFont systemFontOfSize:13];
+    lible1.numberOfLines = 0;
     
     [self.view addSubview:lible1];
     
     UIButton *button = [UIButton buttonWithType:(UIButtonTypeCustom)];
     
-    button.frame = CGRectMake(kMainWidth/2 - 120, 335, 240, 40);
+    button.frame = CGRectMake(20, 280 , kMainWidth - 40 , 40);
     [button setBackgroundImage:[UIImage imageNamed:@"登录注册按钮背景@2x.png"] forState:(UIControlStateNormal)];
     [button addTarget:self action:@selector(pop) forControlEvents:(UIControlEventTouchUpInside)];
     

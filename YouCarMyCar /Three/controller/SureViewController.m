@@ -106,9 +106,6 @@
                 
                 NSLog(@"%@",[[responseObject valueForKey:@"datas"] valueForKey:@"status"]);
                 
-                UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"注销成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [aller show];
-                
                 [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"key"];
                 [[NSUserDefaults standardUserDefaults]setObject:@"" forKey:@"member_id"];
                 
@@ -126,14 +123,13 @@
         
     }else {
         
-//        UIAlertView *aller = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您还未登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [aller show];
         
     }
     
     
     
     LoginViewController *laog = [[LoginViewController alloc]init];
+    laog.k = 110;
     [self.navigationController pushViewController:laog animated:YES];
 
 }
