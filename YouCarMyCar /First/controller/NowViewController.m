@@ -53,7 +53,7 @@
     header.lastUpdatedTimeLabel.hidden = YES;
     
     // 马上进入刷新状态
-    [header beginRefreshing];
+//    [header beginRefreshing];
     
     // 设置header
     self.mytable.header = header;
@@ -76,6 +76,7 @@
     
     // 设置footer
     self.mytable.footer = footer;
+//    [self layoutTiShi];
     
     
 }
@@ -88,10 +89,10 @@
     self.backView.alpha = 0.2;
     
     
-    self.whiteView = [[UIView alloc]initWithFrame:CGRectMake(15, kMainHeight/2 - 90, kMainWidth - 30, 270)];
+    self.whiteView = [[UIView alloc]initWithFrame:CGRectMake(15, kMainHeight/2 - 230, kMainWidth - 30, 270)];
     self.whiteView.backgroundColor = MainBackGround;
     self.whiteView.layer.cornerRadius = 20;
-    [self.view addSubview:self.whiteView];
+//    [self.view addSubview:self.whiteView];
     
     
     
@@ -134,8 +135,18 @@
     [button setTitle:@"确定" forState:(UIControlStateNormal)];
     [self.whiteView addSubview:button];
     
-}
+    
+    [self.view addSubview:self.backView];
+    [self.view addSubview:self.whiteView];
+    
 
+    
+}
+-(void)viewWillAppear:(BOOL)animated
+{[self.mytable.header beginRefreshing];
+    
+    
+}
 
 -(void)dianji
 {
@@ -354,7 +365,7 @@
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
 
-    if (key) {
+    if (!([key isEqualToString:@""])) {
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         
@@ -378,14 +389,13 @@
                 
                 
                 if ([([[NSUserDefaults standardUserDefaults] valueForKey:@"tishi"] )isEqualToString:@"0"]) {
+                    [self layoutTiShi];
                     
-                    
-                    [self.view addSubview:self.backView];
-                    [self.view addSubview:self.whiteView];
                     
 
                 }else {
 
+                    
                 NowTextDetalViewController *detal = [[NowTextDetalViewController alloc]init];
                 detal.iSbutton  = YES;
                 

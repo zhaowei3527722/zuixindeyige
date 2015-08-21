@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -56,9 +56,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-6-20" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kj-16-hXg">
-                        <rect key="frame" x="172" y="59" width="58" height="21"/>
+                        <rect key="frame" x="164" y="59" width="90" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="58" id="ACM-PE-HSv"/>
+                            <constraint firstAttribute="width" constant="90" id="ACM-PE-HSv"/>
                             <constraint firstAttribute="height" constant="21" id="ebw-tU-hsP"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -104,7 +104,7 @@
                     <constraint firstItem="zEV-ph-12m" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-5" id="NFx-dl-y5n"/>
                     <constraint firstItem="Ccy-x5-TbR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="UaV-OR-g35"/>
                     <constraint firstItem="B0j-lJ-nKe" firstAttribute="leading" secondItem="hiw-th-syg" secondAttribute="trailing" constant="18" id="W93-Go-t6g"/>
-                    <constraint firstItem="6kj-16-hXg" firstAttribute="leading" secondItem="B0j-lJ-nKe" secondAttribute="trailing" constant="8" id="Y0d-pN-tlR"/>
+                    <constraint firstItem="6kj-16-hXg" firstAttribute="leading" secondItem="B0j-lJ-nKe" secondAttribute="trailing" id="Y0d-pN-tlR"/>
                     <constraint firstItem="hiw-th-syg" firstAttribute="leading" secondItem="Ccy-x5-TbR" secondAttribute="trailing" id="brx-Jm-mR6"/>
                     <constraint firstItem="5RJ-mb-K79" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="f5D-wi-raN"/>
                     <constraint firstItem="E70-4b-1Jb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="14" id="jML-Gt-zFo"/>

@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+@protocol SpeckDelegate <NSObject>
+
+-(void)tapta:(UITapGestureRecognizer *)tap;
+
+
+@end
+
+
 @interface SpeckWqTableViewCell : UITableViewCell
 @property (nonatomic)NSInteger mynuMberInter;
 @property (nonatomic ,strong)UIImageView *myImageView;
@@ -23,6 +33,7 @@
 @property (nonatomic ,strong)UIImageView *my4ImageView;
 @property (nonatomic ,strong)UIImageView *my5imageView;
 @property (nonatomic ,strong)UILabel *myTimeLable;
+@property (nonatomic,assign)id<SpeckDelegate>delegate;
 
 
 @end

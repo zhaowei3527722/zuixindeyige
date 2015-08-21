@@ -50,7 +50,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self coustom];
     
     self.myArray = [NSMutableArray array];
     self.modalPresentationCapturesStatusBarAppearance = NO;
@@ -90,18 +89,32 @@
     // 设置footer
     self.tableView.footer = footer;
     
-
+    [self coustom];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self coustom];
+    
+    [self headerRefreshing];
 }
 -(void)coustom
 {
+    NSString *member = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
+    
+    NSLog(@"%@",member);
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    
+
+    
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.myModelnow.myid];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@&key=%@&member_id=%@",kMainHttp,self.myModelnow.myid,key,member];
     NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        [self.myArray removeAllObjects];
         
         if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
             NSDictionary *dic = [responseObject valueForKey:@"datas"];
@@ -113,7 +126,7 @@
             self.miao = [dat1 timeIntervalSince1970];
 
             
-            NSLog(@"deat a= a= = =%@",self.myAllmodel.date);
+            [self.tableView reloadData];
             
         }
         
@@ -231,11 +244,6 @@
     
     
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    self.tabBarController.tabBar.hidden = NO;
-    
-}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     
@@ -255,7 +263,7 @@
     
     
     if (section == 1) {
-        return 100;
+        return 120;
         
     }else {
         
@@ -488,20 +496,23 @@
         NSTimeInterval a = [dat timeIntervalSince1970];
         NSInteger tim =  [self.myAllmodel.date integerValue]*24*3600 + [self.myAllmodel.hours integerValue]*3600+[self.myAllmodel.minutes integerValue]*60 + [self.myAllmodel.seconds integerValue];
         mycell.mytimeInteger = tim -(a - self.miao) ;
-        mycell.mydescritionLable.text = self.myModelnow.small_info;
-        mycell.myallGoodsCount.text = self.myModelnow.number;
-        mycell.mynowPerson.text = self.myModelnow.try_people;
-        mycell.myGoodName.text = self.myModelnow.title;
-        [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myModelnow.img]];
+        mycell.mydescritionLable.text = self.myAllmodel.small_info;
+        mycell.myallGoodsCount.text = self.myAllmodel.number;
+        mycell.mynowPerson.text = self.myAllmodel.try_people;
+        mycell.myGoodName.text = self.myAllmodel.title;
+        [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myAllmodel.img]];
         mycell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if ([self.myModelnow.presence integerValue]==1) {
+        
+        
+        NSLog(@"%@",self.myAllmodel.title);
+        if ([self.myAllmodel.presence integerValue]== 1) {
             [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
             
         }else {
             
             [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
             
-
+            
         }
         
 
@@ -567,7 +578,7 @@
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
     
-    if (key) {
+    if (!([key isEqualToString:@""])) {
         AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,self.myModelnow.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -582,7 +593,7 @@
                 
                 TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
                 [self.navigationController pushViewController:ts animated:NO];
-                [self headerRefreshing];
+                [self coustom];
                 
                 
             }

@@ -49,7 +49,7 @@
     self.myArray = [NSMutableArray array];
     self.tableView.bounces = NO;
     
-    
+    self.myAllDetallModel = [[AllDeteModel alloc]init];
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshing)];
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
@@ -71,40 +71,48 @@
    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-//    [self.tableView addHeaderWithTarget:self action:@selector(headerRefreshing)];
-//    [self.tableView headerBeginRefreshing];
-//    
     
     
-    
+    NSLog(@"%@",self.myModelnoW.myid);
 
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    
+    [self headerRefreshing];
+    
+    
 }
 -(void)headerRefreshing
 {
     
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *mid = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.myModelnoW.myid];
-    NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    AFHTTPRequestOperationManager *manager1 = [AFHTTPRequestOperationManager manager];
+    NSString *url1 = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@&key=%@&member_id=%@",kMainHttp,self.myModelnoW.myid,key,mid];
+    NSString *urlF81 = [url1 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+
+    
+    
+    
+    
+    [manager1 GET:urlF81 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"%@",responseObject);
         [self.myArray removeAllObjects];
 
         if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
             NSDictionary *dic = [responseObject valueForKey:@"datas"];
-            self.myAllDetallModel  = [[AllDeteModel alloc]init];
             [self.myAllDetallModel setValuesForKeysWithDictionary:dic];
             [self.myArray addObject:self.myAllDetallModel];
             
-            [self.tableView reloadData];
             
             NSLog(@"%@",self.myAllDetallModel.big_img);
             NSString *string = self.myAllDetallModel.info;
             
-//            string = [string substringWithRange:NSMakeRange(0, string.length - 2)];
-//            
-//            string = [NSString stringWithFormat:@"%@style=\" width:%.fpx\";/>",string,kMainWidth - 10];
             
             NSString *str = [NSString stringWithFormat:@"alt=\"\" style=\" width:%.fpx\";",kMainWidth - 10];
             
@@ -124,7 +132,8 @@
             [web loadHTMLString:string baseURL:nil];
             
             [self.view addSubview:web];
-            
+            [self.tableView reloadData];
+
 
             
         }
@@ -295,21 +304,24 @@
         NSInteger tim =  [self.myAllDetallModel.date integerValue]*24*3600 + [self.myAllDetallModel.hours integerValue]*3600+[self.myAllDetallModel.minutes integerValue]*60 + [self.myAllDetallModel.seconds integerValue];
         
         mycell.mytimeInteger = tim;
-        mycell.mydescritionLable.text = self.myModelnoW.small_info;
-        mycell.myallGoodsCount.text = self.myModelnoW.number;
-        mycell.mynowPerson.text = self.myModelnoW.try_people;
-        mycell.myGoodName.text = self.myModelnoW.title;
-        [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myModelnoW.img]];
+        mycell.mydescritionLable.text = self.myAllDetallModel.small_info;
+        mycell.myallGoodsCount.text = self.myAllDetallModel.number;
+        mycell.mynowPerson.text = self.myAllDetallModel.try_people;
+        mycell.myGoodName.text = self.myAllDetallModel.title;
+        [mycell.myGoodImageVeiw sd_setImageWithURL:[NSURL URLWithString:self.myAllDetallModel.img]];
         mycell.selectionStyle = UITableViewCellSelectionStyleNone;
      
-        if ([self.myModelnoW.presence integerValue]==1) {
-            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji.png"] forState:(UIControlStateNormal)];
+        
+        NSLog(@"mode;l  =======%@",self.myAllDetallModel.presence);
+        
+        if ([self.myAllDetallModel.presence integerValue]== 1) {
+            [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji@2x.png"] forState:(UIControlStateNormal)];
             
         }else {
             
             [mycell.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
             
-
+            
         }
         
         
@@ -377,7 +389,7 @@
     NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
     
     
-    if (key) {
+    if (!([key isEqualToString:@""])) {
         AFHTTPRequestOperationManager  *manager = [[AFHTTPRequestOperationManager alloc]init];
         
         [manager GET:[NSString stringWithFormat:@"%@?act=try&op=applyTry&member_id=%@&key=%@&try_id=%@",kMainHttp,member,key,self.myModelnoW.myid] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -392,7 +404,7 @@
                 
                 TsGoodViewController *ts = [[TsGoodViewController  alloc]init];
                 [self.navigationController pushViewController:ts animated:NO];
-                [self headerRefreshing];
+                [self.tableView.header beginRefreshing];
                 
                 
             }

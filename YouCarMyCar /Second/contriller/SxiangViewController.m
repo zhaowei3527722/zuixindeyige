@@ -25,7 +25,7 @@
 
 #import "LoginViewController.h"
 
-@interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate>
+@interface SxiangViewController ()<UITableViewDataSource,UITableViewDelegate,WpDetalTableviewCellDelegate,SpeckDelegate>
 @property (nonatomic)NSInteger indextnumber;//记录获取试用报告列表的 第几页
 @property (nonatomic,strong)NSMutableArray *myArray;
 @property (nonatomic,strong)AllDeteModel *myAllmodel;
@@ -59,7 +59,8 @@
     }
     
     
-    
+    self.myAllmodel  = [[AllDeteModel alloc]init];
+
     
     
     
@@ -176,13 +177,17 @@
 
 -(void)coustom
 {
+    NSString *key = [[NSUserDefaults standardUserDefaults] valueForKey:@"key"];
+    NSString *member_id =  [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
     
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@",kMainHttp,self.stringID];
+    NSString *url = [NSString stringWithFormat:@"%@?act=try&op=info&id=%@&key=%@&member_id=%@",kMainHttp,self.stringID,key,member_id];
     
     NSString *urlF8 = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSLog(@"%@",url);
     
     [manager GET:urlF8 parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -190,12 +195,12 @@
         
         if (!([responseObject valueForKey:@"datas"] == [NSNull null])) {
             NSDictionary *dic = [responseObject valueForKey:@"datas"];
-            self.myAllmodel  = [[AllDeteModel alloc]init];
             [self.myAllmodel setValuesForKeysWithDictionary:dic];
             [self.myTableView reloadData];
             NSLog(@"%@",self.myAllmodel.big_img);
             NSDate* dat1 = [NSDate dateWithTimeIntervalSinceNow:0];
             self.miao = [dat1 timeIntervalSince1970];
+            NSLog(@"%@",      self.myAllmodel.prize);
             
             
             [self.myTableView reloadData];
@@ -356,12 +361,15 @@
             wqCell = [[SpeckWqTableViewCell alloc]initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:wpindext1];
             
         }
+        
+        
+        
         TryReportModel *model = self.myArray[indexPath.row -1];
         
         
         [wqCell.myToImageView sd_setImageWithURL:[NSURL URLWithString:model.member_avatar]];
         
-        wqCell.myNameLable.text  = model.member_name;
+        wqCell.myNameLable.text  = model.member_truename;
         wqCell.myPriceLableJ.text = model.price_info;
         wqCell.myWeithtLableZ.text = model.quality_info;
         wqCell.myAspectLableW.text = model.appearance_info;
@@ -381,13 +389,13 @@
         
         NSString* dateString = [formatter stringFromDate:date];
         
-        
-        NSLog(@"format dateString:%@",dateString);
-        
         wqCell.myTimeLable.text = dateString;
         
-
+        wqCell.myImageView.tag = indexPath.row +100;
         
+        wqCell.delegate = self;
+        
+        wqCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         
         return wqCell;
@@ -395,6 +403,38 @@
         
     }
     
+    
+}
+-(void)tapta:(UITapGestureRecognizer *)tap
+{
+    
+
+    UIImageView *imageview = (UIImageView *)tap.view;
+  NSInteger aa =imageview.tag - 100-1;
+    TryReportModel *model = self.myArray[aa];
+
+  
+    NSLog(@"%ld",(long)aa);
+    
+    self.myBigImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, -64, kMainWidth, kMainHeight )];
+    
+    [self.view addSubview:self.myBigImageView];
+    [self.myBigImageView sd_setImageWithURL:[NSURL URLWithString:model.img]];
+    
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
+    [self.myBigImageView addGestureRecognizer:tap1];
+    self.myBigImageView.userInteractionEnabled = YES;
+    
+    self.navigationController.navigationBar.hidden = YES;
+    
+    
+}
+-(void)tap
+{
+    
+    self.navigationController.navigationBar.hidden = NO;
+
+    [self.myBigImageView removeFromSuperview];
     
 }
 
@@ -485,11 +525,16 @@
 
 -(void)liftButton:(UIButton *)button
 {
-    
+    LiftButtonViewController *lift = [[LiftButtonViewController alloc]init];
+    lift.wangqiModel = self.wangqiModel;
+    [self.navigationController pushViewController:lift animated:YES];
+
     NSString *key =[[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
     
     if (!([key isEqualToString:@""])) {
         
+        
+        NSLog(@" ------------%@",self.myAllmodel.prize);
         
         if ((NSInteger)self.myAllmodel.prize  == 1) {
             

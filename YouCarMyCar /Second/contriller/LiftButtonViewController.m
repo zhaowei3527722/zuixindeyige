@@ -46,9 +46,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // 加载圈圈 (登录成功后移除 登录失败也移除)
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.HUD];
+    self.HUD.labelText = @"请稍后...";
     
+
     
-    NSLog(@"%@",self.wangqiModel.title);
     
     self.isOne = YES;
     self.isTow = YES;
@@ -174,6 +178,23 @@
             self.base64string = [imageData base64Encoding];
         }
         
+        
+        
+        if ([self.base64string isEqualToString:@""]||[self.zhi.text isEqualToString:@""]||[self.wai.text isEqualToString:@""]||[self.jia.text isEqualToString:@""]) {
+            UIAlertView *uial = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请把信息填写完整" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [uial show];
+            
+            
+        }else {
+        
+        
+        
+        
+            [self.HUD show:YES];
+            
+        
+        
+        
         NSString *mymember_id = [[NSUserDefaults standardUserDefaults]valueForKey:@"member_id"];
         NSString *mykey = [[NSUserDefaults standardUserDefaults]valueForKey:@"key"];
         NSLog(@"%@",self.wangqiModel.myID);
@@ -229,10 +250,11 @@
         }];
         
         
+            [self.HUD removeFromSuperview];
+            
         
         
-        
-        
+        }
         
         
         

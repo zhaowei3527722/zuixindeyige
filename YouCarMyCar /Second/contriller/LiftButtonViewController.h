@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "WangQiModel.h"
+#import "MBProgressHUD.h"
+
 @interface LiftButtonViewController : UIViewController
 @property (nonatomic)BOOL isOne;
 @property (nonatomic)BOOL isTow;
@@ -21,6 +23,7 @@
 @property (nonatomic ,strong)UIButton *xingxing5;
 @property (nonatomic ,strong)WangQiModel *wangqiModel;
 
+@property (nonatomic,strong)MBProgressHUD *HUD;
 
 
 @end

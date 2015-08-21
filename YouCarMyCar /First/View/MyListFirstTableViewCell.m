@@ -82,7 +82,7 @@
             self.myTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(40+(self.cellheight - 12 )/51 *44 + 5, self.cellheight / 4 * 2 + 30, self.cellweight - (self.cellweight / 2 - 20)- 50 , 20)];
             [self addSubview:self.myTimeLable];
             
-            self.myTimeLable.font = [UIFont systemFontOfSize:13];
+            self.myTimeLable.font = [UIFont systemFontOfSize:15];
             
             self.timLable= [[MZTimerLabel alloc] initWithLabel:self.myTimeLable andTimerType:MZTimerLabelTypeTimer];
             [self.timLable setCountDownTime:self.mytimeInteger];
@@ -130,8 +130,7 @@
         [self addSubview:self.mydescritionLable];
         
         self.mybutton = [[UIButton alloc]initWithFrame:CGRectMake((kMainWidth - imagewith ) / 2 +imagewith - 60, self.cellheight / 4 * 3 + 10, 120 , self.cellheight / 4 - 10)];
-        [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
-        [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji@2x.png"] forState:(UIControlStateSelected)];
+
         
         [self.mybutton addTarget:self action:@selector(mybutton:) forControlEvents:(UIControlEventTouchUpInside)];
         [self addSubview:self.mybutton];
@@ -212,9 +211,6 @@
                 self.mybutton = [[UIButton alloc]initWithFrame:CGRectMake((kMainWidth - imagewith ) / 2 +imagewith - 60, self.cellheight / 4 * 3 + 10, 120 , self.cellheight / 4 - 10)];
         
         self.mybutton = [[UIButton alloc]initWithFrame:CGRectMake((kMainWidth - imagewith ) / 2 +imagewith - 75, self.cellheight / 4 * 3 + 10, 150 , self.cellheight / 4 - 10)];
-        [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用@2x.png"] forState:(UIControlStateNormal)];
-        [self.mybutton setBackgroundImage:[UIImage imageNamed:@"免费试用dianji@2x.png"] forState:(UIControlStateSelected)];
-        
         [self.mybutton addTarget:self action:@selector(mybutton:) forControlEvents:(UIControlEventTouchUpInside)];
         [self addSubview:self.mybutton];
         

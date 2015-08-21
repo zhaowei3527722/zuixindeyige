@@ -216,7 +216,7 @@
     }else if (self.i == 13){
         return 4;
     }else if (self.i == 0){
-        return _huodongArray.count;
+        return 10;
     }else {
         return 3;
     }
@@ -337,33 +337,45 @@
     }else{
         
         ActivityTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"huodongCell" forIndexPath:indexPath];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        Huodongjilu *huodongModel = self.huodongArray[ indexPath.row];
-        cell.backgroundColor = MainBackGround;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        Huodongjilu *huodongModel = self.huodongArray[ indexPath.row];
+//        cell.backgroundColor = MainBackGround;
+//        
+//        cell.thingImage.image = [UIImage imageNamed:@"2.png"];
+//        cell.selectionStyle = UITableViewCellAccessoryNone;
+//        cell.superview.superview.backgroundColor = MainBackGround;
+//        
+//        cell.numberLable.text = huodongModel.number;
+//        cell.nameLable.text = huodongModel.title;
         
-        cell.thingImage.image = [UIImage imageNamed:@"2.png"];
-        cell.selectionStyle = UITableViewCellAccessoryNone;
-        cell.superview.superview.backgroundColor = MainBackGround;
         
-        cell.numberLable.text = huodongModel.number;
-        cell.nameLable.text = huodongModel.title;
-        cell.timeLable.text = huodongModel.open_prize;
+        NSDateFormatter* formatter = [[NSDateFormatter alloc] init] ;
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"shanghai"];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
+        [formatter setDateFormat:@"yy年MM月dd日"];
+        NSDate* date = [NSDate dateWithTimeIntervalSince1970:1000000000];
+        NSString* dateString = [formatter stringFromDate:date];
+
+        cell.timeLable.text = dateString;
         
-        if ([huodongModel.status isEqualToString:@"3"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
-        }else if ([huodongModel.status isEqualToString:@"1"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
-            
-        }else if ([huodongModel.status isEqualToString:@"2"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"再接再厉.png"] forState:(UIControlStateNormal)];
-        }else if ([huodongModel.status isEqualToString:@"0"]) {
-            [cell.baoGao setImage:[UIImage imageNamed:@"恭喜中奖.png"] forState:(UIControlStateNormal)];
-            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
-        }
         
-        NSURL *url = [NSURL URLWithString:huodongModel.img];
-        
-        [cell.thingImage sd_setImageWithURL:url];
+//        
+//        if ([huodongModel.status isEqualToString:@"3"]) {
+//            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+//        }else if ([huodongModel.status isEqualToString:@"1"]) {
+//            [cell.baoGao setImage:[UIImage imageNamed:@"审核中.png"] forState:(UIControlStateNormal)];
+//            
+//        }else if ([huodongModel.status isEqualToString:@"2"]) {
+//            [cell.baoGao setImage:[UIImage imageNamed:@"再接再厉.png"] forState:(UIControlStateNormal)];
+//        }else if ([huodongModel.status isEqualToString:@"0"]) {
+//            [cell.baoGao setImage:[UIImage imageNamed:@"恭喜中奖.png"] forState:(UIControlStateNormal)];
+//            [cell.baoGao addTarget:self action:@selector(baogao:) forControlEvents:(UIControlEventTouchUpInside)];
+//        }
+//        
+//        NSURL *url = [NSURL URLWithString:huodongModel.img];
+//        
+//        [cell.thingImage sd_setImageWithURL:url];
         
         
         

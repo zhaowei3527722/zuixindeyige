@@ -44,7 +44,6 @@
     
     
     
-    
     [self addSubview:self.myNameLable];
     [self addSubview:self.myToImageView];
     
@@ -112,7 +111,24 @@
     xian.backgroundColor = [UIColor grayColor];
     
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
     
+    
+    
+    [self.myImageView addGestureRecognizer:tap];
+    self.myImageView.userInteractionEnabled = YES;
+    
+    
+    
+    
+}
+
+-(void)tap:(UITapGestureRecognizer *)tap
+{
+    if ([self.delegate respondsToSelector:@selector(tapta:)]) {
+        [self.delegate tapta:tap];
+        
+    }
 }
 
 -(void)setMySpeckXingNumberInteger:(NSInteger)mySpeckXingNumberInteger
